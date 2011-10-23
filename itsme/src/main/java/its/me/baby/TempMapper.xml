@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="its.me.baby.TempMapper">
+	
+	<resultMap id="temp" type="its.me.baby.Temp">
+		<id property="userId" column="USER_ID"/>
+		<result property="userName" column="USER_NAME"/>
+	</resultMap>
+	
+	<select id="get" parameterType="int" resultMap="temp">
+		select
+			USER_ID,
+			USER_NAME
+		FROM
+			TEMP
+		WHERE
+			USER_ID = #{userId}
+	</select>
+
+	<select id="list" resultMap="temp">
+		select
+			USER_ID,
+			USER_NAME
+		FROM
+			TEMP
+	</select>
+
+	<insert id="save" parameterType="its.me.baby.Temp">
+		insert into TEMP
+		(
+			USER_ID,
+			USER_NAME
+		)
+		values
+		(
+			#{userId},
+			#{userName}
+		)
+	</insert>
+</mapper>

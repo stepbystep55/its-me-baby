@@ -1,4 +1,4 @@
-package its.me.baby;
+package its.me.baby.dto;
 
 public class Temp {
 

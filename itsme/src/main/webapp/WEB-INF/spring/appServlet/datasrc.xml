@@ -9,7 +9,7 @@
 
 	<!-- Embedded database for storing connections -->
 	<jdbc:embedded-database id="dataSource" type="H2">
-		<jdbc:script location="classpath:/its/me/baby/create_temp.sql" />
+		<jdbc:script location="classpath:/its/me/baby/mapper/create_temp.sql" />
 	</jdbc:embedded-database>	
 
 	<!-- Local, JDBC-based TransactionManager -->
@@ -24,7 +24,7 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value= "its.me.baby" />
+		<property name="basePackage" value= "its.me.baby.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 </beans>

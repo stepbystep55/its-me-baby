@@ -23,7 +23,7 @@
 
 	<beans:bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
 
-	<context:component-scan base-package="its.me.baby" />
+	<context:component-scan base-package="its.me.baby.controller" />
 
 	<beans:import resource="datasrc.xml" />
 

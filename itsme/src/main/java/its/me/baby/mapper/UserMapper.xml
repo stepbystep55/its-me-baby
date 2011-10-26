@@ -18,11 +18,10 @@
 		SELECT
 			ID,
 			EMAIL,
-			CRYPTO_PASSWORD,
 			NAME,
 			PROFILE
 		FROM
-			USER
+			USER_MASTER
 		WHERE
 			ID = #{id} AND CRYPTO_PASSWORD = #{cryptoPassword}
 	</select>
@@ -31,11 +30,10 @@
 		SELECT
 			ID,
 			EMAIL,
-			CRYPTO_PASSWORD,
 			NAME,
 			PROFILE
 		FROM
-			USER
+			USER_MASTER
 		WHERE
 			EMAIL = #{email} AND CRYPTO_PASSWORD = #{cryptoPassword}
 	</select>
@@ -44,13 +42,23 @@
 		SELECT
 			COUNT(*)
 		FROM
-			USER
+			USER_MASTER
 		WHERE
 			EMAIL = #{email}
 	</select>
 
+	<select id="list" resultMap="user">
+		SELECT
+			ID,
+			EMAIL,
+			NAME,
+			PROFILE
+		FROM
+			USER_MASTER
+	</select>
+
 	<insert id="saveUser" parameterType="its.me.baby.dto.User">
-		INSERT INTO USER
+		INSERT INTO USER_MASTER
 		(
 			ID,
 			EMAIL,

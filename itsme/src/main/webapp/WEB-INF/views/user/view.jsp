@@ -1,0 +1,20 @@
+<%@ page session="false" %>
+<html>
+<head>
+	<title>View</title>
+</head>
+<body>
+<p>
+	id:${user.id}
+	<br>
+	name:${user.name}
+	<br>
+	email:${user.email}
+	<br>
+	password:${user.password}
+	<br>
+	profile:${user.profile}
+	<br>
+</p>
+</body>
+</html>

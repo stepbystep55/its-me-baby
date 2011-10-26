@@ -25,17 +25,18 @@ public class UserController {
 	private UserMapper userMapper;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+/*
 	@ModelAttribute
 	public User setUpForm(){
 		return new User();
 	}
-
+*/
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView create() {
 
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("user", new User());
 		modelAndView.setViewName("user/create");
 		return modelAndView;
 	}
@@ -50,7 +51,7 @@ public class UserController {
 			modelAndView.setViewName("user/create");
 			return modelAndView;
 		}
-		if (userMapper.countUserByEamil(user.getEmail()) != 0) {
+		if (userMapper.countUserByEmail(user.getEmail()) != 0) {
 			result.rejectValue("email", "email.exists", new String[] {}, "");
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
@@ -58,10 +59,14 @@ public class UserController {
 			return modelAndView;
 		}
 
-		user.setId(userMapper.newId());
+		user.setId(userMapper.newId()); System.out.println("user.id="+user.getId());
 		userMapper.saveUser(user);
 
-		user = userMapper.getUserById(user.getId(), user.getCryptoPassword());
+		UserGetter userGetter = new UserGetter();
+		userGetter.setId(user.getId());
+		userGetter.setPassword(user.getPassword());
+		user = userMapper.getUserById(userGetter);
+		System.out.println("userlist="+userMapper.list());
 	
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -80,7 +85,7 @@ public class UserController {
 			return modelAndView;
 		}
 
-		User user = userMapper.getUserById(userGetter.getId(), userGetter.getCryptoPassword());
+		User user = userMapper.getUserById(userGetter);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);

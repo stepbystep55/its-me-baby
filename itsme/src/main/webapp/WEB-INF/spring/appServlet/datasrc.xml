@@ -11,6 +11,7 @@
 	<jdbc:embedded-database id="dataSource" type="H2">
 		<jdbc:script location="classpath:/its/me/baby/mapper/create_temp.sql" />
 		<jdbc:script location="classpath:/its/me/baby/mapper/create_sequence_user.sql" />
+		<jdbc:script location="classpath:/its/me/baby/mapper/create_user.sql" />
 	</jdbc:embedded-database>	
 
 	<!-- Local, JDBC-based TransactionManager -->

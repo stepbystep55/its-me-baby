@@ -1,5 +1,7 @@
 package its.me.baby.dto;
 
+import its.me.baby.util.StringUtils;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -22,6 +24,7 @@ public class User {
 	private String password = null;
 	
 	@NotEmpty
+	@Length(max=2048)
 	private String profile = null;
 
 	public Integer getId() {
@@ -46,7 +49,7 @@ public class User {
 		return password;
 	}
 	public String getCryptoPassword() {
-		return password+"a";
+		return StringUtils.getMD5Hash(password);
 	}
 	public void setPassword(String password) {
 		this.password = password;
@@ -56,5 +59,10 @@ public class User {
 	}
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email
+				+ ", password=" + password + ", profile=" + profile + "]";
 	}
 }

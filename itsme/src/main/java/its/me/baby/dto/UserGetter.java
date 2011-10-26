@@ -1,5 +1,7 @@
 package its.me.baby.dto;
 
+import its.me.baby.util.StringUtils;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -34,7 +36,7 @@ public class UserGetter {
 		return password;
 	}
 	public String getCryptoPassword() {
-		return password+"a";
+		return StringUtils.getMD5Hash(password);
 	}
 	public void setPassword(String password) {
 		this.password = password;

@@ -4,7 +4,6 @@ import its.me.baby.dto.User;
 import its.me.baby.dto.UserGetter;
 import its.me.baby.mapper.UserMapper;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +32,16 @@ public class UserController {
 */
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView top() {
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userGetter", new UserGetter());
+		modelAndView.setViewName("user/top");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView create() {
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -43,7 +52,7 @@ public class UserController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(@Valid User user, BindingResult result, HttpServletRequest request) {
+	public ModelAndView save(@Valid User user, BindingResult result) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
@@ -52,22 +61,67 @@ public class UserController {
 			return modelAndView;
 		}
 		if (userMapper.countUserByEmail(user.getEmail()) != 0) {
-			result.rejectValue("email", "email.exists", new String[] {}, "");
+			result.rejectValue("email", "error.email.exists", new String[] {}, "");
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/create");
 			return modelAndView;
 		}
 
-		user.setId(userMapper.newId()); System.out.println("user.id="+user.getId());
+		user.setId(userMapper.newId());
 		userMapper.saveUser(user);
 
-		UserGetter userGetter = new UserGetter();
-		userGetter.setId(user.getId());
-		userGetter.setPassword(user.getPassword());
-		user = userMapper.getUserById(userGetter);
-		System.out.println("userlist="+userMapper.list());
-	
+		user = userMapper.getUserById(user.getId());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("user", user);
+		modelAndView.addObject("resultCreated", true);
+		modelAndView.setViewName("user/view");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView update(@Valid User user, BindingResult result) {
+
+		if (result.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("user", user);
+			modelAndView.setViewName("user/edit");
+			return modelAndView;
+		}
+		if (userMapper.countUserByEmail(user.getEmail()) != 0) {
+			result.rejectValue("email", "email.exists", new String[] {}, "");
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("user", user);
+			modelAndView.setViewName("user/edit");
+			return modelAndView;
+		}
+
+		userMapper.updateUser(user);
+
+		user = userMapper.getUserById(user.getId());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("user", user);
+		modelAndView.addObject("resultUpdated", true);
+		modelAndView.setViewName("user/view");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result) {
+
+		if (result.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("userGetter", userGetter);
+			modelAndView.setViewName("user/top");
+			return modelAndView;
+		}
+
+		User user = userMapper.getUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
+
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("user/view");
@@ -75,17 +129,10 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView view(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
+	@RequestMapping(value = "/user/view/{id}", method={RequestMethod.GET})
+	public ModelAndView view(@PathVariable Integer id) {
 
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("userGetter", userGetter);
-			modelAndView.setViewName("user/login");
-			return modelAndView;
-		}
-
-		User user = userMapper.getUserById(userGetter);
+		User user = userMapper.getUserById(id);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);

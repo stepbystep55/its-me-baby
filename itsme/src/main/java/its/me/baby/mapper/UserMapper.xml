@@ -14,7 +14,7 @@
 		SELECT SEQ_USER.NEXTVAL
 	</select>
 
-	<select id="getUserById" parameterType="its.me.baby.dto.UserGetter" resultMap="user">
+	<select id="getUserById" parameterType="Integer" resultMap="user">
 		SELECT
 			ID,
 			EMAIL,
@@ -23,10 +23,10 @@
 		FROM
 			USER_MASTER
 		WHERE
-			ID = #{id} AND CRYPTO_PASSWORD = #{cryptoPassword}
+			ID = #{id}
 	</select>
 
-	<select id="getUserByEmail" parameterType="its.me.baby.dto.UserGetter" resultMap="user">
+	<select id="getUserByEmailAndCryptoPassword" parameterType="map" resultMap="user">
 		SELECT
 			ID,
 			EMAIL,
@@ -75,4 +75,16 @@
 			#{profile}
 		)
 	</insert>
+
+	<update id="updateUser" parameterType="its.me.baby.dto.User">
+		UPDATE USER_MASTER
+			SET
+				ID = #{id},
+				EMAIL = #{email},
+				CRYPTO_PASSWORD = #{cryptoPassword},
+				NAME = #{name},
+				PROFILE = #{profile}
+			WHERE
+				ID = #{id}
+	</update>
 </mapper>

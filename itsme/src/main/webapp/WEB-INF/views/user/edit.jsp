@@ -9,18 +9,20 @@
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Expires" content="-1" />
 	<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.6.4.min.js"></script>
-	<title>Create</title>
+	<title>Edit</title>
 </head>
 <body>
-<form:form modelAttribute="user" action="save" method="post">
+<form:form modelAttribute="user" action="update" method="post">
 <p>
+	<form:hidden path="id" />
+
 	name:<form:input path="name" size="16" maxlength="32" />
 	<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
 	<br>
 	email:<form:input path="email" size="32" maxlength="128"/>
 	<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
 	<br>
-	password:<form:input path="password" size="10" maxlength="32" />
+	password:<form:password path="password" size="10" maxlength="32" />
 	<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
 	<br>
 	profile:<form:textarea path="profile" rows="5" cols="30" />

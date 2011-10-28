@@ -6,10 +6,12 @@
 	<artifactId>baby</artifactId>
 	<name>itsme</name>
 	<packaging>war</packaging>
-	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<properties>
 		<java-version>1.6</java-version>
 		<org.springframework-version>3.0.6.RELEASE</org.springframework-version>
+		<org.springframework.social-version>1.0.0.RELEASE</org.springframework.social-version>
+		<org.springframework.security.crypto-version>3.1.0.RC2.crypto</org.springframework.security.crypto-version>
 		<org.aspectj-version>1.6.11</org.aspectj-version>
 		<org.slf4j-version>1.6.3</org.slf4j-version>
 	</properties>
@@ -165,6 +167,31 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
+
+		<!-- social -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-web</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+
+		<!-- etc -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>${org.springframework.security.crypto-version}</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

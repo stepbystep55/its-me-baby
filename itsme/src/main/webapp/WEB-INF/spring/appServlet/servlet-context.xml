@@ -25,13 +25,10 @@
 
 	<context:component-scan base-package="its.me.baby.controller" />
 
-<!-- 
 	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename">
-			<value>messages</value>
-		</property>
+		<beans:property name="basename" value="messages" />
 	</beans:bean>
--->
+
 	<beans:import resource="datasrc.xml" />
 
 </beans:beans>

@@ -11,8 +11,8 @@
 	<title>View</title>
 </head>
 <body>
-<c:if test="${resultCreated}">c<spring:message code="result.created" /></c:if>
-<c:if test="${resultUpdated}">u<spring:message code="result.updated" /></c:if>
+<c:if test="${resultCreated}"><spring:message code="result.created" /></c:if>
+<c:if test="${resultUpdated}"><spring:message code="result.updated" /></c:if>
 <p>
 	id:${user.id}
 	<br>

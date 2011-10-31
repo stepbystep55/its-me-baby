@@ -1,6 +1,12 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
+<spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
+<spring:url value="/resources-{applicationVersion}" var="resourceUrl">
+	<spring:param name="applicationVersion" value="${applicationVersion}"/>
+</spring:url>
+
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -8,7 +14,7 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Expires" content="-1" />
-	<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="${resourceUrl}/js/jquery-1.6.4.min.js"></script>
 	<title>Edit</title>
 </head>
 <body>
@@ -32,6 +38,11 @@
 	<input type="submit">
 </p>
 </form:form>
+<br>
+<form action="<c:url value="/signin/facebook" />" method="POST">
+	<button type="submit"><img src="<${resourceUrl}/img/connect_facebook.png" /></button>
+	<input type="hidden" name="scope" value="email,publish_stream,offline_access" />
+</form>
 <script type="text/javascript">
 $(function(){
 });

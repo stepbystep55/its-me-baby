@@ -2,6 +2,9 @@ package its.me.baby.dto;
 
 import its.me.baby.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,7 +26,6 @@ public class User {
 	@Length(min=8,max=32)
 	private String password = null;
 	
-	@NotEmpty
 	@Length(max=2048)
 	private String profile = null;
 
@@ -64,5 +66,11 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email
 				+ ", password=<<secret>>" + ", profile=" + profile + "]";
+	}
+	
+	public Map<String, String> validateForEdit() {
+		Map<String, String> rejectValueMap = new HashMap<String, String>();
+		if (profile == null) rejectValueMap.put("profile", "org.hibernate.validator.constraints.NotEmpty.message");
+		return (rejectValueMap.size() == 0) ? null : rejectValueMap;
 	}
 }

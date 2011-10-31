@@ -4,11 +4,19 @@ import its.me.baby.dto.User;
 import its.me.baby.dto.UserGetter;
 import its.me.baby.mapper.UserMapper;
 
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -19,11 +27,26 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
-	
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+/*
+	private final Facebook facebook;
+
+	@Inject
+	public UserController(Facebook facebook) {
+		this.facebook = facebook;
+	}
+	private final UsersConnectionRepository usersConnectionRepository;
+
+	@Inject
+	public UserController(UsersConnectionRepository usersConnectionRepository) {
+		this.usersConnectionRepository = usersConnectionRepository;
+	}
+*/
+
 	@Autowired
 	private UserMapper userMapper;
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 /*
 	@ModelAttribute
 	public User setUpForm(){
@@ -52,7 +75,7 @@ public class UserController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(@Valid User user, BindingResult result) {
+	public ModelAndView save(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
@@ -61,7 +84,7 @@ public class UserController {
 			return modelAndView;
 		}
 		if (userMapper.countUserByEmail(user.getEmail()) != 0) {
-			result.rejectValue("email", "error.email.exists", new String[] {}, "");
+			result.rejectValue("email", "error.email.exists");
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/create");
@@ -73,16 +96,18 @@ public class UserController {
 
 		user = userMapper.getUserById(user.getId());
 
+		request.getSession().setAttribute("its.me.baby.User", user);
+
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.addObject("resultCreated", true);
-		modelAndView.setViewName("user/view");
+		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView update(@Valid User user, BindingResult result) {
+	public ModelAndView update(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
@@ -91,7 +116,7 @@ public class UserController {
 			return modelAndView;
 		}
 		if (userMapper.countUserByEmail(user.getEmail()) != 0) {
-			result.rejectValue("email", "email.exists", new String[] {}, "");
+			result.rejectValue("email", "email.exists");
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
@@ -102,6 +127,8 @@ public class UserController {
 
 		user = userMapper.getUserById(user.getId());
 
+		request.getSession(false).setAttribute("its.me.baby.User", user);
+
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.addObject("resultUpdated", true);
@@ -111,7 +138,7 @@ public class UserController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result) {
+	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
@@ -121,6 +148,8 @@ public class UserController {
 		}
 
 		User user = userMapper.getUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
+
+		request.getSession().setAttribute("its.me.baby.User", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -133,9 +162,19 @@ public class UserController {
 	public ModelAndView view(@PathVariable Integer id) {
 
 		User user = userMapper.getUserById(id);
-
+/*
+		List<Post> feedList = null;
+		try {
+			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
+			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
+			feedList = facebook.feedOperations().getFeed();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		*/
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
+		//modelAndView.addObject("feedList", feedList);
 		modelAndView.setViewName("user/view");
 		return modelAndView;
 	}

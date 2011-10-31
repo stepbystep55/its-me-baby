@@ -25,5 +25,12 @@
 	profile:${user.profile}
 	<br>
 </p>
+<c:if test="${feedList}">
+<ul>
+<c:forEach items="${feedList}" var="post">
+	<li>${post.updatedTime}: ${post.message}</li>
+</c:forEach>
+</ul>
+</c:if>
 </body>
 </html>

@@ -18,8 +18,8 @@
 	<context:property-placeholder properties-ref="defaultProperties" />
 
 	<util:properties id="defaultProperties">
-		<prop key="facebook.clientId">169739149777711</prop>
-		<prop key="facebook.clientSecret">5fdc70526ae4ca2466718b6e3a36fbb7</prop>
+		<prop key="facebook.clientId">101211593327312</prop>
+		<prop key="facebook.clientSecret">3f812052e828348be7ead074936d1632</prop>
 	</util:properties>
 
 	<!-- Controls rendering of the home page once a user has signed in -->
@@ -39,6 +39,7 @@
 		<constructor-arg>
 			<bean class="its.me.baby.social.ItsmeSignInAdapter" />
 		</constructor-arg>
+		<property name="postSignInUrl" value="http://its.me:8080/itsme/user/show" />
 	</bean>
 
 </beans>

@@ -36,8 +36,11 @@ public class UserController {
 	public UserController(Facebook facebook) {
 		this.facebook = facebook;
 	}
-	private final UsersConnectionRepository usersConnectionRepository;
-
+	*/
+	
+	@Autowired
+	private UsersConnectionRepository usersConnectionRepository;
+/*
 	@Inject
 	public UserController(UsersConnectionRepository usersConnectionRepository) {
 		this.usersConnectionRepository = usersConnectionRepository;
@@ -162,7 +165,6 @@ public class UserController {
 	public ModelAndView view(@PathVariable Integer id) {
 
 		User user = userMapper.getUserById(id);
-/*
 		List<Post> feedList = null;
 		try {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
@@ -171,7 +173,26 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("user", user);
+		//modelAndView.addObject("feedList", feedList);
+		modelAndView.setViewName("user/view");
+		return modelAndView;
+	}
+	
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView show(HttpServletRequest request) {
+
+		User user = (User)request.getSession().getAttribute("its.me.baby.User");
+		List<Post> feedList = null;
+		try {
+			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
+			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
+			feedList = facebook.feedOperations().getFeed();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		//modelAndView.addObject("feedList", feedList);

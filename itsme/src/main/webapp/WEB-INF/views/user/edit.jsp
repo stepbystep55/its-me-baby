@@ -1,4 +1,5 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
@@ -40,7 +41,7 @@
 </form:form>
 <br>
 <form action="<c:url value="/signin/facebook" />" method="POST">
-	<button type="submit"><img src="<${resourceUrl}/img/connect_facebook.png" /></button>
+	<button type="submit"><img src="${resourceUrl}/img/connect_facebook.png" /></button>
 	<input type="hidden" name="scope" value="email,publish_stream,offline_access" />
 </form>
 <script type="text/javascript">

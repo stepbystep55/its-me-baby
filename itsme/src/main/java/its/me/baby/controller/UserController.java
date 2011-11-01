@@ -57,7 +57,7 @@ public class UserController {
 	}
 */
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView top() {
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -68,7 +68,9 @@ public class UserController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create() {
+	public ModelAndView create(HttpServletRequest request) {
+
+		request.getSession(true);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", new User());
@@ -99,7 +101,7 @@ public class UserController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession().setAttribute("its.me.baby.User", user);
+		request.getSession(false).setAttribute("its.me.baby.User", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -140,7 +142,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
+	@RequestMapping(method={RequestMethod.POST})
 	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
@@ -152,7 +154,7 @@ public class UserController {
 
 		User user = userMapper.getUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
 
-		request.getSession().setAttribute("its.me.baby.User", user);
+		request.getSession(false).setAttribute("its.me.baby.User", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -184,7 +186,7 @@ public class UserController {
 	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView show(HttpServletRequest request) {
 
-		User user = (User)request.getSession().getAttribute("its.me.baby.User");
+		User user = (User)request.getSession(false).getAttribute("its.me.baby.User");
 		List<Post> feedList = null;
 		try {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());

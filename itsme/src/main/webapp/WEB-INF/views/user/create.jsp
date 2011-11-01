@@ -1,4 +1,5 @@
-<%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" session="true" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
@@ -18,7 +19,8 @@
 	<title>Create</title>
 </head>
 <body>
-<form:form modelAttribute="user" action="save" method="post">
+<c:url value="/user/save" var="url"/>
+<form:form modelAttribute="user" action="${url}" method="post">
 <p>
 	name:<form:input path="name" size="16" maxlength="32" />
 	<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>

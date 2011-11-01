@@ -1,4 +1,4 @@
-<%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" session="true" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -19,7 +19,8 @@
 	<title>Edit</title>
 </head>
 <body>
-<form:form modelAttribute="user" action="update" method="post">
+<c:url value="/user/update" var="url"/>
+<form:form modelAttribute="user" action="${url}" method="post">
 <p>
 	<form:hidden path="id" />
 
@@ -41,7 +42,7 @@
 </form:form>
 <br>
 <form action="<c:url value="/signin/facebook" />" method="POST">
-	<button type="submit"><img src="${resourceUrl}/img/connect_facebook.png" /></button>
+	<input type="image" src="${resourceUrl}/img/connect_facebook.gif" />
 	<input type="hidden" name="scope" value="email,publish_stream,offline_access" />
 </form>
 <script type="text/javascript">

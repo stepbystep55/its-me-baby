@@ -20,6 +20,8 @@
 	<util:properties id="defaultProperties">
 		<prop key="facebook.clientId">101211593327312</prop>
 		<prop key="facebook.clientSecret">3f812052e828348be7ead074936d1632</prop>
+		<prop key="twitter.clientId">uvdyZgVoLULdG68B2CNrw</prop>
+		<prop key="twitter.clientSecret">Pogop0X8n0wfG7WYqnRaHPsjU4EbhOYH1BLKkypWc</prop>
 	</util:properties>
 
 	<!-- Controls rendering of the home page once a user has signed in -->

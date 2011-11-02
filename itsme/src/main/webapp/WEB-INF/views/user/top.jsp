@@ -4,18 +4,15 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<%@ include file="../_head.jsp"%>
 	<title>Top</title>
 </head>
 <body>
-<c:url value="/user/create" var="url"/>
-<form:form modelAttribute="user" action="${url}" method="post">
+<form:form modelAttribute="user" action="create" method="post">
 	<input type="submit" value="create">
 </form:form>
 
-<c:url value="/user/login" var="url2"/>
-<form:form modelAttribute="userGetter" action="${url2}" method="post">
+<form:form modelAttribute="userGetter" action="login" method="post">
 <p>
 	email:<form:input path="email" size="16" maxlength="32" />
 	<spring:hasBindErrors name="userGetter"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>

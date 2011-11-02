@@ -3,11 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta http-equiv="Expires" content="-1" />
+	<%@ include file="../_head.jsp"%>
 	<title>View</title>
 </head>
 <body>
@@ -25,10 +21,19 @@
 	profile:${user.profile}
 	<br>
 </p>
-<c:if test="${feedList}">
+<c:if test="${feedList != null}">
+Facebook
 <ul>
 <c:forEach items="${feedList}" var="post">
-	<li>${post.updatedTime}: ${post.message}</li>
+	<li>${post.updatedTime}: ${post.type}: ${post.message}</li>
+</c:forEach>
+</ul>
+</c:if>
+<c:if test="${tweets != null}">
+Twitter
+<ul>
+<c:forEach items="${tweets}" var="tweet">
+	<li>${tweet.createdAt}: ${tweet.text}</li>
 </c:forEach>
 </ul>
 </c:if>

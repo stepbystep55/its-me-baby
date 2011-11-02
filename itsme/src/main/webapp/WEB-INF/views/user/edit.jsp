@@ -2,25 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
-<spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
-<spring:url value="/resources-{applicationVersion}" var="resourceUrl">
-	<spring:param name="applicationVersion" value="${applicationVersion}"/>
-</spring:url>
-
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta http-equiv="Expires" content="-1" />
-	<script type="text/javascript" src="${resourceUrl}/js/jquery-1.6.4.min.js"></script>
+	<%@ include file="../_head.jsp"%>
 	<title>Edit</title>
 </head>
 <body>
-<c:url value="/user/update" var="url"/>
-<form:form modelAttribute="user" action="${url}" method="post">
+<form:form modelAttribute="user" action="update" method="post">
 <p>
 	<form:hidden path="id" />
 
@@ -42,8 +30,12 @@
 </form:form>
 <br>
 <form action="<c:url value="/signin/facebook" />" method="POST">
-	<input type="image" src="${resourceUrl}/img/connect_facebook.gif" />
-	<input type="hidden" name="scope" value="email,publish_stream,offline_access" />
+	<input type="image" src="<%= request.getContextPath() %>/resources/img/connect_facebook.gif" />
+	<input type="hidden" name="scope" value="email,read_stream,offline_access" />
+</form>
+<form action="<c:url value="/signin/twitter" />" method="POST">
+	<input type="image" src="<%= request.getContextPath() %>/resources/img/t_logo.png" />
+	<input type="hidden" name="scope" value="email,read_stream,offline_access" />
 </form>
 <script type="text/javascript">
 $(function(){

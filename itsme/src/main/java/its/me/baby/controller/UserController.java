@@ -6,7 +6,6 @@ import its.me.baby.mapper.UserMapper;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -17,6 +16,8 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.Post;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("user")
 public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -67,7 +69,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public ModelAndView create(HttpServletRequest request) {
 
 		request.getSession(true);
@@ -79,7 +81,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
@@ -111,7 +113,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "update", method = RequestMethod.POST)
 	public ModelAndView update(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
@@ -142,7 +144,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method={RequestMethod.POST})
+	@RequestMapping(value = "login", method={RequestMethod.POST})
 	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
@@ -163,7 +165,7 @@ public class UserController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/user/view/{id}", method={RequestMethod.GET})
+	@RequestMapping(value = "view/{id}", method={RequestMethod.GET})
 	public ModelAndView view(@PathVariable Integer id) {
 
 		User user = userMapper.getUserById(id);
@@ -181,23 +183,32 @@ public class UserController {
 		modelAndView.setViewName("user/view");
 		return modelAndView;
 	}
-	
+
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(method={RequestMethod.POST,RequestMethod.GET})
+	@RequestMapping(value = "show", method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView show(HttpServletRequest request) {
 
 		User user = (User)request.getSession(false).getAttribute("its.me.baby.User");
 		List<Post> feedList = null;
+		List<Tweet> tweets = null;
 		try {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
-			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
-			feedList = facebook.feedOperations().getFeed();
+			if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
+				Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
+				feedList = facebook.feedOperations().getFeed();
+			}
+
+			if (connectionRepository.findPrimaryConnection(Twitter.class) != null) {
+				Twitter twitter = connectionRepository.getPrimaryConnection(Twitter.class).getApi();
+				tweets = twitter.timelineOperations().getUserTimeline();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
-		//modelAndView.addObject("feedList", feedList);
+		modelAndView.addObject("feedList", feedList);
+		modelAndView.addObject("tweets", tweets);
 		modelAndView.setViewName("user/view");
 		return modelAndView;
 	}

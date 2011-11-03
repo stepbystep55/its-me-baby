@@ -9,19 +9,23 @@
 </head>
 <body>
 <form:form modelAttribute="user" action="save" method="post">
-<p>
+<ul>
+	<li>
 	name:<form:input path="name" size="16" maxlength="32" />
 	<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
-	<br>
+	</li>
+	<li>
 	email:<form:input path="email" size="32" maxlength="128"/>
 	<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
-	<br>
-	password:<form:input path="password" size="10" maxlength="32" />
+	</li>
+	<li>
+	password:<form:input path="password" size="16" maxlength="32" />
 	<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
-	<br>
-	<br>
-	<input type="submit">
-</p>
+	</li>
+	<li>
+	<input type="submit" value="signup"/>
+	</li>
+</ul>
 </form:form>
 <script type="text/javascript">
 $(function(){

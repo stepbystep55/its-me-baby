@@ -38,13 +38,16 @@
 			EMAIL = #{email} AND CRYPTO_PASSWORD = #{cryptoPassword}
 	</select>
 
-	<select id="countUserByEmail" parameterType="String" resultType="int">
+	<select id="countUserByEmail" parameterType="map" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
 			USER_MASTER
 		WHERE
 			EMAIL = #{email}
+		<if test="omittedId != null">
+			AND ID <![CDATA[ <> ]]> #{omittedId}
+		</if>
 	</select>
 
 	<select id="list" resultMap="user">

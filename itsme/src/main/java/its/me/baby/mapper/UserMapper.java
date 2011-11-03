@@ -10,11 +10,11 @@ public interface UserMapper {
 
 	public int newId();
 
-	public User getUserById(@Param("id") Integer id);
+	public User getUserById(Integer id);
 
 	public User getUserByEmailAndCryptoPassword(@Param("email") String email, @Param("cryptoPassword") String cryptoPassword);
 
-	public int countUserByEmail(String email);
+	public int countUserByEmail(@Param("email") String email, @Param("omittedId") Integer omittedId);
 
 	public void saveUser(User user);
 

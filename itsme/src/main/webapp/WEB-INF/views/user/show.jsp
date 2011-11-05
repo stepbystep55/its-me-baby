@@ -1,5 +1,6 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
@@ -47,6 +48,13 @@
 		<li>${tweet.createdAt}: ${tweet.text}</li>
 	</c:forEach>
 	</ul>
+	</c:if>
+</div>
+<div>
+	<c:if test="${fn:length(messageMap) > 0}">
+	<c:forEach items="${messageMap}" var="entry">
+		<li>${entry.key}: ${entry.value}</li>
+	</c:forEach>
 	</c:if>
 </div>
 </body>

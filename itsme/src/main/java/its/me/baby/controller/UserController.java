@@ -4,7 +4,11 @@ import its.me.baby.dto.User;
 import its.me.baby.dto.UserGetter;
 import its.me.baby.mapper.UserMapper;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -212,19 +216,32 @@ public class UserController {
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 
 		List<Post> feedList = null;
+		//List<StatusPost> feedList = null;
+		TreeMap<Date, String> messageMap = new TreeMap<Date, String>();
 		if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
 			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
 			feedList = facebook.feedOperations().getFeed();
+			//feedList = facebook.feedOperations().getStatuses();
+			for (Iterator<Post> itr = feedList.iterator(); itr.hasNext(); ) {
+				Post post = itr.next();
+				messageMap.put(post.getCreatedTime(), post.getMessage());
+			}
 		}
 		List<Tweet> tweets = null;
 		if (connectionRepository.findPrimaryConnection(Twitter.class) != null) {
 			Twitter twitter = connectionRepository.getPrimaryConnection(Twitter.class).getApi();
 			tweets = twitter.timelineOperations().getUserTimeline();
+			for (Iterator<Tweet> itr = tweets.iterator(); itr.hasNext(); ) {
+				Tweet tweet = itr.next();
+				messageMap.put(tweet.getCreatedAt(), tweet.getText());
+			}
 		}
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.addObject("feedList", feedList);
 		modelAndView.addObject("tweets", tweets);
+		modelAndView.addObject("messageMap", messageMap.descendingMap());
 		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}

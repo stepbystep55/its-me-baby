@@ -1,14 +1,14 @@
 package its.me.baby.controller;
 
+import its.me.baby.dto.StreamEntry;
 import its.me.baby.dto.User;
 import its.me.baby.dto.UserGetter;
 import its.me.baby.mapper.UserMapper;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/")
 public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -49,93 +49,6 @@ public class UserController {
 		return new User();
 	}
 */
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView top() {
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("user/top");
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "login", method= RequestMethod.GET)
-	public ModelAndView login() {
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userGetter", new UserGetter());
-		modelAndView.setViewName("user/login");
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "login", method= RequestMethod.POST)
-	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
-	
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("userGetter", userGetter);
-			modelAndView.setViewName("user/login");
-			return modelAndView;
-		}
-		User user = userMapper.getUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
-		if (user == null) {
-			ModelAndView modelAndView = new ModelAndView();
-			result.rejectValue("email", "error.login.failed");
-			modelAndView.addObject("userGetter", userGetter);
-			modelAndView.setViewName("user/login");
-			return modelAndView;
-		}
-
-		request.getSession(true).setAttribute("its.me.baby.User", user);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("forward:edit");
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "create", method = RequestMethod.GET)
-	public ModelAndView create(HttpServletRequest request) {
-
-		request.getSession(true);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("user", new User());
-		modelAndView.setViewName("user/create");
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@Valid User user, BindingResult result, HttpServletRequest request) {
-
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", user);
-			modelAndView.setViewName("user/create");
-			return modelAndView;
-		}
-		if (userMapper.countUserByEmail(user.getEmail(), null) != 0) {
-			result.rejectValue("email", "error.email.exists");
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", user);
-			modelAndView.setViewName("user/create");
-			return modelAndView;
-		}
-
-		user.setId(userMapper.newId());
-		userMapper.saveUser(user);
-
-		user = userMapper.getUserById(user.getId());
-
-		request.getSession(false).setAttribute("its.me.baby.User", user);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultCreated", true);
-		modelAndView.setViewName("forward:edit");
-		return modelAndView;
-	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
@@ -159,7 +72,7 @@ public class UserController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(false).setAttribute("its.me.baby.User", user);
+		request.getSession(false).setAttribute(User.class.getName(), user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultUpdated", true);
@@ -171,7 +84,7 @@ public class UserController {
 	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
 	public ModelAndView disconnect(@RequestParam String provider, HttpServletRequest request) {
 
-		User user = (User)request.getSession(false).getAttribute("its.me.baby.User");
+		User user = (User)request.getSession(false).getAttribute(User.class.getName());
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		if (provider.equals("facebook")) {
@@ -192,7 +105,7 @@ public class UserController {
 	@RequestMapping(value = "edit", method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView edit(HttpServletRequest request) {
 
-		User user = (User)request.getSession(false).getAttribute("its.me.baby.User");
+		User user = (User)request.getSession(false).getAttribute(User.class.getName());
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
@@ -211,20 +124,18 @@ public class UserController {
 	public ModelAndView show(HttpServletRequest request) {
 	//public ModelAndView show(@PathVariable Integer id, HttpServletRequest request) {
 
-		User user = (User)request.getSession(false).getAttribute("its.me.baby.User");
+		User user = (User)request.getSession(false).getAttribute(User.class.getName());
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 
 		List<Post> feedList = null;
-		//List<StatusPost> feedList = null;
-		TreeMap<Date, String> messageMap = new TreeMap<Date, String>();
+		List<StreamEntry> entryList = new ArrayList<StreamEntry>();
 		if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
 			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
 			feedList = facebook.feedOperations().getFeed();
-			//feedList = facebook.feedOperations().getStatuses();
 			for (Iterator<Post> itr = feedList.iterator(); itr.hasNext(); ) {
 				Post post = itr.next();
-				messageMap.put(post.getCreatedTime(), post.getMessage());
+				entryList.add(new StreamEntry(post));
 			}
 		}
 		List<Tweet> tweets = null;
@@ -233,15 +144,17 @@ public class UserController {
 			tweets = twitter.timelineOperations().getUserTimeline();
 			for (Iterator<Tweet> itr = tweets.iterator(); itr.hasNext(); ) {
 				Tweet tweet = itr.next();
-				messageMap.put(tweet.getCreatedAt(), tweet.getText());
+				entryList.add(new StreamEntry(tweet));
 			}
 		}
+		Collections.sort(entryList);
+		Collections.reverse(entryList);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.addObject("feedList", feedList);
 		modelAndView.addObject("tweets", tweets);
-		modelAndView.addObject("messageMap", messageMap.descendingMap());
+		modelAndView.addObject("entryList", entryList);
 		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 public final class ItsmeConnectionSignUp implements ConnectionSignUp {
 
 	public String execute(Connection<?> connection) {
-		User user = (User)RequestContextHolder.getRequestAttributes().getAttribute("its.me.baby.User", RequestAttributes.SCOPE_SESSION);
+		User user = (User)RequestContextHolder.getRequestAttributes().getAttribute(User.class.getName(), RequestAttributes.SCOPE_SESSION);
 		return user.getId().toString();
 		//return connection.getKey().getProviderUserId();
 	}

@@ -51,9 +51,9 @@
 	</c:if>
 </div>
 <div>
-	<c:if test="${fn:length(messageMap) > 0}">
-	<c:forEach items="${messageMap}" var="entry">
-		<li>${entry.key}: ${entry.value}</li>
+	<c:if test="${fn:length(entryList) > 0}">
+	<c:forEach items="${entryList}" var="entry">
+		<li>${entry.createdAt}: ${entry.message}</li>
 	</c:forEach>
 	</c:if>
 </div>

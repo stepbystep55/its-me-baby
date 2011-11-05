@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
-	<%@ include file="../_head.jsp"%>
+	<%@ include file="_head.jsp"%>
 	<title>Login</title>
 </head>
 <body>

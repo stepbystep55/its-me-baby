@@ -53,7 +53,7 @@
 		<constructor-arg>
 			<bean class="its.me.baby.social.ItsmeSignInAdapter" />
 		</constructor-arg>
-		<property name="postSignInUrl" value="http://its.me:8080/itsme/user/edit" />
+		<property name="postSignInUrl" value="http://its.me:8080/itsme/edit" />
 	</bean>
 
 </beans>

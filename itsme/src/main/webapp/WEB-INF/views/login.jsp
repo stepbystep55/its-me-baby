@@ -22,62 +22,64 @@
 <body>
 <form:form modelAttribute="userGetter" action="login" method="post">
 <div id="header">
-	<div class="container clearfix">
-		<div class="grid1 first">
+	<div class="container_12">
+		<div class="grid_1">
 			<a href="<%= request.getContextPath() %>/">Top</a>
 		</div>
-		<div class="grid10">
+		<div class="grid_11">
 			&nbsp;
-		</div>
-		<div class="grid1">
-			<a href="login">Sign in</a>
 		</div>
 	</div>
 </div>
 
 <div id="content">
-	<div class="grid3 first">&nbsp;</div>
-	<div class="grid9">
-			<div class="grid9 first">
-				<div id="title" style="padding-left: 65px;">Sign in</div>
-			</div>
+	<div class="container_12">
+		<div class="grid_3">&nbsp;</div>
+		<div class="grid_9">
+			<div id="title" style="padding-left: 65px;">Sign in</div>
+		</div>
 
-			<div class="grid1 first user_form_label">
-				<label for="emal">Email</label>
-			</div>
-			<div class="grid3 user_form_input">
-				<form:input path="email" size="16" maxlength="64" />
-			</div>
-			<div class="grid5">
-				<spring:hasBindErrors name="userGetter"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
-			</div>
+		<div class="clear"></div>
+		<div class="grid_3">&nbsp;</div>
+		<div class="grid_1 user_form_label">
+			<label for="emal">Email</label>
+		</div>
+		<div class="grid_3 user_form_input">
+			<form:input path="email" size="16" maxlength="64" />
+		</div>
+		<div class="grid_5">
+			<spring:hasBindErrors name="userGetter"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
+		</div>
 		
-			<div class="grid1 first user_form_label">
-				<label for="password">Password</label>
-			</div>
-			<div class="grid3 user_form_input">
-				<form:input path="password" size="16" maxlength="32" />
-			</div>
-			<div class="grid5">
-				<spring:hasBindErrors name="userGetter"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
-			</div>
+		<div class="clear"></div>
+		<div class="grid_3">&nbsp;</div>
+		<div class="grid_1 user_form_label">
+			<label for="password">Password</label>
+		</div>
+		<div class="grid_3 user_form_input">
+			<form:input path="password" size="16" maxlength="32" />
+		</div>
+		<div class="grid_5">
+			<spring:hasBindErrors name="userGetter"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
+		</div>
 		
-			<div class="grid2 first">&nbsp;</div>
-			<div class="grid1 user_form_button" style="padding-left: 33px;">
-				<input type="submit" value="Sign in"/>
-			</div>
-			<div class="grid6">&nbsp;</div>
+		<div class="clear"></div>
+		<div class="grid_5">&nbsp;</div>
+		<div class="grid_7 user_form_button">
+			<input type="submit" value="Sign in"/>
+		</div>
 		
-			<div class="grid2 first">&nbsp;</div>
-			<div class="grid7 user_form_button">
-				<a class="appeal" href="create">or Register</a>
-			</div>
+		<div class="clear"></div>
+		<div class="grid_5">&nbsp;</div>
+		<div class="grid_7 user_form_button">
+			<a class="appeal" href="create">or Register</a>
+		</div>
 	</div>
 </div>
 
 <div id="footer">
-	<div class="container clearfix">
-		<div class="grid12 first">
+	<div class="container_12">
+		<div class="grid12">
 			<div class="footer_item">
 			&copy;ippoippo
 			</div>

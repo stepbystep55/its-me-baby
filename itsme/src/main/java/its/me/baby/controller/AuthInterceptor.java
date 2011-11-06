@@ -14,7 +14,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if (handler instanceof HomeController) {
+
+		if (handler.getClass().getName().startsWith("org.springframework")) {
+			return true;
+		} else if (handler instanceof HomeController) {
 			return true;
 		} else {
 			if (request.getSession(false) == null) {

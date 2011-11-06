@@ -1,0 +1,114 @@
+@CHARSET "UTF-8";
+/*
+bg texture resources)
+	http://www.3quarks.com/en/BackgroundPattern/index.html
+	http://patterns.ava7.com/
+	http://www.grsites.com/archive/textures/
+grid system)
+	http://webdesignrecipes.com/css-grid-system-layout/
+*/
+body {
+	background: #FFFFFF repeat fixed 100% 100%;
+	font-family: "ＭＳ Ｐゴシック",Helvetica,Arial,sans-serif;
+	font-size: 16px;
+	color: #4F4F4F;
+}
+
+/* grid system */
+.container {width: 940px;margin: 0 auto;}
+.grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8, .grid9, .grid10, .grid11, grid12 {
+	float: left;
+	display: inline;
+	margin-left: 20px;
+}
+.grid1 {width: 60px;}
+.grid2 {width: 140px;}
+.grid3 {width: 220px;}
+.grid4 {width: 300px;}
+.grid5 {width: 380px;}
+.grid6 {width: 460px;}
+.grid7 {width: 540px;}
+.grid8 {width: 620px;}
+.grid9 {width: 700px;}
+.grid10 {width: 780px;}
+.grid11 {width: 860px;}
+.grid12 {width: 940px;}
+.first {margin-left: 0;clear: left;}
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+ /* IE6 */
+* html .clearfix { zoom: 1;}
+ /* IE7 */
+*:first-child+html .clearfix {zoom: 1;}
+
+/* etc */
+a:link, a:visited {
+	font-weight: bold;
+	color: #000077;
+	text-decoration: none;
+}
+a:hover, a:active {
+	font-weight: bold;
+	color: #0000CB;
+	text-decoration: underline;
+}
+#header {
+	background-color: #333333;
+	height: 30px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 27px;
+}
+#content {
+	min-height: 680px;
+	width: 100%;
+	margin: 0px;
+	padding: 10px 0;
+	border-bottom: 1px solid #CCCCCC;
+}
+#footer {
+	height: 30px;
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+	text-align: center;
+	line-height: 30px;
+}
+#fotter_item {
+}
+#header a:link, #header a:visited {
+	font-weight: bold;
+	font-size: 15px;
+	color: #FFFFF0;
+	text-decoration: none;
+}
+#header a:hover, #header a:active {
+	font-weight: bold;
+	font-size: 15px;
+	color: #FFFFF0;
+	text-decoration: underline;
+}
+a.appeal {
+	height: 200px;
+	font-weight: bold;
+	font-size: 24px;
+}
+.user_form_label {
+	line-height: 30px;
+	font-weight: bold;
+	height: 40px;
+}
+.user_form_input input {
+	font-size: 20px;
+}
+.user_form_button input {
+	font-weight: bold;
+	font-size: 15px;
+}

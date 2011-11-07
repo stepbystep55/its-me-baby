@@ -6,38 +6,17 @@
 <head>
 	<%@ include file="_head.jsp"%>
 	<title>Login</title>
-	<style TYPE="text/css">
-<!--
-#title {
-	margin: 0;
-	padding-top: 30px;
-	padding-bottom: 20px;
-	color: #DC143C;
-	font-weight: bold;
-	font-size: 42px;
-}
--->
-	</style>
 </head>
 <body>
-<form:form modelAttribute="userGetter" action="login" method="post">
-<div id="header">
-	<div class="container_12">
-		<div class="grid_1">
-			<a href="<%= request.getContextPath() %>/">Top</a>
-		</div>
-		<div class="grid_11">
-			&nbsp;
-		</div>
-	</div>
-</div>
+<%@ include file="_body_header.jsp"%>
 
+<form:form modelAttribute="userGetter" action="login" method="post">
 <div id="content">
 	<div class="container_12">
-		<div class="grid_3">&nbsp;</div>
-		<div class="grid_9">
-			<div id="title" style="padding-left: 65px;">Sign in</div>
+		<div class="grid_11">
+			<div id="title" style="text-align:center;">Sign in</div>
 		</div>
+		<div class="grid_1">&nbsp;</div>
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
@@ -57,7 +36,7 @@
 			<label for="password">Password</label>
 		</div>
 		<div class="grid_3 user_form_input">
-			<form:input path="password" size="16" maxlength="32" />
+			<form:password path="password" size="16" maxlength="32" />
 		</div>
 		<div class="grid_5">
 			<spring:hasBindErrors name="userGetter"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
@@ -76,6 +55,7 @@
 		</div>
 	</div>
 </div>
+</form:form>
 
 <div id="footer">
 	<div class="container_12">
@@ -86,6 +66,5 @@
 		</div>
 	</div>
 </div>
-</form:form>
 </body>
 </html>

@@ -8,27 +8,23 @@
 	<title>View</title>
 </head>
 <body>
-<div id="edit">
-	<a href="edit">edit your profile</a>
-</div>
-<div id="show">
-<ul>
-	<li>
-	id:${user.id}
-	</li>
-	<li>
-	name:${user.name}
-	</li>
-	<li>
-	email:${user.email}
-	</li>
-	<li>
-	password:${user.password}
-	</li>
-	<li>
-	profile:${user.profile}
-	</li>
-</ul>
+<%@ include file="../_body_header.jsp"%>
+
+<div id="content">
+	<div class="container_12">
+		<div class="grid_1">&nbsp;</div>
+		<div class="grid_11">
+			<div id="title">${user.name}</div>
+		</div>
+
+		<div class="clear"></div>
+		<div class="grid_1">&nbsp;</div>
+		<div class="grid_6">
+			<div id="profile">${user.profile}</div>
+		</div>
+		<div class="grid_5">&nbsp;</div>
+
+	</div>
 </div>
 
 <div>

@@ -24,12 +24,12 @@ a:hover, a:active {
 	text-decoration: underline;
 }
 #header {
-	background-color: #333333;
+	background-color: #DCDCDC;
 	height: 30px;
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	line-height: 27px;
+	line-height: 30px;
 }
 #content {
 	min-height: 680px;
@@ -46,24 +46,44 @@ a:hover, a:active {
 	text-align: center;
 	line-height: 30px;
 }
-#fotter_item {
-}
 #header a:link, #header a:visited {
+	color: #666666;
 	font-weight: bold;
 	font-size: 15px;
-	color: #FFFFF0;
 	text-decoration: none;
 }
 #header a:hover, #header a:active {
+	color: #333333;
 	font-weight: bold;
 	font-size: 15px;
-	color: #FFFFF0;
 	text-decoration: underline;
 }
 a.appeal {
 	height: 200px;
 	font-weight: bold;
 	font-size: 24px;
+}
+#title {
+	margin: 0;
+	padding-top: 30px;
+	padding-bottom: 10px;
+	color: #DC143C;
+	font-weight: bold;
+	font-size: 42px;
+}
+#sub_title {
+	margin: 0;
+	padding-bottom: 30px;
+	color: #FFA500;
+	font-weight: bold;
+	font-size: 20px;
+}
+#attention {
+	padding: 5px;
+	border: 1px dotted #CCCCCC;
+	background-color: #FFFFF0;
+	font-weight: normal;
+	font-size: 16px;
 }
 .user_form_label {
 	line-height: 30px;

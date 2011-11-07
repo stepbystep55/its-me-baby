@@ -11,21 +11,6 @@
 body {
 	background: #FFFFFF url(http://farm7.static.flickr.com/6161/6180399199_347c33cbfa_z.jpg) no-repeat fixed 90% 30%;
 }
-#title {
-	margin: 0;
-	padding-top: 30px;
-	padding-bottom: 10px;
-	color: #DC143C;
-	font-weight: bold;
-	font-size: 42px;
-}
-#sub_title {
-	margin: 0;
-	padding-bottom: 30px;
-	color: #FFA500;
-	font-weight: bold;
-	font-size: 20px;
-}
 #profile {
 	font-size: 18px;
 	font-weight: bold;
@@ -36,30 +21,11 @@ body {
 	margin: 0;
 	padding-bottom: 30px;
 }
-#attention {
-	padding: 5px;
-	border: 1px dotted #CCCCCC;
-	background-color: #FFFFF0;
-	font-weight: normal;
-	font-size: 16px;
-}
 -->
 </style>
 </head>
 <body>
-<div id="header">
-	<div class="container_12">
-		<div class="grid_1">
-			<a href="<%= request.getContextPath() %>/">Top</a>
-		</div>
-		<div class="grid_10">
-			&nbsp;
-		</div>
-		<div class="grid_1">
-			<a href="login">Sign in</a>
-		</div>
-	</div>
-</div>
+<%@ include file="_body_header.jsp"%>
 
 <div id="content">
 	<div class="container_12">

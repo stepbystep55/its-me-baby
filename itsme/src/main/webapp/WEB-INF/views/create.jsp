@@ -6,41 +6,17 @@
 <head>
 	<%@ include file="_head.jsp"%>
 	<title>Create</title>
-	<style TYPE="text/css">
-<!--
-#title {
-	margin: 0;
-	padding-top: 30px;
-	padding-bottom: 20px;
-	color: #DC143C;
-	font-weight: bold;
-	font-size: 42px;
-}
--->
-	</style>
 </head>
 <body>
-<form:form modelAttribute="user" action="save" method="post">
-<div id="header">
-	<div class="container_12">
-		<div class="grid_1">
-			<a href="<%= request.getContextPath() %>/">Top</a>
-		</div>
-		<div class="grid_10">
-			&nbsp;
-		</div>
-		<div class="grid_1">
-			<a href="login">Sign in</a>
-		</div>
-	</div>
-</div>
+<%@ include file="_body_header.jsp"%>
 
+<form:form modelAttribute="user" action="save" method="post">
 <div id="content">
 	<div class="container_12">
-		<div class="grid_3">&nbsp;</div>
-		<div class="grid_9">
-			<div id="title" style="padding-left: 65px;">Register</div>
+		<div class="grid_11">
+			<div id="title" style="text-align:center;">Register</div>
 		</div>
+		<div class="grid_1">&nbsp;</div>
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
@@ -87,6 +63,7 @@
 		<div class="grid_6">&nbsp;</div>
 	</div>
 </div>
+</form:form>
 
 <div id="footer">
 	<div class="container_12">
@@ -98,7 +75,6 @@
 	</div>
 </div>
 
-</form:form>
 <script type="text/javascript">
 $(function(){
 });

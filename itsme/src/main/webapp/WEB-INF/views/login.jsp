@@ -20,10 +20,10 @@
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1 user_form_label">
+		<div class="grid_1 user_form_label align_right">
 			<label for="emal">Email</label>
 		</div>
-		<div class="grid_3 user_form_input">
+		<div class="grid_3 user_form_input align_right">
 			<form:input path="email" size="16" maxlength="64" />
 		</div>
 		<div class="grid_5">
@@ -32,10 +32,10 @@
 		
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1 user_form_label">
+		<div class="grid_1 user_form_label align_right">
 			<label for="password">Password</label>
 		</div>
-		<div class="grid_3 user_form_input">
+		<div class="grid_3 user_form_input align_right">
 			<form:password path="password" size="16" maxlength="32" />
 		</div>
 		<div class="grid_5">
@@ -43,16 +43,18 @@
 		</div>
 		
 		<div class="clear"></div>
-		<div class="grid_5">&nbsp;</div>
-		<div class="grid_7 user_form_button">
+		<div class="grid_4">&nbsp;</div>
+		<div class="grid_3 user_form_button align_right">
 			<input type="submit" value="Sign in"/>
 		</div>
+		<div class="grid_5">&nbsp;</div>
 		
 		<div class="clear"></div>
-		<div class="grid_5">&nbsp;</div>
-		<div class="grid_7 user_form_button">
+		<div class="grid_4">&nbsp;</div>
+		<div class="grid_3 user_form_button align_right">
 			<a class="appeal" href="create">or Register</a>
 		</div>
+		<div class="grid_5">&nbsp;</div>
 	</div>
 </div>
 </form:form>

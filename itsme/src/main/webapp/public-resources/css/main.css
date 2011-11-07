@@ -63,6 +63,12 @@ a.appeal {
 	font-weight: bold;
 	font-size: 24px;
 }
+.align_right {
+	text-align: right;
+}
+.align_center {
+	text-align: center;
+}
 #title {
 	margin: 0;
 	padding-top: 30px;
@@ -86,6 +92,7 @@ a.appeal {
 	font-size: 16px;
 }
 .user_form_label {
+	/*color: #000077;*/
 	line-height: 30px;
 	font-weight: bold;
 	height: 40px;

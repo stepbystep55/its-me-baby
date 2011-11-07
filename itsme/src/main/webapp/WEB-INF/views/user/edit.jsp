@@ -9,13 +9,15 @@
 </head>
 <body>
 <%@ include file="../_body_header.jsp"%>
-<c:if test="${resultCreated}"><spring:message code="result.created" /></c:if>
-<c:if test="${resultUpdated}"><spring:message code="result.updated" /></c:if>
 
 <div id="content">
 <form:form modelAttribute="user" action="update" method="post">
 <form:hidden path="id" />
 	<div class="container_12">
+		<div class="grid_12 align_center">
+			<c:if test="${resultCreated}"><spring:message code="result.created" /></c:if>
+			<c:if test="${resultUpdated}"><spring:message code="result.updated" /></c:if>
+		</div>
 		<div class="grid_11">
 			<div id="title" style="text-align:center;">Your Information</div>
 		</div>
@@ -23,10 +25,10 @@
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1">
+		<div class="grid_1 align_right">
 			<label for="name">Name</label>
 		</div>
-		<div class="grid_3">
+		<div class="grid_3 align_right">
 			<form:input path="name" size="16" maxlength="32" />
 		</div>
 		<div class="grid_5">
@@ -35,10 +37,10 @@
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1">
+		<div class="grid_1 align_right">
 			<label for="emal">Email</label>
 		</div>
-		<div class="grid_3">
+		<div class="grid_3 align_right">
 			<form:input path="email" size="16" maxlength="64"/>
 		</div>
 		<div class="grid_5">
@@ -47,10 +49,10 @@
 
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1">
+		<div class="grid_1 align_right">
 			<label for="password">Password</label>
 		</div>
-		<div class="grid_3">
+		<div class="grid_3 align_right">
 			<form:password path="password" size="16" maxlength="32" />
 		</div>
 		<div class="grid_5">
@@ -59,10 +61,10 @@
 		
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
-		<div class="grid_1">
+		<div class="grid_1 align_right">
 			<label for="password">Profile</label>
 		</div>
-		<div class="grid_3">
+		<div class="grid_3 align_right">
 			<form:textarea path="profile" rows="5" cols="30" />
 		</div>
 		<div class="grid_5">
@@ -72,7 +74,7 @@
 		<div class="clear"></div>
 		<div class="grid_3">&nbsp;</div>
 		<div class="grid_2">&nbsp;</div>
-		<div class="grid_1 user_form_button" style="padding-left: 33px;">
+		<div class="grid_1 user_form_button align_right" style="padding-left: 33px;">
 			<input type="submit" value="Update"/>
 		</div>
 		<div class="grid_6">&nbsp;</div>

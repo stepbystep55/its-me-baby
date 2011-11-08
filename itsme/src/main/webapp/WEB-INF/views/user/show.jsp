@@ -6,6 +6,8 @@
 <head>
 	<%@ include file="../_head.jsp"%>
 	<title>View</title>
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.prettyPhoto.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/prettyPhoto.css">
 </head>
 <body>
 <%@ include file="../_body_header.jsp"%>
@@ -27,7 +29,9 @@
 	</div>
 </div>
 
-<div>
+<a href="#inline-1" rel="prettyPhoto[inline]" >view stream</a>
+<%--
+<div id="inline-1" style="display:hide;">
 	<c:if test="${feedList != null}">
 	Facebook
 	<ul>
@@ -46,12 +50,19 @@
 	</ul>
 	</c:if>
 </div>
-<div>
+--%>
+<div id="inline-1" style="display:none;">
 	<c:if test="${fn:length(entryList) > 0}">
 	<c:forEach items="${entryList}" var="entry">
 		<li>${entry.createdAt}: ${entry.message}</li>
 	</c:forEach>
 	</c:if>
 </div>
+
+<script type="text/javascript">
+$(function(){
+	$("a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',theme:'light_rounded', opacity: 0.05});
+});
+</script>
 </body>
 </html>

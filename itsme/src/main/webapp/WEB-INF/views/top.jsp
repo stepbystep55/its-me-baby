@@ -6,7 +6,7 @@
 <head>
 	<%@ include file="_head.jsp"%>
 	<title>Top</title>
-	<style TYPE="text/css">
+	<style type="text/css">
 <!--
 body {
 	background: #FFFFFF url(http://farm7.static.flickr.com/6161/6180399199_347c33cbfa_z.jpg) no-repeat fixed 90% 30%;
@@ -22,7 +22,14 @@ body {
 	padding-bottom: 30px;
 }
 -->
-</style>
+	</style>
+
+	<script type="text/javascript">
+<!--
+$(function(){
+});
+-->
+	</script>
 </head>
 <body>
 <%@ include file="_body_header.jsp"%>
@@ -68,10 +75,5 @@ body {
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-$(function(){
-});
-</script>
 </body>
 </html>

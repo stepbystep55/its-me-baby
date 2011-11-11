@@ -5,9 +5,17 @@
 <html>
 <head>
 	<%@ include file="../_head.jsp"%>
-	<title>View</title>
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.prettyPhoto.js"></script>
-	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/prettyPhoto.css">
+	<title>Show</title>
+	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
+	<script type="text/javascript">
+<!--
+$(function(){
+	//$('#stream').colorbox({ opacity:0.85 , href:'stream' });
+	$('#stream').colorbox({width:"80%", height:"50%"});
+});
+-->
+	</script>
 </head>
 <body>
 <%@ include file="../_body_header.jsp"%>
@@ -29,40 +37,6 @@
 	</div>
 </div>
 
-<a href="#inline-1" rel="prettyPhoto[inline]" >view stream</a>
-<%--
-<div id="inline-1" style="display:hide;">
-	<c:if test="${feedList != null}">
-	Facebook
-	<ul>
-	<c:forEach items="${feedList}" var="post">
-		<li>${post.updatedTime}: ${post.type}: ${post.message}</li>
-	</c:forEach>
-	</ul>
-	</c:if>
-	
-	<c:if test="${tweets != null}">
-	Twitter
-	<ul>
-	<c:forEach items="${tweets}" var="tweet">
-		<li>${tweet.createdAt}: ${tweet.text}</li>
-	</c:forEach>
-	</ul>
-	</c:if>
-</div>
---%>
-<div id="inline-1" style="display:none;">
-	<c:if test="${fn:length(entryList) > 0}">
-	<c:forEach items="${entryList}" var="entry">
-		<li>${entry.createdAt}: ${entry.message}</li>
-	</c:forEach>
-	</c:if>
-</div>
-
-<script type="text/javascript">
-$(function(){
-	$("a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',theme:'light_rounded', opacity: 0.05});
-});
-</script>
+<a id="stream" href="stream">view stream</a>
 </body>
 </html>

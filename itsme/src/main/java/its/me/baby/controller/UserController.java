@@ -126,6 +126,18 @@ public class UserController {
 
 		User user = (User)request.getSession(false).getAttribute(User.class.getName());
 
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("user", user);
+		modelAndView.setViewName("user/show");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "stream", method={RequestMethod.GET})
+	public ModelAndView stream(HttpServletRequest request) {
+
+		User user = (User)request.getSession(false).getAttribute(User.class.getName());
+
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 
 		List<Post> feedList = null;
@@ -149,13 +161,12 @@ public class UserController {
 		}
 		Collections.sort(entryList);
 		Collections.reverse(entryList);
-		
+
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("user", user);
 		modelAndView.addObject("feedList", feedList);
 		modelAndView.addObject("tweets", tweets);
 		modelAndView.addObject("entryList", entryList);
-		modelAndView.setViewName("user/show");
+		modelAndView.setViewName("user/stream");
 		return modelAndView;
 	}
 }

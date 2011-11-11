@@ -6,6 +6,12 @@
 <head>
 	<%@ include file="_head.jsp"%>
 	<title>Create</title>
+	<script type="text/javascript">
+<!--
+$(function(){
+});
+// -->
+	</script>
 </head>
 <body>
 <%@ include file="_body_header.jsp"%>
@@ -74,10 +80,5 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-$(function(){
-});
-</script>
 </body>
 </html>

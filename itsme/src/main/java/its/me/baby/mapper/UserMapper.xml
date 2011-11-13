@@ -103,4 +103,11 @@
 			WHERE
 				ID = #{id}
 	</update>
+
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM 
+			USER_MASTER
+		WHERE 
+			ID = #{id}
+	</delete>
 </mapper>

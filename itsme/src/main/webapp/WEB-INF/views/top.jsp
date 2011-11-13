@@ -39,9 +39,11 @@ $(function(){
 	</script>
 </head>
 <body>
+<%--
 <div id="background"><img src="<%= request.getContextPath() %>/resources/img/bk_shift.jpg" class="stretch" alt="" /></div>
+--%>
 
-<%@ include file="_body_header.jsp"%>
+<jsp:include page="_body_header.jsp"/>
 
 <div id="content">
 	<div class="container_16">
@@ -63,7 +65,7 @@ $(function(){
 				It's easy to put all your online contents together.
 				</p>
 				<p class="attention">
-				This site is just a showcase .The application stores only your accout ids.
+				This site is just a showcase .The application stores only your accout id.
 				Feel free to try!
 				</p>
 			</div>

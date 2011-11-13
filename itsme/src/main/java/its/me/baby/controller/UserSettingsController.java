@@ -1,13 +1,8 @@
 package its.me.baby.controller;
 
-import its.me.baby.dto.StreamEntry;
 import its.me.baby.dto.User;
-import its.me.baby.exception.IllegalRequestException;
 import its.me.baby.mapper.UserMapper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +15,6 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.Post;
-import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/")
@@ -56,7 +48,7 @@ public class UserSettingsController {
 	public ModelAndView updateAccount(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		/* TODO
-		User userInSession = (User)request.getSession(false).getAttribute(User.class.getName());
+		User userInSession = (User)request.getSession(false).getAttribute("authUser");
 		if (!userInSession.getId().equals(user.getId())) throw new IllegalRequestException();
 		*/
 
@@ -88,7 +80,7 @@ public class UserSettingsController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(false).setAttribute(User.class.getName(), user);
+		request.getSession(false).setAttribute("authUser", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultUpdated", true);
@@ -121,7 +113,7 @@ public class UserSettingsController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(false).setAttribute(User.class.getName(), user);
+		request.getSession(false).setAttribute("authUser", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultUpdated", true);
@@ -154,7 +146,7 @@ public class UserSettingsController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(false).setAttribute(User.class.getName(), user);
+		request.getSession(false).setAttribute("authUser", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultUpdated", true);
@@ -166,12 +158,7 @@ public class UserSettingsController {
 	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
 	public ModelAndView disconnect(@RequestParam String provider, HttpServletRequest request) {
 		
-		/* TODO
-		User userInSession = (User)request.getSession(false).getAttribute(User.class.getName());
-		if (!userInSession.getId().equals(user.getId())) throw new IllegalRequestException();
-		*/
-
-		User user = (User)request.getSession(false).getAttribute(User.class.getName());
+		User user = (User)request.getSession(false).getAttribute("authUser");
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		if (provider.equals("facebook")) {
@@ -192,7 +179,7 @@ public class UserSettingsController {
 	@RequestMapping(value = "edit", method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView edit(HttpServletRequest request) {
 
-		User user = (User)request.getSession(false).getAttribute(User.class.getName());
+		User user = (User)request.getSession(false).getAttribute("authUser");
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
@@ -204,5 +191,23 @@ public class UserSettingsController {
 		modelAndView.addObject("twitterConnected", twitterConnected);
 		modelAndView.setViewName("user/edit");
 		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public ModelAndView delete(@RequestParam Integer id) {
+
+		userMapper.delete(id);
+
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());
+		Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
+		if (connection != null) connectionRepository.removeConnection(connection.getKey());
+		connection = connectionRepository.findPrimaryConnection(Twitter.class);
+		if (connection != null) connectionRepository.removeConnection(connection.getKey());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("forward:logout");
+		return modelAndView;
+		
 	}
 }

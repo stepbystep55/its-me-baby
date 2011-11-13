@@ -1,10 +1,4 @@
 @CHARSET "UTF-8";
-/*
-bg texture resources)
-	http://www.3quarks.com/en/BackgroundPattern/index.html
-	http://patterns.ava7.com/
-	http://www.grsites.com/archive/textures/
-*/
 body {
 	background: #FFFFFF repeat fixed 100% 100%;
 	font-family: "ＭＳ Ｐゴシック",Helvetica,Arial,sans-serif;
@@ -24,7 +18,8 @@ a:hover, a:active {
 	text-decoration: underline;
 }
 #header {
-	background-color: #DCDCDC;
+	/*background-color: #DCDCDC;*/
+	background-color: #F5F5F5;
 	height: 30px;
 	width: 100%;
 	margin: 0;
@@ -130,3 +125,44 @@ a.appeal {
 	font-weight: bold;
 	text-align: center;
 }
+
+/* dropdown menu */
+#dropdown
+{	margin: 0;
+	padding: 0}
+	
+	#dropdown li
+	{	float: left;
+		list-style: none;
+		font: 12px Tahoma, Arial}
+/*
+	#dropdown li a
+	{	display: block;
+		background: #20548E;
+		padding: 5px 12px;
+		text-decoration: none;
+		border-right: 1px solid white;
+		width: 70px;
+		color: #EAFFED;
+		white-space: nowrap}
+*/
+	#dropdown li a:hover
+	{	background: #1A4473}
+		
+		#dropdown li ul
+		{	margin: 0;
+			padding: 0;
+			position: absolute;
+			visibility: hidden;
+			border-top: 1px solid white}
+		
+		#dropdown li ul li
+		{	float: none;
+			display: inline}
+		
+		#dropdown li ul li a
+		{	width: auto;
+			background: #9F1B1B}
+		
+		#dropdown li ul li a:hover
+		{	background: #7F1616}

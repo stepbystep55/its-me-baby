@@ -55,7 +55,7 @@ $(function(){
 	</script>
 </head>
 <body>
-<%@ include file="../_body_header.jsp"%>
+<jsp:include page="../_body_header.jsp"/>
 
 <div id="content">
 	<div class="container_16">
@@ -120,6 +120,19 @@ $(function(){
 			</div>
 			<div class="grid_6">&nbsp;</div>
 			</form:form>
+			
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
+			<form:form modelAttribute="user" action="delete" method="post">
+			<form:hidden path="id" />
+			<div class="clear"></div>
+			<div class="grid_10 user_form_button align_right">
+				<input type="submit" value="delete account"/>
+			</div>
+			<div class="grid_6">&nbsp;</div>
+			</form:form>
 		</div>
 
 		<div class="clear"></div>
@@ -157,8 +170,8 @@ $(function(){
 		<div id="form_profile" style="display:none;">
 			<form:form modelAttribute="user" action="updateProfile" method="post">
 			<form:hidden path="id" />
-			<div class="grid_5 align_right">
-				<label for="password">Profile</label>
+			<div class="grid_5 user_form_label align_right">
+				<label for="profile">Profile</label>
 			</div>
 			<div class="grid_5 align_right">
 				<form:textarea path="profile" rows="5" cols="30" />

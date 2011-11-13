@@ -5,6 +5,7 @@ import its.me.baby.dto.UserGetter;
 import its.me.baby.mapper.UserMapper;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -65,10 +66,22 @@ public class HomeController {
 			return modelAndView;
 		}
 
-		request.getSession(true).setAttribute(User.class.getName(), user);
+		request.getSession(true).setAttribute("authUser", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("forward:edit");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "logout", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView logout(HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		if (session != null) session.invalidate();
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("top");
 		return modelAndView;
 	}
 
@@ -105,7 +118,7 @@ public class HomeController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(true).setAttribute(User.class.getName(), user);
+		request.getSession(true).setAttribute("authUser", user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultCreated", true);

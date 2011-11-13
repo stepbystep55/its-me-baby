@@ -24,5 +24,7 @@ public interface UserMapper {
 
 	public void updateProfile(@Param("id") Integer id, @Param("profile") String profile);
 
+	public void delete(Integer id);
+
 	public List<User> list();
 }

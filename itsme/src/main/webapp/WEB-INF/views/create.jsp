@@ -65,7 +65,7 @@ $(function(){
 	</style>
 </head>
 <body>
-<%@ include file="_body_header.jsp"%>
+<jsp:include page="_body_header.jsp"/>
 
 <form:form modelAttribute="user" action="save" method="post">
 <div id="content">

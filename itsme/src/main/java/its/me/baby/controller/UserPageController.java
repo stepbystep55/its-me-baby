@@ -40,7 +40,7 @@ public class UserPageController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "show/{id}", method={RequestMethod.GET})
-	public ModelAndView show(@PathVariable Integer id, HttpServletRequest request) {
+	public ModelAndView show(@PathVariable Integer id) {
 
 		User user = userMapper.getUserById(id);
 
@@ -52,7 +52,7 @@ public class UserPageController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "stream/{id}", method={RequestMethod.GET})
-	public ModelAndView stream(@PathVariable Integer id, HttpServletRequest request) {
+	public ModelAndView stream(@PathVariable Integer id) {
 
 		User user = userMapper.getUserById(id);
 

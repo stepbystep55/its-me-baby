@@ -19,7 +19,7 @@ $(function(){
 	</script>
 </head>
 <body>
-<%@ include file="../_body_header.jsp"%>
+<jsp:include page="../_body_header.jsp"/>
 
 <div id="content">
 	<div class="container_12">

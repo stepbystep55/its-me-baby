@@ -2,6 +2,7 @@ package its.me.baby.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 		if (handler.getClass().getName().startsWith("org.springframework")) {
 			return true;
+
 		} else if (handler instanceof HomeController) {
 			return true;
+
 		} else if (handler instanceof UserSettingsController) {
-			if (request.getSession(false) == null) {
+			HttpSession session = request.getSession(false);
+			if ((session == null) || (session.getAttribute("authUser") == null)) {
 				logger.info("Access without session: " + request.getRequestURI());
 				new RedirectView("/login", true).render(null, request, response);
 				return false;
@@ -28,5 +32,4 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}
 		return true;
 	}
-
 }

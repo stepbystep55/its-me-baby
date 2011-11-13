@@ -4,17 +4,18 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
-	<%@ include file="../_head.jsp"%>
 	<title>Show</title>
+	<%@ include file="../_head_base.jsp"%>
+	<%@ include file="../_head_grid.jsp"%>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
 	<script type="text/javascript">
 <!--
 $(function(){
-	//$('#stream').colorbox({ opacity:0.85 , href:'stream' });
-	$('#stream').colorbox({width:"80%", height:"50%"});
+	//$('#stream').colorbox({width:"80%", height:"50%"});
+	$('#stream').colorbox({iframe:true, width:"80%", height:"80%"});
 });
--->
+// -->
 	</script>
 </head>
 <body>
@@ -37,6 +38,6 @@ $(function(){
 	</div>
 </div>
 
-<a id="stream" href="stream">view stream</a>
+<a id="stream" href="<%= request.getContextPath() %>/stream/${user.id}">view stream</a>
 </body>
 </html>

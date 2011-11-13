@@ -76,8 +76,6 @@ public class HomeController {
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
 
-		request.getSession(true);
-
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", new User());
 		modelAndView.setViewName("create");
@@ -107,7 +105,7 @@ public class HomeController {
 
 		user = userMapper.getUserById(user.getId());
 
-		request.getSession(false).setAttribute(User.class.getName(), user);
+		request.getSession(true).setAttribute(User.class.getName(), user);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultCreated", true);

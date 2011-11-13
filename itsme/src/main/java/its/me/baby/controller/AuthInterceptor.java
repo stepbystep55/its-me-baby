@@ -19,7 +19,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		} else if (handler instanceof HomeController) {
 			return true;
-		} else {
+		} else if (handler instanceof UserSettingsController) {
 			if (request.getSession(false) == null) {
 				logger.info("Access without session: " + request.getRequestURI());
 				new RedirectView("/login", true).render(null, request, response);

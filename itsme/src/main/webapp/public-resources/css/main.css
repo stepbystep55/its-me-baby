@@ -32,7 +32,6 @@ a:hover, a:active {
 	line-height: 30px;
 }
 #content {
-	min-height: 680px;
 	width: 100%;
 	margin: 0px;
 	padding: 10px 0;
@@ -84,7 +83,12 @@ a.appeal {
 	font-weight: bold;
 	font-size: 20px;
 }
-#attention {
+.confirm {
+	color: #FFA500;
+	font-weight: bold;
+	font-size: 20px;
+}
+.attention {
 	padding: 5px;
 	border: 1px dotted #CCCCCC;
 	background-color: #FFFFF0;
@@ -93,14 +97,36 @@ a.appeal {
 }
 .user_form_label {
 	/*color: #000077;*/
-	line-height: 30px;
+	line-height: 28px;
+	font-weight: bold;
+	height: 40px;
+}
+.user_form_label_br {
+	/*color: #000077;*/
+	line-height: 14px;
 	font-weight: bold;
 	height: 40px;
 }
 .user_form_input input {
-	font-size: 20px;
+	font-size: 16px;
+	height: 30px;
+	width: 260px;
 }
 .user_form_button input {
 	font-weight: bold;
 	font-size: 15px;
+}
+.tab_button {
+	color: #000077;
+	font-weight: bold;
+	cursor: pointer;
+	text-align: center;
+	/*text-decoration: underline;*/
+	background-color: #F8F8FF;
+	border: 1px solid #E6E6FA;
+}
+.tab_button_disabled {
+	color: #333333;
+	font-weight: bold;
+	text-align: center;
 }

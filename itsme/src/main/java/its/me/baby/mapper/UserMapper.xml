@@ -79,13 +79,26 @@
 		)
 	</insert>
 
-	<update id="updateUser" parameterType="its.me.baby.dto.User">
+	<update id="updateAccount" parameterType="map">
 		UPDATE USER_MASTER
 			SET
-				ID = #{id},
 				EMAIL = #{email},
-				CRYPTO_PASSWORD = #{cryptoPassword},
-				NAME = #{name},
+				NAME = #{name}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<update id="updatePassword" parameterType="map">
+		UPDATE USER_MASTER
+			SET
+				CRYPTO_PASSWORD = #{cryptoPassword}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<update id="updateProfile" parameterType="map">
+		UPDATE USER_MASTER
+			SET
 				PROFILE = #{profile}
 			WHERE
 				ID = #{id}

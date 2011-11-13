@@ -79,7 +79,6 @@ public class StreamEntry implements Comparable<StreamEntry>{
 		return true;
 	}
 
-	@Override
 	public int compareTo(StreamEntry o) {
 		return this.getCreatedAt().compareTo(o.getCreatedAt());
 	}

@@ -7,22 +7,18 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class User {
 
 	private Integer id = null;
 
-	@NotEmpty
 	@Length(min=3,max=32)
 	private String name = null;
 	
-	@NotEmpty
 	@Email
 	@Length(max=128)
 	private String email = null;
 	
-	@NotEmpty
 	@Length(min=8,max=32)
 	private String password = null;
 	
@@ -62,15 +58,32 @@ public class User {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email
 				+ ", password=<<secret>>" + ", profile=" + profile + "]";
 	}
-	
-	public Map<String, String> validateForEdit() {
-		Map<String, String> rejectValueMap = new HashMap<String, String>();
+
+	private Map<String, String> rejectValueMap = new HashMap<String, String>(0);
+
+	public Map<String, String> getRejectValueMap() {
+		return rejectValueMap;
+	}
+
+	public boolean validForEditingAccount() {
+		if (name == null) rejectValueMap.put("name", "org.hibernate.validator.constraints.NotEmpty.message");
+		if (email == null) rejectValueMap.put("email", "org.hibernate.validator.constraints.NotEmpty.message");
+		return (rejectValueMap.size() == 0);
+	}
+
+	public boolean validForEditingPassword() {
+		if (password == null) rejectValueMap.put("password", "org.hibernate.validator.constraints.NotEmpty.message");
+		return (rejectValueMap.size() == 0);
+	}
+
+	public boolean validForEditingProfile() {
 		if (profile == null) rejectValueMap.put("profile", "org.hibernate.validator.constraints.NotEmpty.message");
-		return (rejectValueMap.size() == 0) ? null : rejectValueMap;
+		return (rejectValueMap.size() == 0);
 	}
 }

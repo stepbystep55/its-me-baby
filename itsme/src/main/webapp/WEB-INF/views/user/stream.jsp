@@ -4,24 +4,45 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
-	<%@ include file="../_head.jsp"%>
-	<title>Show</title>
+	<title>Stream</title>
+	<%@ include file="../_head_base.jsp"%>
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.masonry.min.js"></script>
 	<script type="text/javascript">
 <!--
 $(function(){
+	$('.wrap').masonry();
 });
 // -->
 	</script>
+	<style type="text/css">
+<!--
+.wrap {
+	width: 880px;
+	padding: 10px;
+	background: #EEE;
+	overflow: auto;
+}
+.box {
+	width: 190px;
+	margin: 5px;
+	padding: 10px;
+	float: left;
+	background: #424242;
+	color: #FFF;
+	display: inline;  /* IE6 fix */
+}
+// -->
+	</style>
 </head>
 <body>
 
 <div>
 	<c:if test="${fn:length(entryList) > 0}">
-	<ul>
+	<div class="wrap">
 	<c:forEach items="${entryList}" var="entry">
-		<li>${entry.createdAt}: ${entry.message}</li>
+		<div class="box">${entry.createdAt}: ${entry.message}</div>
 	</c:forEach>
-	</ul>
+	</div>
 	</c:if>
 </div>
 </body>

@@ -11,43 +11,27 @@
 <!--
 $(function(){
 	$('#edit_account').click(function(){
-		$('#form_password').hide();
-		$('#form_profile').hide();
-		$('#form_social').hide();
+		$('div[id^="form_"]').hide();
 		$('#form_account').show();
+		$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
 		$('#edit_account').removeClass('tab_button').addClass('tab_button_disabled');
-		$('#edit_password').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_profile').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_social').removeClass('tab_button_disabled').addClass('tab_button');
 	});
 	$('#edit_password').click(function(){
-		$('#form_account').hide();
-		$('#form_profile').hide();
-		$('#form_social').hide();
+		$('div[id^="form_"]').hide();
 		$('#form_password').show();
-		$('#edit_account').removeClass('tab_button_disabled').addClass('tab_button');
+		$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
 		$('#edit_password').removeClass('tab_button').addClass('tab_button_disabled');
-		$('#edit_profile').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_social').removeClass('tab_button_disabled').addClass('tab_button');
 	});
 	$('#edit_profile').click(function(){
-		$('#form_account').hide();
-		$('#form_password').hide();
-		$('#form_social').hide();
+		$('div[id^="form_"]').hide();
 		$('#form_profile').show();
-		$('#edit_account').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_password').removeClass('tab_button_disabled').addClass('tab_button');
+		$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
 		$('#edit_profile').removeClass('tab_button').addClass('tab_button_disabled');
-		$('#edit_social').removeClass('tab_button_disabled').addClass('tab_button');
 	});
 	$('#edit_social').click(function(){
-		$('#form_account').hide();
-		$('#form_password').hide();
-		$('#form_profile').hide();
+		$('div[id^="form_"]').hide();
 		$('#form_social').show();
-		$('#edit_account').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_password').removeClass('tab_button_disabled').addClass('tab_button');
-		$('#edit_profile').removeClass('tab_button_disabled').addClass('tab_button');
+		$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
 		$('#edit_social').removeClass('tab_button').addClass('tab_button_disabled');
 	});
 });

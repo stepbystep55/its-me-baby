@@ -48,8 +48,8 @@ public class UserSettingsController {
 	public ModelAndView updateAccount(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		/* TODO
-		User userInSession = (User)request.getSession(false).getAttribute("authUser");
-		if (!userInSession.getId().equals(user.getId())) throw new IllegalRequestException();
+		User authUser = (User)request.getSession(false).getAttribute("authUser");
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 		*/
 
 		if (result.hasErrors()) {

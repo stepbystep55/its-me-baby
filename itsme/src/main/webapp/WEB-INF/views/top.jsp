@@ -65,7 +65,7 @@ $(function(){
 				It's easy to put all your online contents together.
 				</p>
 				<p class="attention">
-				This site is just a showcase .The application stores only your accout id.
+				This site is just a showcase .The application stores nothing but your accout id.
 				Feel free to try!
 				</p>
 			</div>

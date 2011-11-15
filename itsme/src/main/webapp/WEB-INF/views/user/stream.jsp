@@ -23,7 +23,7 @@ $(function(){
 	overflow: auto;
 }
 .box {
-	width: 190px;
+	width: 230px;
 	margin: 5px;
 	padding: 10px;
 	float: left;

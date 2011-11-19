@@ -1,6 +1,7 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
@@ -40,7 +41,10 @@ $(function(){
 	<c:if test="${fn:length(entryList) > 0}">
 	<div class="wrap">
 	<c:forEach items="${entryList}" var="entry">
-		<div class="box">${entry.createdAt}: ${entry.message}</div>
+		<div class="box">
+		<fmt:formatDate value="${entry.createdAt}" type="DATE" pattern="MM-dd-yyyy"/><br/>
+		${entry.message}
+		</div>
 	</c:forEach>
 	</div>
 	</c:if>

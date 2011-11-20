@@ -116,12 +116,11 @@ public class HomeController {
 		user.setId(userMapper.newId());
 		userMapper.saveUser(user);
 
-		user = userMapper.getUserById(user.getId());
+		request.getSession(true).setAttribute("authUser", userMapper.getUserById(user.getId()));
 
-		request.getSession(true).setAttribute("authUser", user);
+		request.setAttribute("created", "true");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultCreated", true);
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}

@@ -8,34 +8,6 @@
 	<%@ include file="_head_base.jsp"%>
 	<%@ include file="_head_grid.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.validate.min.js"></script>	
-	<script type="text/javascript">
-<!--
-$(function(){
-	// validate signup form on keyup and submit
-	$("#userGetter").validate({
-		rules: {
-			password: {
-				required: true,
-			},
-			email: {
-				required: true
-			},
-		},
-		messages: {
-			password: {
-				required: "Please provide a password"
-			},
-			email: {
-				required: "Please provide a email"
-			}
-		},
-		errorPlacement: function(error, element) {
-			error.appendTo( element.parent("div").next("div") );
-		}
-	});
-});
-// -->
-	</script>
 	<style type="text/css">
 <!--
 .error { color: red; }
@@ -46,19 +18,19 @@ $(function(){
 <jsp:include page="_body_header.jsp"/>
 
 <form:form modelAttribute="userGetter" action="login" method="post">
-<div id="content">
+<div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">
-			<div id="title" style="text-align:center;">Sign in</div>
+			<div id="page_title" style="text-align:center;">Sign in</div>
 		</div>
 		<div class="clear"></div>
 		<div class="grid_16">&nbsp;</div>
 
 		<div class="clear"></div>
-		<div class="grid_5 user_form_label align_right">
+		<div class="grid_5 form_label align_right">
 			<label for="emal">Email</label>
 		</div>
-		<div class="grid_5 user_form_input align_right">
+		<div class="grid_5 form_input_large form_input_stretch align_right">
 			<form:input path="email" maxlength="64" />
 		</div>
 		<div class="grid_6">
@@ -66,10 +38,10 @@ $(function(){
 		</div>
 		
 		<div class="clear"></div>
-		<div class="grid_5 user_form_label align_right">
+		<div class="grid_5 form_label align_right">
 			<label for="password">Password</label>
 		</div>
-		<div class="grid_5 user_form_input align_right">
+		<div class="grid_5 form_input_large form_input_stretch align_right">
 			<form:password path="password" maxlength="32" />
 		</div>
 		<div class="grid_6">
@@ -112,5 +84,34 @@ $(function(){
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+<!--
+$(function(){
+	// validate signup form on keyup and submit
+	$("#userGetter").validate({
+		rules: {
+			password: {
+				required: true,
+			},
+			email: {
+				required: true
+			},
+		},
+		messages: {
+			password: {
+				required: "Please provide a password"
+			},
+			email: {
+				required: "Please provide a email"
+			}
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.parent("div").next("div") );
+		}
+	});
+});
+// -->
+</script>
 </body>
 </html>

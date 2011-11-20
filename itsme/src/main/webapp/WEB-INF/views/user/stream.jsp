@@ -8,13 +8,6 @@
 	<title>Stream</title>
 	<%@ include file="../_head_base.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.masonry.min.js"></script>
-	<script type="text/javascript">
-<!--
-$(function(){
-	$('.wrap').masonry();
-});
-// -->
-	</script>
 	<style type="text/css">
 <!--
 .wrap {
@@ -49,5 +42,13 @@ $(function(){
 	</div>
 	</c:if>
 </div>
+
+<script type="text/javascript">
+<!--
+$(function(){
+	$('.wrap').masonry();
+});
+// -->
+</script>
 </body>
 </html>

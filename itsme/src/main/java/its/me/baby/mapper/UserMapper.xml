@@ -7,7 +7,19 @@
 		<result property="email" column="EMAIL"/>
 		<result property="cryptoPassword" column="CRYPTO_PASSWORD"/>
 		<result property="name" column="NAME"/>
-		<result property="profile" column="PROFILE"/>
+		<result property="nameFontColor" column="NAME_FONT_COLOR"/>
+		<result property="nameFontSize" column="NAME_FONT_SIZE"/>
+		<result property="title" column="TITLE"/>
+		<result property="titleFontColor" column="TITLE_FONT_COLOR"/>
+		<result property="titleFontSize" column="TITLE_FONT_SIZE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="contentFontColor" column="CONTENT_FONT_COLOR"/>
+		<result property="contentFontSize" column="CONTENT_FONT_SIZE"/>
+		<result property="profileBoxColor" column="PROFILE_BOX_COLOR"/>
+		<result property="profileBoxOpacity" column="PROFILE_BOX_OPACITY"/>
+		<result property="profileBoxPosition" column="PROFILE_BOX_POSITION"/>
+		<result property="bgImgUrl" column="BG_IMG_URL"/>
+		<result property="bgImgLayout" column="BG_IMG_LAYOUT"/>
 	</resultMap>
 	
 	<select id="newId" resultType="int">
@@ -19,7 +31,19 @@
 			ID,
 			EMAIL,
 			NAME,
-			PROFILE
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
 		FROM
 			USER_MASTER
 		WHERE
@@ -31,7 +55,19 @@
 			ID,
 			EMAIL,
 			NAME,
-			PROFILE
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
 		FROM
 			USER_MASTER
 		WHERE
@@ -67,7 +103,19 @@
 			EMAIL,
 			CRYPTO_PASSWORD,
 			NAME,
-			PROFILE
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
 		)
 		VALUES
 		(
@@ -75,15 +123,26 @@
 			#{email},
 			#{cryptoPassword},
 			#{name},
-			#{profile}
+			#{nameFontColor},
+			#{nameFontSize},
+			#{title},
+			#{titleFontColor},
+			#{titleFontSize},
+			#{content},
+			#{contentFontColor},
+			#{contentFontSize},
+			#{profileBoxColor},
+			#{profileBoxOpacity},
+			#{profileBoxPosition},
+			#{bgImgUrl},
+			#{bgImgLayout}
 		)
 	</insert>
 
 	<update id="updateAccount" parameterType="map">
 		UPDATE USER_MASTER
 			SET
-				EMAIL = #{email},
-				NAME = #{name}
+				EMAIL = #{email}
 			WHERE
 				ID = #{id}
 	</update>
@@ -96,10 +155,23 @@
 				ID = #{id}
 	</update>
 
-	<update id="updateProfile" parameterType="map">
+	<update id="updateProfile" parameterType="its.me.baby.dto.User">
 		UPDATE USER_MASTER
 			SET
-				PROFILE = #{profile}
+				NAME = #{name},
+				NAME_FONT_COLOR = #{nameFontColor},
+				NAME_FONT_SIZE = #{nameFontSize},
+				TITLE = #{title},
+				TITLE_FONT_COLOR = #{titleColor},
+				TITLE_FONT_SIZE = #{titleSize},
+				CONTENT = #{content},
+				CONTENT_FONT_COLOR = #{contentFontColor},
+				CONTENT_FONT_SIZE = #{contentFontSize},
+				PROFILE_BOX_COLOR = #{profileBoxColor},
+				PROFILE_BOX_OPACITY = #{profileBoxOpacity},
+				PROFILE_BOX_POSITION = #{profileBoxPosition},
+				BG_IMG_URL = #{bgImgUrl},
+				BG_IMG_LAYOUT = #{bgImgLayout}
 			WHERE
 				ID = #{id}
 	</update>

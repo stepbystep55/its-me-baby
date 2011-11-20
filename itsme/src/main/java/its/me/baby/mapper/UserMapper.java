@@ -18,11 +18,11 @@ public interface UserMapper {
 
 	public void saveUser(User user);
 
-	public void updateAccount(@Param("id") Integer id, @Param("name") String name, @Param("email") String email);
+	public void updateAccount(@Param("id") Integer id, @Param("email") String email);
 
 	public void updatePassword(@Param("id") Integer id, @Param("cryptoPassword") String cryptoPassword);
 
-	public void updateProfile(@Param("id") Integer id, @Param("profile") String profile);
+	public void updateProfile(User user);
 
 	public void delete(Integer id);
 

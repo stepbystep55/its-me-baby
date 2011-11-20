@@ -8,7 +8,93 @@
 	<%@ include file="_head_base.jsp"%>
 	<%@ include file="_head_grid.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.validate.min.js"></script>	
-	<script type="text/javascript">
+	<style type="text/css">
+<!--
+.error { color: red; }
+// -->
+	</style>
+</head>
+<body>
+<jsp:include page="_body_header.jsp"/>
+
+<form:form modelAttribute="user" action="save" method="post">
+<div id="page_content">
+	<div class="container_16">
+		<div class="grid_16">
+			<div id="page_title" style="text-align:center;">Sign up</div>
+		</div>
+		<div class="clear"></div>
+		<div class="grid_16">&nbsp;</div>
+
+		<div class="clear"></div>
+		<div class="grid_5 form_label align_right">
+			<label for="name">Name</label>
+		</div>
+		<div class="grid_5 form_input_large form_input_stretch align_right">
+			<form:input path="name" maxlength="32" />
+		</div>
+		<div class="grid_6">
+			<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
+		</div>
+
+		<div class="clear"></div>
+		<div class="grid_5 form_label align_right">
+			<label for="emal">Email</label>
+		</div>
+		<div class="grid_5 form_input_large form_input_stretch align_right">
+			<form:input path="email" maxlength="128"/>
+		</div>
+		<div class="grid_6">
+			<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
+		</div>
+
+		<div class="clear"></div>
+		<div class="grid_5 form_label align_right">
+			<label for="password">Password</label>
+		</div>
+		<div class="grid_5 form_input_large form_input_stretch align_right">
+			<form:password path="password" maxlength="32" />
+		</div>
+		<div class="grid_6">
+			<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
+		</div>
+
+		<div class="clear"></div>
+		<div class="grid_5 form_label_br align_right">
+			<label for="reenter_password">Re-enter<br/>Password</label>
+		</div>
+		<div class="grid_5 form_input_large form_input_stretch align_right">
+			<input type="password" id="reenter_password" name="reenter_password" maxlength="32" />
+		</div>
+		<div class="grid_6"></div>
+
+		<div class="clear"></div>
+		<div class="grid_10 user_form_button align_right">
+			<input type="submit" value="Sign up"/>
+		</div>
+		<div class="grid_6"></div>
+	</div>
+
+	<div class="container_16">
+		<div class="grid_16">&nbsp;</div>
+	</div>
+	<div class="container_16">
+		<div class="grid_16">&nbsp;</div>
+	</div>
+</div>
+</form:form>
+
+<div id="footer">
+	<div class="container_12">
+		<div class="grid_12">
+			<div class="footer_item">
+			&copy;ippoippo
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
 <!--
 $(function(){
 	// validate signup form on keyup and submit
@@ -57,91 +143,6 @@ $(function(){
 	});
 });
 // -->
-	</script>
-	<style type="text/css">
-<!--
-.error { color: red; }
-// -->
-	</style>
-</head>
-<body>
-<jsp:include page="_body_header.jsp"/>
-
-<form:form modelAttribute="user" action="save" method="post">
-<div id="content">
-	<div class="container_16">
-		<div class="grid_16">
-			<div id="title" style="text-align:center;">Sign up</div>
-		</div>
-		<div class="clear"></div>
-		<div class="grid_16">&nbsp;</div>
-
-		<div class="clear"></div>
-		<div class="grid_5 user_form_label align_right">
-			<label for="name">Name</label>
-		</div>
-		<div class="grid_5 user_form_input align_right">
-			<form:input path="name" maxlength="32" />
-		</div>
-		<div class="grid_6">
-			<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
-		</div>
-
-		<div class="clear"></div>
-		<div class="grid_5 user_form_label align_right">
-			<label for="emal">Email</label>
-		</div>
-		<div class="grid_5 user_form_input align_right">
-			<form:input path="email" maxlength="128"/>
-		</div>
-		<div class="grid_6">
-			<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
-		</div>
-
-		<div class="clear"></div>
-		<div class="grid_5 user_form_label align_right">
-			<label for="password">Password</label>
-		</div>
-		<div class="grid_5 user_form_input align_right">
-			<form:password path="password" maxlength="32" />
-		</div>
-		<div class="grid_6">
-			<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
-		</div>
-
-		<div class="clear"></div>
-		<div class="grid_5 user_form_label_br align_right">
-			<label for="reenter_password">Re-enter<br/>Password</label>
-		</div>
-		<div class="grid_5 user_form_input align_right">
-			<input type="password" id="reenter_password" name="reenter_password" maxlength="32" />
-		</div>
-		<div class="grid_6"></div>
-
-		<div class="clear"></div>
-		<div class="grid_10 user_form_button align_right">
-			<input type="submit" value="Sign up"/>
-		</div>
-		<div class="grid_6"></div>
-	</div>
-
-	<div class="container_16">
-		<div class="grid_16">&nbsp;</div>
-	</div>
-	<div class="container_16">
-		<div class="grid_16">&nbsp;</div>
-	</div>
-</div>
-</form:form>
-
-<div id="footer">
-	<div class="container_12">
-		<div class="grid_12">
-			<div class="footer_item">
-			&copy;ippoippo
-			</div>
-		</div>
-	</div>
-</div>
+</script>
 </body>
 </html>

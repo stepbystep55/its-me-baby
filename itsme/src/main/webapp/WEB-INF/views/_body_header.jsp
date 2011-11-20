@@ -29,7 +29,7 @@ ul.dropdown li:hover > ul { visibility: visible; margin: 0; padding: 0; }
 // -->
 	</style>
 <%--
-<div id="header">
+<div id="page_header">
 	<div class="container_12">
 		<div class="grid_1"><a href="<%= request.getContextPath() %>/">Its me</a></div>
 		<% if (request.getSession(false) == null || request.getSession(false).getAttribute("authUser") == null) { %>
@@ -45,18 +45,15 @@ ul.dropdown li:hover > ul { visibility: visible; margin: 0; padding: 0; }
 			<div class="grid_1 align_right"><a href="<%= request.getContextPath() %>/logout">Sign out</a></div>
 		<% } %>
 --%>
-<div id="header">
+<div id="page_header">
 	<div class="container_12">
 		<div class="grid_1"><a href="<%= request.getContextPath() %>/">Its me</a></div>
 		<% if (request.getSession(false) == null || request.getSession(false).getAttribute("authUser") == null) { %>
-			<div class="grid_9">&nbsp;</div>
-			<div class="grid_2 align_right"><a href="<%= request.getContextPath() %>/login">Sign in</a></div>
-		<%
-			} else {
-				User user = (User)request.getSession(false).getAttribute("authUser");
-		%>
-			<div class="grid_8">&nbsp;</div>
-			<div class="grid_2 align_right">
+			<div class="grid_10">&nbsp;</div>
+			<div class="grid_1 align_right"><a href="<%= request.getContextPath() %>/login">Sign in</a></div>
+		<% } else { User user = (User)request.getSession(false).getAttribute("authUser"); %>
+			<div class="grid_10">&nbsp;</div>
+			<div class="grid_1 align_right">
 				<ul class="dropdown">
 					<li><a href="#">Account</a>
 						<ul class="sub_menu">

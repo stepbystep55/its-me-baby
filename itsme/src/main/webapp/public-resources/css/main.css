@@ -8,16 +8,16 @@ body {
 
 /* etc */
 a:link, a:visited {
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: #000077;
 	text-decoration: none;
 }
 a:hover, a:active {
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: #0000CB;
-	text-decoration: none;
+	text-decoration: underline;
 }
-#header {
+#page_header {
 	/*background-color: #DCDCDC;*/
 	background-color: #F5F5F5;
 	height: 30px;
@@ -26,7 +26,7 @@ a:hover, a:active {
 	padding: 0;
 	line-height: 30px;
 }
-#content {
+#page_content {
 	width: 100%;
 	margin: 0px;
 	padding: 10px 0;
@@ -40,22 +40,29 @@ a:hover, a:active {
 	text-align: center;
 	line-height: 30px;
 }
-#header a:link, #header a:visited {
-	color: #666666;
-	font-weight: bold;
+#page_header a:link, #page_header a:visited {
+	color: #303030;
+	/*font-weight: bold;*/
 	font-size: 15px;
 	text-decoration: none;
 }
-#header a:hover, #header a:active {
-	color: #333333;
-	font-weight: bold;
+#page_header a:hover, #page_header a:active {
+	color: #000000;
+	/*font-weight: bold;*/
 	font-size: 15px;
-	text-decoration: none;
+	text-decoration: underline;
 }
-a.appeal {
+a.appeal:link, a.appeal:visited {
 	height: 200px;
 	font-weight: bold;
 	font-size: 24px;
+	text-decoration: none;
+}
+a.appeal:hover, a.appeal:active {
+	height: 200px;
+	font-weight: bold;
+	font-size: 24px;
+	text-decoration: underline;
 }
 .align_right {
 	text-align: right;
@@ -63,7 +70,7 @@ a.appeal {
 .align_center {
 	text-align: center;
 }
-#title {
+#page_title {
 	margin: 0;
 	padding-top: 30px;
 	padding-bottom: 10px;
@@ -90,24 +97,26 @@ a.appeal {
 	font-weight: normal;
 	font-size: 16px;
 }
-.user_form_label {
+.form_label {
 	/*color: #000077;*/
 	line-height: 28px;
 	font-weight: bold;
 	height: 40px;
 }
-.user_form_label_br {
+.form_label_br {
 	/*color: #000077;*/
 	line-height: 14px;
 	font-weight: bold;
 	height: 40px;
 }
-.user_form_input input {
+.form_input_large input {
 	font-size: 16px;
 	height: 30px;
-	width: 260px;
 }
-.user_form_button input {
+.form_input_stretch input, .form_input_stretch textarea {
+	width: 100%;
+}
+.form_button input {
 	font-weight: bold;
 	font-size: 15px;
 }

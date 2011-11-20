@@ -76,14 +76,13 @@ public class UserSettingsController {
 			return modelAndView;
 		}
 
-		userMapper.updateAccount(user.getId(), user.getName(), user.getEmail());
+		userMapper.updateAccount(user.getId(), user.getEmail());
 
-		user = userMapper.getUserById(user.getId());
+		request.getSession(false).setAttribute("authUser", userMapper.getUserById(user.getId()));
 
-		request.getSession(false).setAttribute("authUser", user);
+		request.setAttribute("updated", "account");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultUpdated", true);
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
@@ -111,12 +110,11 @@ public class UserSettingsController {
 
 		userMapper.updatePassword(user.getId(), user.getCryptoPassword());
 
-		user = userMapper.getUserById(user.getId());
+		request.getSession(false).setAttribute("authUser", userMapper.getUserById(user.getId()));
 
-		request.getSession(false).setAttribute("authUser", user);
+		request.setAttribute("updated", "password");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultUpdated", true);
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
@@ -142,14 +140,13 @@ public class UserSettingsController {
 			return modelAndView;
 		}
 
-		userMapper.updateProfile(user.getId(), user.getProfile());
+		userMapper.updateProfile(user);
 
-		user = userMapper.getUserById(user.getId());
+		request.getSession(false).setAttribute("authUser", userMapper.getUserById(user.getId()));
 
-		request.getSession(false).setAttribute("authUser", user);
+		request.setAttribute("updated", "profile");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultUpdated", true);
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
@@ -168,13 +165,13 @@ public class UserSettingsController {
 			Connection connection = connectionRepository.findPrimaryConnection(Twitter.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		}
+		request.setAttribute("updated", "social");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultUpdated", true);
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
-	
+
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "edit", method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView edit(HttpServletRequest request) {

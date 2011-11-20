@@ -30,13 +30,6 @@
 }
 // -->
 	</style>
-
-	<script type="text/javascript">
-<!--
-$(function(){
-});
-// -->
-	</script>
 </head>
 <body>
 <%--
@@ -45,14 +38,14 @@ $(function(){
 
 <jsp:include page="_body_header.jsp"/>
 
-<div id="content">
+<div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">&nbsp;</div>
 	</div>
 	<div class="container_16">
 		<div class="grid_1">&nbsp;</div>
 		<div class="grid_15">
-			<div id="title">It's me, baby!</div>
+			<div id="page_title">It's me, baby!</div>
 			<div id="sub_title">Create your online profile page.</div>
 		</div>
 	
@@ -89,5 +82,12 @@ $(function(){
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+<!--
+$(function(){
+});
+// -->
+</script>
 </body>
 </html>

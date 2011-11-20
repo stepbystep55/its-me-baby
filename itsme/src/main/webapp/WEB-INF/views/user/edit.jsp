@@ -7,49 +7,13 @@
 	<title>Edit</title>
 	<%@ include file="../_head_base.jsp"%>
 	<%@ include file="../_head_grid.jsp"%>
-	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.miniColors.css" />
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.miniColors.min.js"></script>	<script type="text/javascript">
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.validate.min.js"></script>	
+	<style type="text/css">
 <!--
-$(function(){
-	<c:choose>
-		<c:when test="${updated == 'account'}">activateAccountTab();</c:when>
-		<c:when test="${updated == 'social'}">activateSocialTab();</c:when>
-		<c:when test="${updated == 'password'}">activatePasswordTab();</c:when>
-		<c:otherwise>activateProfileTab();</c:otherwise>
-	</c:choose>
-	$('#edit_profile').click(activateProfileTab);
-	$('#edit_social').click(activateSocialTab);
-	$('#edit_account').click(activateAccountTab);
-	$('#edit_password').click(activatePasswordTab);
-	
-	$('#nameFontColor').miniColors();
-});
-function activateProfileTab(){
-	$('div[id^="form_"]').hide();
-	$('#form_profile').show();
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_profile').removeClass('tab_button').addClass('tab_button_disabled');
-}
-function activateSocialTab(){
-	$('div[id^="form_"]').hide();
-	$('#form_social').show();
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_social').removeClass('tab_button').addClass('tab_button_disabled');
-}
-function activateAccountTab(){
-	$('div[id^="form_"]').hide();
-	$('#form_account').show();
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_account').removeClass('tab_button').addClass('tab_button_disabled');
-}
-function activatePasswordTab(){
-	$('div[id^="form_"]').hide();
-	$('#form_password').show();
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_password').removeClass('tab_button').addClass('tab_button_disabled');
-}
+.error { color: red; }
 // -->
-</script>
+	</style>
+	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />
 </head>
 <body>
 <jsp:include page="../_body_header.jsp"/>
@@ -67,24 +31,6 @@ function activatePasswordTab(){
 		</div>
 		<div class="clear"></div>
 		<div class="grid_16">&nbsp;</div>
-
-		<div class="clear"></div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
-		<div class="grid_1" style="background-color:black;">&nbsp;</div>
 
 		<div class="clear"></div>
 		<div class="grid_4">&nbsp;</div>
@@ -111,69 +57,77 @@ function activatePasswordTab(){
 			<div class="grid_5 form_label align_right">
 				<label for="name">Name</label>
 			</div>
-			<div class="grid_4 form_input_stretch">
+			<div class="grid_5 form_input_stretch">
 				<form:input path="name" maxlength="32" />&nbsp;
 			</div>
-			<div class="grid_7">
+			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<form:input path="nameFontColor" size="8" maxlength="6" />&nbsp;
-				<form:input path="nameFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="nameFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="nameFontSize" size="3" maxlength="3" />
 			</div>
 
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
 				<label for="profile">Title</label>
 			</div>
-			<div class="grid_4  form_input_stretch">
+			<div class="grid_5  form_input_stretch">
 				<form:input path="title" size="32" maxlength="128" />&nbsp;
 			</div>
-			<div class="grid_7">
+			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="title" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<form:input path="titleFontColor" size="8" maxlength="6" />&nbsp;
-				<form:input path="titleFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="titleFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="titleFontSize" size="3" maxlength="3" />
 			</div>
 
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
 				<label for="content">Content</label>
 			</div>
-			<div class="grid_4 form_input_stretch">
+			<div class="grid_5 form_input_stretch">
 				<form:textarea path="content" rows="5" />&nbsp;
 			</div>
-			<div class="grid_7">
+			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="content" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<form:input path="contentFontColor" size="8" maxlength="6" />&nbsp;
-				<form:input path="contentFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="contentFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="contentFontSize" size="3" maxlength="3" />
 			</div>
 
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
 				<label for="profileBox">Profile Box</label>
 			</div>
-			<div class="grid_7">
-				<form:input path="profileBoxColor" size="8" maxlength="6" />&nbsp;
-				<form:input path="profileBoxOpacity" size="3" maxlength="3" />
-				<form:input path="profileBoxPosition" size="8" maxlength="8" />
+			<div class="grid_11">
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Opacity</span>&nbsp;<form:input path="profileBoxOpacity" size="3" maxlength="3" />
+				<span class="form_sublabel">Position</span>&nbsp;<form:input path="profileBoxPosition" size="8" maxlength="8" />
 			</div>
-			<div class="grid_4">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_16">&nbsp;</div>
 
 			<div class="clear"></div>
-			<div class="grid_10 form_button align_right">
-				<input type="button" value="preview"/>&nbsp;&nbsp;<input type="submit" value="update"/>
+			<div class="grid_8 form_button align_right">
+				<input type="button" value="preview"/>
+			</div>
+			<div class="grid_2 form_button align_right">
+				<input type="submit" value="update"/>
 			</div>
 			<div class="grid_6">&nbsp;</div>
 			</form:form>
@@ -312,5 +266,97 @@ function activatePasswordTab(){
 	</div>
 </div>
 
+<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.minicolors.min.js"></script>	<script type="text/javascript">
+<!--
+$(function(){
+	// for use validator, user class must be divided to some classes because of some form's ids are same now.
+	// validate signup form on keyup and submit
+	/*
+	$("#user").validate({
+		rules: {
+			name: {
+				required: true,
+				minlength: 3
+			},
+			password: {
+				required: true,
+				minlength: 8
+			},
+			reenter_password: {
+				required: true,
+				minlength: 8,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+			}
+		},
+		messages: {
+			name: {
+				required: "Please enter your name",
+				minlength: "Your name must be at least 3 characters long"
+			},
+			password: {
+				required: "Please provide a password",
+				minlength: "Your password must be at least 8 characters long"
+			},
+			reenter_password: {
+				required: "Please provide a password",
+				minlength: "Your password must be at least 8 characters long",
+				equalTo: "Please enter the same password as above"
+			},
+			email: {
+				required: "Please provide a email",
+				email: "Please enter a valid email address"
+			}
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.parent("div").next("div") );
+		}
+	});
+	*/
+	// 
+	if($('.confirm')!=null) $('.confirm').fadeOut(3000);
+	// choose tab
+	<c:choose>
+		<c:when test="${updated == 'account'}">activateAccountTab();</c:when>
+		<c:when test="${updated == 'social'}">activateSocialTab();</c:when>
+		<c:when test="${updated == 'password'}">activatePasswordTab();</c:when>
+		<c:otherwise>activateProfileTab();</c:otherwise>
+	</c:choose>
+	$('#edit_profile').click(activateProfileTab);
+	$('#edit_social').click(activateSocialTab);
+	$('#edit_account').click(activateAccountTab);
+	$('#edit_password').click(activatePasswordTab);
+	// minicolor
+	$('.minicolors').miniColors();
+});
+function activateProfileTab(){
+	$('div[id^="form_"]').hide();
+	$('#form_profile').show();
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_profile').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activateSocialTab(){
+	$('div[id^="form_"]').hide();
+	$('#form_social').show();
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_social').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activateAccountTab(){
+	$('div[id^="form_"]').hide();
+	$('#form_account').show();
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_account').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activatePasswordTab(){
+	$('div[id^="form_"]').hide();
+	$('#form_password').show();
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_password').removeClass('tab_button').addClass('tab_button_disabled');
+}
+// -->
+</script>
 </body>
 </html>

@@ -98,16 +98,18 @@ a.appeal:hover, a.appeal:active {
 	font-size: 16px;
 }
 .form_label {
-	/*color: #000077;*/
 	line-height: 28px;
+	vertical-align: middle;
 	font-weight: bold;
 	height: 40px;
 }
 .form_label_br {
-	/*color: #000077;*/
 	line-height: 14px;
 	font-weight: bold;
 	height: 40px;
+}
+.form_sublabel {
+	font-weight: bold;
 }
 .form_input_large input {
 	font-size: 16px;

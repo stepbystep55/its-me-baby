@@ -13,8 +13,8 @@ import org.hibernate.validator.constraints.Range;
 
 public class User {
 
-	public static final String DEFAULT_FONT_COLOR = "000000";
-	public static final String DEFAULT_BG_COLOR = "FFFFFF";
+	public static final String DEFAULT_FONT_COLOR = "#000000";
+	public static final String DEFAULT_BG_COLOR = "#FFFFFF";
 	public static final String BG_IMG_LAYOUT_CENTER = "center";
 	public static final String BG_IMG_LAYOUT_TILE = "tile";
 	public static final String BG_IMG_LAYOUT_STRETCH = "stretch";
@@ -33,7 +33,7 @@ public class User {
 	@Length(min=3,max=32)
 	private String name = null;
 
-	@Pattern(regexp="[abcdefABCDEF0-9]{6}")
+	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String nameFontColor = DEFAULT_FONT_COLOR;
 
 	@Range(min=1,max=300)
@@ -42,7 +42,7 @@ public class User {
 	@Length(max=128)
 	private String title = "";
 
-	@Pattern(regexp="[abcdefABCDEF0-9]{6}")
+	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String titleFontColor = DEFAULT_FONT_COLOR;
 
 	@Range(min=1,max=300)
@@ -51,13 +51,13 @@ public class User {
 	@Length(max=2048)
 	private String content = "";
 
-	@Pattern(regexp="[abcdefABCDEF0-9]{6}")
+	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String contentFontColor = DEFAULT_FONT_COLOR;
 
 	@Range(min=1,max=300)
 	private Integer contentFontSize = 16;
 
-	@Pattern(regexp="[abcdefABCDEF0-9]{6}")
+	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String profileBoxColor = DEFAULT_BG_COLOR;
 
 	@Range(min=0,max=100)

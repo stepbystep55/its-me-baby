@@ -74,10 +74,10 @@
 			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
-				<label for="profile">Title</label>
+				<label for="title">Title</label>
 			</div>
 			<div class="grid_5  form_input_stretch">
-				<form:input path="title" size="32" maxlength="128" />&nbsp;
+				<form:input path="title" maxlength="128" />&nbsp;
 			</div>
 			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="title" cssStyle="color:red" /></spring:hasBindErrors>
@@ -112,12 +112,38 @@
 			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
-				<label for="profileBox">Profile Box</label>
+				<label>Profile Box</label>
 			</div>
 			<div class="grid_11">
 				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
 				<span class="form_sublabel">Opacity</span>&nbsp;<form:input path="profileBoxOpacity" size="3" maxlength="3" />
-				<span class="form_sublabel">Position</span>&nbsp;<form:input path="profileBoxPosition" size="8" maxlength="8" />
+				<span class="form_sublabel">Position</span>&nbsp;
+				<form:select path="profileBoxPosition">
+					<form:option value="left"/>
+					<form:option value="right"/>
+				</form:select>
+			</div>
+
+			<div class="clear"></div>
+			<div class="grid_16">&nbsp;</div>
+			<div class="clear"></div>
+			<div class="grid_5 form_label align_right">
+				<label>Background</label>
+			</div>
+			<div class="grid_5  form_input_stretch">
+				<form:input path="bgImgUrl" maxlength="512" />&nbsp;
+			</div>
+			<div class="grid_6">
+				<spring:hasBindErrors name="user"><form:errors path="bgImgUrl" cssStyle="color:red" /></spring:hasBindErrors>
+			</div>
+			<div class="clear"></div>
+			<div class="grid_5">&nbsp;</div>
+			<div class="grid_11">
+				<form:select path="bgImgLayout">
+					<form:option value="center"/>
+					<form:option value="tile"/>
+					<form:option value="stretch"/>
+				</form:select>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_16">&nbsp;</div>

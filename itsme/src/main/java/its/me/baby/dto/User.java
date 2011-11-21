@@ -37,7 +37,7 @@ public class User {
 	private String nameFontColor = DEFAULT_FONT_COLOR;
 
 	@Range(min=1,max=300)
-	private Integer nameFontSize = 80;
+	private Integer nameFontSize = 72;
 
 	@Length(max=128)
 	private String title = "";
@@ -65,8 +65,9 @@ public class User {
 
 	private String profileBoxPosition = PROFILE_BOX_POSITION_LEFT;
 
+	// TODO need to revise the regular expression for url
 	@Length(max=512)
-	@Pattern(regexp="http(s)://.*")
+	@Pattern(regexp="https?://.*")
 	private String bgImgUrl = null;
 
 	@Length(max=512)

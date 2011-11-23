@@ -1,14 +1,12 @@
 package its.me.baby.controller;
 
 import its.me.baby.dto.StreamEntry;
-import its.me.baby.dto.User;
-import its.me.baby.mapper.UserMapper;
+import its.me.baby.dto.UserProfile;
+import its.me.baby.mapper.UserProfileMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,16 +34,16 @@ public class UserPageController {
 	private UsersConnectionRepository usersConnectionRepository;
 
 	@Autowired
-	private UserMapper userMapper;
+	private UserProfileMapper userProfileMapper;
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "show/{id}", method={RequestMethod.GET})
 	public ModelAndView show(@PathVariable Integer id) {
 
-		User user = userMapper.getUserById(id);
+		UserProfile userProfile = userProfileMapper.getUserProfileById(id);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("user", user);
+		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}
@@ -54,7 +52,7 @@ public class UserPageController {
 	@RequestMapping(value = "stream/{id}", method={RequestMethod.GET})
 	public ModelAndView stream(@PathVariable Integer id) {
 
-		User user = userMapper.getUserById(id);
+		UserProfile user = userProfileMapper.getUserProfileById(id);
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 

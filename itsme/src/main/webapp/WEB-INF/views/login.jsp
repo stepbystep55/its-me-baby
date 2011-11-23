@@ -91,20 +91,12 @@ $(function(){
 	// validate signup form on keyup and submit
 	$("#userGetter").validate({
 		rules: {
-			password: {
-				required: true,
-			},
-			email: {
-				required: true
-			},
+			password: { required: true },
+			email: { required: true },
 		},
 		messages: {
-			password: {
-				required: "Please provide a password"
-			},
-			email: {
-				required: "Please provide a email"
-			}
+			password: { required: "Please provide a password" },
+			email: { required: "Please provide a email" }
 		},
 		errorPlacement: function(error, element) {
 			error.appendTo( element.parent("div").next("div") );

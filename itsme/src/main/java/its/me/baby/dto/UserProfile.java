@@ -1,17 +1,14 @@
 package its.me.baby.dto;
 
-import its.me.baby.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-public class User {
+public class UserProfile {
 
 	public static final String DEFAULT_FONT_COLOR = "#000000";
 	public static final String DEFAULT_BG_COLOR = "#FFFFFF";
@@ -23,13 +20,6 @@ public class User {
 
 	private Integer id = null;
 
-	@Email
-	@Length(max=128)
-	private String email = null;
-	
-	@Length(min=8,max=32)
-	private String password = null;
-	
 	@Length(min=3,max=32)
 	private String name = null;
 
@@ -66,8 +56,8 @@ public class User {
 	private String profileBoxPosition = PROFILE_BOX_POSITION_LEFT;
 
 	// TODO need to revise the regular expression for url
+	//@Pattern(regexp="https?://.*")
 	@Length(max=512)
-	@Pattern(regexp="https?://.*")
 	private String bgImgUrl = null;
 
 	@Length(max=512)
@@ -84,21 +74,6 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public String getCryptoPassword() {
-		return StringUtils.getMD5Hash(password);
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getContent() {
 		return content;
@@ -182,23 +157,13 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + "]";
+		return "UserProfile [id=" + id + ", name=" + name + "]";
 	}
 
 	private Map<String, String> rejectValueMap = new HashMap<String, String>(0);
 
 	public Map<String, String> getRejectValueMap() {
 		return rejectValueMap;
-	}
-
-	public boolean validForEditingAccount() {
-		if (email == null) rejectValueMap.put("email", "org.hibernate.validator.constraints.NotEmpty.message");
-		return (rejectValueMap.size() == 0);
-	}
-
-	public boolean validForEditingPassword() {
-		if (password == null) rejectValueMap.put("password", "org.hibernate.validator.constraints.NotEmpty.message");
-		return (rejectValueMap.size() == 0);
 	}
 
 	public boolean validForEditingProfile() {

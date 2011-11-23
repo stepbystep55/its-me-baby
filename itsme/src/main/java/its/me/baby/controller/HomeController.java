@@ -1,8 +1,7 @@
 package its.me.baby.controller;
 
-import its.me.baby.dto.User;
-import its.me.baby.dto.UserGetter;
-import its.me.baby.mapper.UserMapper;
+import its.me.baby.dto.AuthUser;
+import its.me.baby.mapper.UserMasterMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
 	@Autowired
-	private UserMapper userMapper;
+	private UserMasterMapper userMasterMapper;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -42,23 +41,23 @@ public class HomeController {
 	public ModelAndView login() {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userGetter", new UserGetter());
+		modelAndView.addObject("authUser", new AuthUser());
 		modelAndView.setViewName("login");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "login", method= RequestMethod.POST)
-	public ModelAndView login(@Valid UserGetter userGetter, BindingResult result, HttpServletRequest request) {
+	public ModelAndView login(@Valid AuthUser userGetter, BindingResult result, HttpServletRequest request) {
 	
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("userGetter", userGetter);
+		modelAndView.addObject("userGetter", new AuthUser());
 			modelAndView.setViewName("login");
 			return modelAndView;
 		}
-		User user = userMapper.getUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
-		if (user == null) {
+		AuthUser authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
+		if (authUser == null) {
 			ModelAndView modelAndView = new ModelAndView();
 			result.rejectValue("email", "error.login.failed");
 			modelAndView.addObject("userGetter", userGetter);
@@ -66,7 +65,7 @@ public class HomeController {
 			return modelAndView;
 		}
 
-		request.getSession(true).setAttribute("authUser", user);
+		request.getSession(true).setAttribute(AuthUser.class.getName(), authUser);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("forward:edit");
@@ -90,33 +89,34 @@ public class HomeController {
 	public ModelAndView create(HttpServletRequest request) {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("user", new User());
+		modelAndView.addObject("authUser", new AuthUser());
 		modelAndView.setViewName("create");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@Valid User user, BindingResult result, HttpServletRequest request) {
-
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public ModelAndView create(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
+System.out.println("authuser="+authUser.getEmail());
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", user);
+			modelAndView.addObject("authUser", authUser);
 			modelAndView.setViewName("create");
 			return modelAndView;
 		}
-		if (userMapper.countUserByEmail(user.getEmail(), null) != 0) {
+		if (userMasterMapper.countUserByEmail(authUser.getEmail(), null) != 0) {
 			result.rejectValue("email", "error.email.exists");
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", user);
+			modelAndView.addObject("authUser", authUser);
 			modelAndView.setViewName("create");
 			return modelAndView;
 		}
 
-		user.setId(userMapper.newId());
-		userMapper.saveUser(user);
+		authUser.setId(userMasterMapper.newId());
+		userMasterMapper.createUser(authUser);
 
-		request.getSession(true).setAttribute("authUser", userMapper.getUserById(user.getId()));
+		authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(authUser.getEmail(), authUser.getCryptoPassword());
+		request.getSession(true).setAttribute(AuthUser.class.getName(), authUser);
 
 		request.setAttribute("created", "true");
 

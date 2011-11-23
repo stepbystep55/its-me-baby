@@ -1,5 +1,7 @@
 package its.me.baby.controller;
 
+import its.me.baby.dto.AuthUser;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,7 +26,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 		} else if (handler instanceof UserSettingsController) {
 			HttpSession session = request.getSession(false);
-			if ((session == null) || (session.getAttribute("authUser") == null)) {
+			if ((session == null) || (session.getAttribute(AuthUser.class.getName()) == null)) {
 				logger.info("Access without session: " + request.getRequestURI());
 				new RedirectView("/login", true).render(null, request, response);
 				return false;

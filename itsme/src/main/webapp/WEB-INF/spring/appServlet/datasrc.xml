@@ -11,7 +11,8 @@
 	<jdbc:embedded-database id="dataSource" type="H2">
 		<jdbc:script location="classpath:/org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql" />
 		<jdbc:script location="classpath:/its/me/baby/mapper/create_sequence_user.sql" />
-		<jdbc:script location="classpath:/its/me/baby/mapper/create_user.sql" />
+		<jdbc:script location="classpath:/its/me/baby/mapper/create_user_master.sql" />
+		<jdbc:script location="classpath:/its/me/baby/mapper/create_user_profile.sql" />
 	</jdbc:embedded-database>	
 
 	<!-- Local, JDBC-based TransactionManager -->

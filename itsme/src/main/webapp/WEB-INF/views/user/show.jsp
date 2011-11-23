@@ -11,14 +11,15 @@
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
 	<style type="text/css">
 <!--
+<c:if test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != ''}">
 <c:choose>
-	<c:when test="${user.bgImgLayout == 'center'}">
-		body { background: url(${user.bgImgUrl}) no-repeat fixed 50% 50%; }
+	<c:when test="${userProfile.bgImgLayout == 'center'}">
+		body { background: url(${userProfile.bgImgUrl}) no-repeat fixed 50% 50%; }
 	</c:when>
-	<c:when test="${user.bgImgLayout == 'tile'}">
-		body { background: url(${user.bgImgUrl}) no-repeat fixed 50% 50%; }
+	<c:when test="${userProfile.bgImgLayout == 'tile'}">
+		body { background: url(${userProfile.bgImgUrl}) repeat fixed 50% 50%; }
 	</c:when>
-	<c:when test="${user.bgImgLayout == 'stretch'}">
+	<c:when test="${userProfile.bgImgLayout == 'stretch'}">
 		#background {
 			width: 100%; 
 			height: 100%; 
@@ -30,13 +31,14 @@
 		.stretch {width:100%;height:auto;min-height:100%;}
 	</c:when>
 </c:choose>
+</c:if>
 // -->
 	</style>
 </head>
 <body>
-<c:if test="user.bgImgUrl != null && user.bgImgUrl != ''">
-	<c:if test="${user.bgImgLayout == 'stretch'}">
-		<div id="background"><img src="${user.bgImgUrl}" class="center" alt="" /></div>
+<c:if test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != ''}">
+	<c:if test="${userProfile.bgImgLayout == 'stretch'}">
+		<div id="background"><img src="${userProfile.bgImgUrl}" class="stretch" alt="" /></div>
 	</c:if>
 </c:if>
 <jsp:include page="../_body_header.jsp"/>
@@ -45,24 +47,25 @@
 	style="
 	z-index:999;
 	<c:choose>
-		<c:when test="${user.profileBoxPosition == 'left'}">position:absolute;top:30%;left:20%;</c:when>
-		<c:when test="${user.profileBoxPosition == 'right'}">position:absolute;top:30%;right:20%;</c:when>
+		<c:when test="${userProfile.profileBoxPosition == 'left'}">position:absolute;top:30%;left:20%;</c:when>
+		<c:when test="${userProfile.profileBoxPosition == 'right'}">position:absolute;top:30%;right:20%;</c:when>
+		<c:when test="${userProfile.profileBoxPosition == 'center'}">margin:0 auto;</c:when>
 	</c:choose>
-	background-color:${user.profileBoxColor} no-repeat fixed 0 0;"
+	background-color:${userProfile.profileBoxColor} no-repeat fixed 0 0;"
 >
-	<div id="user_name" style="font-size:${user.nameFontSize}; color:${user.nameFontColor}">
-		${user.name}
+	<div id="user_name" style="font-size:${userProfile.nameFontSize}; color:${userProfile.nameFontColor}">
+		${userProfile.name}
 	</div>
-	<div id="user_title" style="font-size:${user.titleFontSize}; color:${user.titleFontColor}">
-		${user.title}
+	<div id="user_title" style="font-size:${userProfile.titleFontSize}; color:${userProfile.titleFontColor}">
+		${userProfile.title}
 	</div>
 	&nbsp;
-	<div id="user_content" style="font-size:${user.contentFontSize}; color:${user.contentFontColor}">
-		${user.content}
+	<div id="user_content" style="font-size:${userProfile.contentFontSize}; color:${userProfile.contentFontColor}">
+		${userProfile.content}
 	</div>
 	&nbsp;
 	<div id="user_stream" class="align_right">
-		<a id="stream" href="<%= request.getContextPath() %>/stream/${user.id}">view stream</a>
+		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.id}">view stream</a>
 	</div>
 </div>
 

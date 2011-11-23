@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="its.me.baby.mapper.UserMasterMapper">
+	
+	<resultMap id="authUser" type="its.me.baby.dto.AuthUser">
+		<id property="id" column="ID"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cryptoPassword" column="CRYPTO_PASSWORD"/>
+	</resultMap>
+
+	<select id="newId" resultType="int">
+		SELECT SEQ_USER.NEXTVAL
+	</select>
+
+	<select id="getAuthUserByEmailAndCryptoPassword" parameterType="map" resultMap="authUser">
+		SELECT
+			ID,
+			EMAIL
+		FROM
+			USER_MASTER
+		WHERE
+			EMAIL = #{email} AND CRYPTO_PASSWORD = #{cryptoPassword}
+	</select>
+
+	<select id="countUserByEmail" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			USER_MASTER
+		WHERE
+			EMAIL = #{email}
+		<if test="omittedId != null">
+			AND ID <![CDATA[ <> ]]> #{omittedId}
+		</if>
+	</select>
+
+	<insert id="createUser" parameterType="its.me.baby.dto.AuthUser">
+		INSERT INTO USER_MASTER
+		(
+			ID,
+			EMAIL,
+			CRYPTO_PASSWORD
+		)
+		VALUES
+		(
+			#{id},
+			#{email},
+			#{cryptoPassword}
+		)
+	</insert>
+
+	<update id="updateAccount" parameterType="map">
+		UPDATE USER_MASTER
+			SET
+				EMAIL = #{email}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<update id="updatePassword" parameterType="map">
+		UPDATE USER_MASTER
+			SET
+				CRYPTO_PASSWORD = #{cryptoPassword}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<delete id="deleteUser" parameterType="Integer">
+		DELETE FROM 
+			USER_MASTER
+		WHERE 
+			ID = #{id}
+	</delete>
+</mapper>

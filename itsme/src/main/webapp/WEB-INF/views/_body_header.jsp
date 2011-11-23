@@ -1,9 +1,9 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<%@ page import="its.me.baby.dto.User" %>
+<%@ page import="its.me.baby.dto.AuthUser" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.dropdownplain.js"></script>
+	<script type="text/javascript"  charset="utf-8" src="<%=request.getContextPath()%>/resources/js/jquery.dropdownplain.js"></script>
 	<script type="text/javascript">
 <!--
 // -->
@@ -47,17 +47,21 @@ ul.dropdown li:hover > ul { visibility: visible; margin: 0; padding: 0; }
 --%>
 <div id="page_header">
 	<div class="container_12">
-		<div class="grid_1"><a href="<%= request.getContextPath() %>/">Its me</a></div>
-		<% if (request.getSession(false) == null || request.getSession(false).getAttribute("authUser") == null) { %>
+		<div class="grid_1"><a href="<%=request.getContextPath()%>/">Its me</a></div>
+		<%
+			if (request.getSession(false) == null || request.getSession(false).getAttribute(AuthUser.class.getName()) == null) {
+		%>
 			<div class="grid_10">&nbsp;</div>
-			<div class="grid_1 align_right"><a href="<%= request.getContextPath() %>/login">Sign in</a></div>
-		<% } else { User user = (User)request.getSession(false).getAttribute("authUser"); %>
+			<div class="grid_1 align_right"><a href="<%=request.getContextPath()%>/login">Sign in</a></div>
+		<%
+			} else { AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		%>
 			<div class="grid_10">&nbsp;</div>
 			<div class="grid_1 align_right">
 				<ul class="dropdown">
 					<li><a href="#">Account</a>
 						<ul class="sub_menu">
-							<li><a href="<%= request.getContextPath() %>/show/<%=user.getId() %>">My page</a></li>
+							<li><a href="<%= request.getContextPath() %>/show/<%=authUser.getId() %>">My page</a></li>
 							<li><a href="<%= request.getContextPath() %>/edit">Settings</a></li>
 							<li><a href="<%= request.getContextPath() %>/logout">Sign out</a></li>
 						</ul>

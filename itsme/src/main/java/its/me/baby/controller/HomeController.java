@@ -1,6 +1,7 @@
 package its.me.baby.controller;
 
 import its.me.baby.dto.AuthUser;
+import its.me.baby.dto.UserProfile;
 import its.me.baby.mapper.UserMasterMapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,7 +98,7 @@ public class HomeController {
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public ModelAndView create(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
-System.out.println("authuser="+authUser.getEmail());
+
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("authUser", authUser);
@@ -115,8 +116,7 @@ System.out.println("authuser="+authUser.getEmail());
 		authUser.setId(userMasterMapper.newId());
 		userMasterMapper.createUser(authUser);
 
-		authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(authUser.getEmail(), authUser.getCryptoPassword());
-		request.getSession(true).setAttribute(AuthUser.class.getName(), authUser);
+		request.getSession(true).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
 
 		request.setAttribute("created", "true");
 

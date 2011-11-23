@@ -20,8 +20,6 @@ public class AuthUser {
 	@Length(min=8,max=32)
 	private String password = null;
 
-	private UserProfile profile = null;
-
 	public Integer getId() {
 		return id;
 	}
@@ -44,16 +42,16 @@ public class AuthUser {
 		this.password = password;
 	}
 
-	public UserProfile getProfile() {
-		return profile;
-	}
-	public void setProfile(UserProfile profile) {
-		this.profile = profile;
-	}
 	private Map<String, String> rejectValueMap = new HashMap<String, String>(0);
 
 	public Map<String, String> getRejectValueMap() {
 		return rejectValueMap;
+	}
+	
+	public UserProfile newProfile() {
+		UserProfile userProfile = new UserProfile();
+		userProfile.setId(id);
+		return userProfile;
 	}
 
 	public boolean validForCreating() {
@@ -76,15 +74,8 @@ public class AuthUser {
 		return (rejectValueMap.size() == 0);
 	}
 
-	public boolean validForEditingProfile() {
-		if (profile != null) {
-			if (profile.validForEditingProfile()) rejectValueMap = profile.getRejectValueMap();
-		}
-		return (rejectValueMap.size() == 0);
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", profile=" + profile + "]";
+		return "User [id=" + id + ", email=" + email + "]";
 	}
 }

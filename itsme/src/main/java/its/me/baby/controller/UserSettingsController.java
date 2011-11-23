@@ -2,6 +2,7 @@ package its.me.baby.controller;
 
 import its.me.baby.dto.AuthUser;
 import its.me.baby.dto.UserProfile;
+import its.me.baby.exception.IllegalRequestException;
 import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
 
@@ -50,41 +51,40 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "updateAccount", method = RequestMethod.POST)
-	public ModelAndView updateAccount(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
+	public ModelAndView updateAccount(
+			@Valid AuthUser accountUpdater, BindingResult result, HttpServletRequest request)
+					throws IllegalRequestException {
 
-		/* TODO
-		User authUser = (User)request.getSession(false).getAttribute("authUser");
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
-		*/
+		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		if (!authUser.getId().equals(accountUpdater.getId())) throw new IllegalRequestException();
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", authUser);
+			modelAndView.addObject("user", accountUpdater);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (!authUser.validForEditingAccount()) {
-			ModelAndView modelAndView = new ModelAndView();
-			Map<String, String> rejectValueMap = authUser.getRejectValueMap();
+		if (!accountUpdater.validForEditingAccount()) {
+			Map<String, String> rejectValueMap = accountUpdater.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
-			modelAndView.addObject("authUser", authUser);
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("authUser", accountUpdater);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (userMasterMapper.countUserByEmail(authUser.getEmail(), authUser.getId()) != 0) {
+		if (userMasterMapper.countUserByEmail(accountUpdater.getEmail(), accountUpdater.getId()) != 0) {
 			result.rejectValue("email", "error.email.exists");
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("authUser", accountUpdater);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
 
-		userMasterMapper.updateAccount(authUser.getId(), authUser.getEmail());
+		userMasterMapper.updateAccount(accountUpdater.getId(), accountUpdater.getEmail());
 
-		authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(authUser.getEmail(), authUser.getCryptoPassword());
-		request.getSession(false).setAttribute(AuthUser.class.getName(), authUser);
+		request.getSession(false).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
 
 		request.setAttribute("updated", "account");
 
@@ -95,29 +95,33 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "updatePassword", method = RequestMethod.POST)
-	public ModelAndView updatePassword(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
+	public ModelAndView updatePassword(
+			@Valid AuthUser passwordUpdater, BindingResult result, HttpServletRequest request)
+					throws IllegalRequestException {
 
+		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		if (!authUser.getId().equals(passwordUpdater.getId())) throw new IllegalRequestException();
+		
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("authUser", passwordUpdater);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (!authUser.validForEditingPassword()) {
-			ModelAndView modelAndView = new ModelAndView();
-			Map<String, String> rejectValueMap = authUser.getRejectValueMap();
+		if (!passwordUpdater.validForEditingPassword()) {
+			Map<String, String> rejectValueMap = passwordUpdater.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
-			modelAndView.addObject("authUser", authUser);
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("authUser", passwordUpdater);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
 
-		userMasterMapper.updatePassword(authUser.getId(), authUser.getCryptoPassword());
+		userMasterMapper.updatePassword(passwordUpdater.getId(), passwordUpdater.getCryptoPassword());
 
-		authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(authUser.getEmail(), authUser.getCryptoPassword());
-		request.getSession(false).setAttribute(AuthUser.class.getName(), authUser);
+		request.getSession(false).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
 
 		request.setAttribute("updated", "password");
 
@@ -128,29 +132,42 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "updateProfile", method = RequestMethod.POST)
-	public ModelAndView updateProfile(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
+	public ModelAndView updateProfile(
+			@Valid UserProfile userProfile, BindingResult result, HttpServletRequest request)
+					throws IllegalRequestException {
+
+		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		System.out.println("authid="+authUser.getId()+", reqid="+userProfile.getId());
+		if (!authUser.getId().equals(userProfile.getId())) throw new IllegalRequestException();
 
 		if (result.hasErrors()) {
+			/*
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("authUser", authUser);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
-		}
-		if (!authUser.validForEditingProfile()) {
+			*/
 			ModelAndView modelAndView = new ModelAndView();
-			Map<String, String> rejectValueMap = authUser.getRejectValueMap();
+			modelAndView.setViewName("forward:edit");
+			return modelAndView;
+		}
+		if (!userProfile.validForEditingProfile()) {
+			Map<String, String> rejectValueMap = userProfile.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
+			/*
+			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("authUser", authUser);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
+			*/
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("forward:edit");
+			return modelAndView;
 		}
 
-		userProfileMapper.updateUserProfile(authUser.getProfile());
-
-		authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(authUser.getEmail(), authUser.getCryptoPassword());
-		request.getSession(false).setAttribute(AuthUser.class.getName(), authUser);
+		userProfileMapper.updateUserProfile(userProfile);
 
 		request.setAttribute("updated", "profile");
 
@@ -161,11 +178,14 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
-	public ModelAndView disconnect(@RequestParam String provider, HttpServletRequest request) {
+	public ModelAndView disconnect(
+			@RequestParam Integer id, @RequestParam String provider, HttpServletRequest request)
+					throws IllegalRequestException {
 		
 		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		if (!authUser.getId().equals(id)) throw new IllegalRequestException();
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());
 		if (provider.equals("facebook")) {
 			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
@@ -187,7 +207,7 @@ public class UserSettingsController {
 		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
 
 		UserProfile userProfile = userProfileMapper.getUserProfileById(authUser.getId());
-		authUser.setProfile(userProfile);
+		if (userProfile == null) userProfile = authUser.newProfile();
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
 		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
@@ -195,6 +215,7 @@ public class UserSettingsController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("authUser", authUser);
+		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("facebookConnected", facebookConnected);
 		modelAndView.addObject("twitterConnected", twitterConnected);
 		modelAndView.setViewName("user/edit");
@@ -203,8 +224,14 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "delete", method = RequestMethod.POST)
-	public ModelAndView delete(@RequestParam Integer id) {
+	public ModelAndView delete(
+			@RequestParam Integer id, HttpServletRequest request)
+					throws IllegalRequestException {
 
+		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		if (!authUser.getId().equals(id)) throw new IllegalRequestException();
+
+		userProfileMapper.deleteProfile(id);
 		userMasterMapper.deleteUser(id);
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());

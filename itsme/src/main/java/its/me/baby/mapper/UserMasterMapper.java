@@ -8,6 +8,8 @@ public interface UserMasterMapper {
 
 	public int newId();
 
+	public AuthUser getAuthUserById(Integer id);
+
 	public AuthUser getAuthUserByEmailAndCryptoPassword(@Param("email") String email, @Param("cryptoPassword") String cryptoPassword);
 
 	public int countUserByEmail(@Param("email") String email, @Param("omittedId") Integer omittedId);

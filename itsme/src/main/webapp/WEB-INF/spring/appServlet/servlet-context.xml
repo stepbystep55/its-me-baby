@@ -33,6 +33,18 @@
 		<beans:property name="basename" value="messages" />
 	</beans:bean>
 
+	<!-- エラーページの設定-->
+	<!--
+	<beans:bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<beans:property name="exceptionMappings">
+			<beans:props>
+				<beans:prop key="java.lang.Throwable">error</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	-->
+
 	<beans:import resource="datasrc.xml" />
 	<beans:import resource="social.xml" />
 

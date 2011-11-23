@@ -52,9 +52,7 @@ public class UserPageController {
 	@RequestMapping(value = "stream/{id}", method={RequestMethod.GET})
 	public ModelAndView stream(@PathVariable Integer id) {
 
-		UserProfile user = userProfileMapper.getUserProfileById(id);
-
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());
 
 		List<Post> feedList = null;
 		List<StreamEntry> entryList = new ArrayList<StreamEntry>();

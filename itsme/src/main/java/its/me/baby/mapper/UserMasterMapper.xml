@@ -5,11 +5,20 @@
 	<resultMap id="authUser" type="its.me.baby.dto.AuthUser">
 		<id property="id" column="ID"/>
 		<result property="email" column="EMAIL"/>
-		<result property="cryptoPassword" column="CRYPTO_PASSWORD"/>
 	</resultMap>
 
 	<select id="newId" resultType="int">
 		SELECT SEQ_USER.NEXTVAL
+	</select>
+
+	<select id="getAuthUserById" parameterType="int" resultMap="authUser">
+		SELECT
+			ID,
+			EMAIL
+		FROM
+			USER_MASTER
+		WHERE
+			ID = #{id}
 	</select>
 
 	<select id="getAuthUserByEmailAndCryptoPassword" parameterType="map" resultMap="authUser">

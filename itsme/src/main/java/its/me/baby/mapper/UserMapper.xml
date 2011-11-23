@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="its.me.baby.mapper.UserMapper">
+	
+	<resultMap id="user" type="its.me.baby.dto.User">
+		<id property="id" column="ID"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cryptoPassword" column="CRYPTO_PASSWORD"/>
+		<result property="name" column="NAME"/>
+		<result property="nameFontColor" column="NAME_FONT_COLOR"/>
+		<result property="nameFontSize" column="NAME_FONT_SIZE"/>
+		<result property="title" column="TITLE"/>
+		<result property="titleFontColor" column="TITLE_FONT_COLOR"/>
+		<result property="titleFontSize" column="TITLE_FONT_SIZE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="contentFontColor" column="CONTENT_FONT_COLOR"/>
+		<result property="contentFontSize" column="CONTENT_FONT_SIZE"/>
+		<result property="profileBoxColor" column="PROFILE_BOX_COLOR"/>
+		<result property="profileBoxOpacity" column="PROFILE_BOX_OPACITY"/>
+		<result property="profileBoxPosition" column="PROFILE_BOX_POSITION"/>
+		<result property="bgImgUrl" column="BG_IMG_URL"/>
+		<result property="bgImgLayout" column="BG_IMG_LAYOUT"/>
+	</resultMap>
+	
+	<select id="newId" resultType="int">
+		SELECT SEQ_USER.NEXTVAL
+	</select>
+
+	<select id="getUserById" parameterType="Integer" resultMap="user">
+		SELECT
+			ID,
+			EMAIL,
+			NAME,
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
+		FROM
+			USER_MASTER
+		WHERE
+			ID = #{id}
+	</select>
+
+	<select id="getUserByEmailAndCryptoPassword" parameterType="map" resultMap="user">
+		SELECT
+			ID,
+			EMAIL,
+			NAME,
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
+		FROM
+			USER_MASTER
+		WHERE
+			EMAIL = #{email} AND CRYPTO_PASSWORD = #{cryptoPassword}
+	</select>
+
+	<select id="countUserByEmail" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			USER_MASTER
+		WHERE
+			EMAIL = #{email}
+		<if test="omittedId != null">
+			AND ID <![CDATA[ <> ]]> #{omittedId}
+		</if>
+	</select>
+
+	<select id="list" resultMap="user">
+		SELECT
+			ID,
+			EMAIL,
+			NAME,
+			PROFILE
+		FROM
+			USER_MASTER
+	</select>
+
+	<insert id="saveUser" parameterType="its.me.baby.dto.User">
+		INSERT INTO USER_MASTER
+		(
+			ID,
+			EMAIL,
+			CRYPTO_PASSWORD,
+			NAME,
+			NAME_FONT_COLOR,
+			NAME_FONT_SIZE,
+			TITLE,
+			TITLE_FONT_COLOR,
+			TITLE_FONT_SIZE,
+			CONTENT,
+			CONTENT_FONT_COLOR,
+			CONTENT_FONT_SIZE,
+			PROFILE_BOX_COLOR,
+			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_POSITION,
+			BG_IMG_URL,
+			BG_IMG_LAYOUT
+		)
+		VALUES
+		(
+			#{id},
+			#{email},
+			#{cryptoPassword},
+			#{name},
+			#{nameFontColor},
+			#{nameFontSize},
+			#{title},
+			#{titleFontColor},
+			#{titleFontSize},
+			#{content},
+			#{contentFontColor},
+			#{contentFontSize},
+			#{profileBoxColor},
+			#{profileBoxOpacity},
+			#{profileBoxPosition},
+			#{bgImgUrl},
+			#{bgImgLayout}
+		)
+	</insert>
+
+	<update id="updateAccount" parameterType="map">
+		UPDATE USER_MASTER
+			SET
+				EMAIL = #{email}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<update id="updatePassword" parameterType="map">
+		UPDATE USER_MASTER
+			SET
+				CRYPTO_PASSWORD = #{cryptoPassword}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<update id="updateProfile" parameterType="its.me.baby.dto.User">
+		UPDATE USER_MASTER
+			SET
+				NAME = #{name},
+				NAME_FONT_COLOR = #{nameFontColor},
+				NAME_FONT_SIZE = #{nameFontSize},
+				TITLE = #{title},
+				TITLE_FONT_COLOR = #{titleColor},
+				TITLE_FONT_SIZE = #{titleSize},
+				CONTENT = #{content},
+				CONTENT_FONT_COLOR = #{contentFontColor},
+				CONTENT_FONT_SIZE = #{contentFontSize},
+				PROFILE_BOX_COLOR = #{profileBoxColor},
+				PROFILE_BOX_OPACITY = #{profileBoxOpacity},
+				PROFILE_BOX_POSITION = #{profileBoxPosition},
+				BG_IMG_URL = #{bgImgUrl},
+				BG_IMG_LAYOUT = #{bgImgLayout}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM 
+			USER_MASTER
+		WHERE 
+			ID = #{id}
+	</delete>
+</mapper>

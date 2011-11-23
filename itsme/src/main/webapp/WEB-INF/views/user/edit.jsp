@@ -52,41 +52,41 @@
 
 		<div class="clear"></div>
 		<div id="form_profile" style="display:none;">
-			<form:form modelAttribute="authUser" action="updateProfile" method="post">
+			<form:form modelAttribute="userProfile" action="updateProfile" method="post">
 			<form:hidden path="id" />
 			<div class="grid_5 form_label align_right">
-				<label for="profile.name">Name</label>
+				<label for="name">Name</label>
 			</div>
 			<div class="grid_5 form_input_stretch">
-				<form:input path="profile.name" maxlength="32" />&nbsp;
+				<form:input path="name" maxlength="32" />&nbsp;
 			</div>
 			<div class="grid_6">
-				<spring:hasBindErrors name="authUser"><form:errors path="profile.name" cssStyle="color:red" /></spring:hasBindErrors>
+				<spring:hasBindErrors name="userProfile"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profile.nameFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
-				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="profile.nameFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="nameFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="nameFontSize" size="3" maxlength="3" />
 			</div>
 
 			<div class="clear"></div>
 			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
-				<label for="profile.title">Title</label>
+				<label for="title">Title</label>
 			</div>
 			<div class="grid_5  form_input_stretch">
-				<form:input path="profile.title" maxlength="128" />&nbsp;
+				<form:input path="title" maxlength="128" />&nbsp;
 			</div>
 			<div class="grid_6">
-				<spring:hasBindErrors name="authUser"><form:errors path="profile.title" cssStyle="color:red" /></spring:hasBindErrors>
+				<spring:hasBindErrors name="userProfile"><form:errors path="title" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profile.titleFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
-				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="profile.titleFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="titleFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="titleFontSize" size="3" maxlength="3" />
 			</div>
 
 			<div class="clear"></div>
@@ -96,16 +96,16 @@
 				<label for="content">Content</label>
 			</div>
 			<div class="grid_5 form_input_stretch">
-				<form:textarea path="profile.content" rows="5" />&nbsp;
+				<form:textarea path="content" rows="5" />&nbsp;
 			</div>
 			<div class="grid_6">
-				<spring:hasBindErrors name="authUser"><form:errors path="profile.content" cssStyle="color:red" /></spring:hasBindErrors>
+				<spring:hasBindErrors name="userProfile"><form:errors path="content" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profile.contentFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
-				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="profile.contentFontSize" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="contentFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Font size</span>&nbsp;<form:input path="contentFontSize" size="3" maxlength="3" />
 			</div>
 
 			<div class="clear"></div>
@@ -115,10 +115,10 @@
 				<label>Profile Box</label>
 			</div>
 			<div class="grid_11">
-				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profile.profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
-				<span class="form_sublabel">Opacity</span>&nbsp;<form:input path="profile.profileBoxOpacity" size="3" maxlength="3" />
+				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
+				<span class="form_sublabel">Opacity</span>&nbsp;<form:input path="profileBoxOpacity" size="3" maxlength="3" />
 				<span class="form_sublabel">Position</span>&nbsp;
-				<form:select path="profile.profileBoxPosition">
+				<form:select path="profileBoxPosition">
 					<form:option value="left"/>
 					<form:option value="right"/>
 					<form:option value="center"/>
@@ -132,15 +132,15 @@
 				<label>Background</label>
 			</div>
 			<div class="grid_5  form_input_stretch">
-				<form:input path="profile.bgImgUrl" maxlength="512" />&nbsp;
+				<form:input path="bgImgUrl" maxlength="512" />&nbsp;
 			</div>
 			<div class="grid_6">
-				<spring:hasBindErrors name="authUser"><form:errors path="profile.bgImgUrl" cssStyle="color:red" /></spring:hasBindErrors>
+				<spring:hasBindErrors name="authUser"><form:errors path="bgImgUrl" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
-				<form:select path="profile.bgImgLayout">
+				<form:select path="bgImgLayout">
 					<form:option value="center"/>
 					<form:option value="tile"/>
 					<form:option value="stretch"/>
@@ -166,10 +166,11 @@
 			<div class="grid_3 form_button">
 				<c:choose>
 				<c:when test="${facebookConnected}">
-				<form action="disconnect" method="POST">
-					<input type="submit" value="disconnect" />
+				<form:form id="socialUpdater" modelAttribute="authUser" action="disconnect" method="POST">
+					<form:hidden path="id" />
 					<input type="hidden" name="provider" value="facebook" />
-				</form>
+					<input type="submit" value="disconnect" />
+				</form:form>
 				</c:when>
 				<c:otherwise>
 				<form action="<c:url value="/signin/facebook" />" method="POST">
@@ -186,10 +187,11 @@
 			<div class="grid_3 form_button">
 				<c:choose>
 				<c:when test="${twitterConnected}">
-				<form action="disconnect" method="POST">
-					<input type="submit" value="disconnect" />
+				<form:form id="socialUpdater" modelAttribute="authUser" action="disconnect" method="POST">
+					<form:hidden path="id" />
 					<input type="hidden" name="provider" value="twitter" />
-				</form>
+					<input type="submit" value="disconnect" />
+				</form:form>
 				</c:when>
 				<c:otherwise>
 				<form action="<c:url value="/signin/twitter" />" method="POST">
@@ -203,7 +205,7 @@
 
 		<div class="clear"></div>
 		<div id="form_account">
-			<form:form modelAttribute="authUser" action="updateAccount" method="post">
+			<form:form id="accountUpdater" modelAttribute="authUser" action="updateAccount" method="post">
 			<form:hidden path="id" />
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
@@ -244,7 +246,7 @@
 
 		<div class="clear"></div>
 		<div id="form_password" style="display:none;">
-			<form:form modelAttribute="authUser" action="updatePassword" method="post">
+			<form:form id="passwordUpdater" modelAttribute="authUser" action="updatePassword" method="post">
 			<form:hidden path="id" />
 			<div class="grid_5 form_label align_right">
 				<label for="password">Password</label>

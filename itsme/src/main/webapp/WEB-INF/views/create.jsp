@@ -17,7 +17,7 @@
 <body>
 <jsp:include page="_body_header.jsp"/>
 
-<form:form modelAttribute="authUser" action="create" method="post">
+<form:form modelAttribute="user" action="create" method="post">
 <div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">
@@ -34,7 +34,7 @@
 			<form:input path="email" maxlength="128"/>
 		</div>
 		<div class="grid_6">
-			<spring:hasBindErrors name="authUser"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
+			<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
 		</div>
 
 		<div class="clear"></div>
@@ -45,7 +45,7 @@
 			<form:password path="password" maxlength="32" />
 		</div>
 		<div class="grid_6">
-			<spring:hasBindErrors name="authUser"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
+			<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
 		</div>
 
 		<div class="clear"></div>
@@ -87,7 +87,7 @@
 <!--
 $(function(){
 	// validate signup form on keyup and submit
-	$("#authUser").validate({
+	$("#user").validate({
 		rules: {
 			name: {
 				required: true,

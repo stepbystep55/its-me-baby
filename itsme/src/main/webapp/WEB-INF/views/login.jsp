@@ -17,7 +17,7 @@
 <body>
 <jsp:include page="_body_header.jsp"/>
 
-<form:form modelAttribute="userGetter" action="login" method="post">
+<form:form modelAttribute="user" action="login" method="post">
 <div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">
@@ -89,7 +89,7 @@
 <!--
 $(function(){
 	// validate signup form on keyup and submit
-	$("#userGetter").validate({
+	$("#user").validate({
 		rules: {
 			password: { required: true },
 			email: { required: true },

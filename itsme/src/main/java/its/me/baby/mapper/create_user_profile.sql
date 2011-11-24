@@ -1,5 +1,5 @@
 CREATE TABLE USER_PROFILE (
-	ID Integer not null,
+	USER_ID Integer not null,
 	NAME varchar(32) not null,
 	NAME_FONT_COLOR varchar(8) not null,
 	NAME_FONT_SIZE Integer not null,
@@ -14,5 +14,5 @@ CREATE TABLE USER_PROFILE (
 	PROFILE_BOX_POSITION varchar(8) not null,
 	BG_IMG_URL varchar(512),
 	BG_IMG_LAYOUT varchar(8),
-	primary key (ID),
-	FOREIGN KEY (ID) REFERENCES USER_MASTER(ID));
+	primary key (USER_ID),
+	FOREIGN KEY (USER_ID) REFERENCES USER_MASTER(ID));

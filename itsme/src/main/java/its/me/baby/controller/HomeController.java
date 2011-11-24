@@ -1,6 +1,6 @@
 package its.me.baby.controller;
 
-import its.me.baby.dto.AuthUser;
+import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
 import its.me.baby.mapper.UserMasterMapper;
 
@@ -42,31 +42,31 @@ public class HomeController {
 	public ModelAndView login() {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("authUser", new AuthUser());
+		modelAndView.addObject("user", new User());
 		modelAndView.setViewName("login");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "login", method= RequestMethod.POST)
-	public ModelAndView login(@Valid AuthUser userGetter, BindingResult result, HttpServletRequest request) {
+	public ModelAndView login(@Valid User user, BindingResult result, HttpServletRequest request) {
 	
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userGetter", new AuthUser());
+		modelAndView.addObject("user", new User());
 			modelAndView.setViewName("login");
 			return modelAndView;
 		}
-		AuthUser authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(userGetter.getEmail(), userGetter.getCryptoPassword());
+		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
 		if (authUser == null) {
 			ModelAndView modelAndView = new ModelAndView();
 			result.rejectValue("email", "error.login.failed");
-			modelAndView.addObject("userGetter", userGetter);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("login");
 			return modelAndView;
 		}
 
-		request.getSession(true).setAttribute(AuthUser.class.getName(), authUser);
+		request.getSession(true).setAttribute(User.SESSION_KEY_AUTH, authUser);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("forward:edit");
@@ -90,33 +90,34 @@ public class HomeController {
 	public ModelAndView create(HttpServletRequest request) {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("authUser", new AuthUser());
+		modelAndView.addObject("user", new User());
 		modelAndView.setViewName("create");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public ModelAndView create(@Valid AuthUser authUser, BindingResult result, HttpServletRequest request) {
+	public ModelAndView create(@Valid User user, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("create");
 			return modelAndView;
 		}
-		if (userMasterMapper.countUserByEmail(authUser.getEmail(), null) != 0) {
+		if (userMasterMapper.countUserByEmail(user.getEmail(), null) != 0) {
 			result.rejectValue("email", "error.email.exists");
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("create");
 			return modelAndView;
 		}
 
-		authUser.setId(userMasterMapper.newId());
-		userMasterMapper.createUser(authUser);
+		user.setId(userMasterMapper.newId());
+		userMasterMapper.createUser(user);
 
-		request.getSession(true).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
+		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
+		request.getSession(true).setAttribute(User.SESSION_KEY_AUTH, authUser);
 
 		request.setAttribute("created", "true");
 

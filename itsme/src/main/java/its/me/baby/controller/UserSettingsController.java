@@ -1,6 +1,6 @@
 package its.me.baby.controller;
 
-import its.me.baby.dto.AuthUser;
+import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.IllegalRequestException;
 import its.me.baby.mapper.UserMasterMapper;
@@ -50,41 +50,39 @@ public class UserSettingsController {
 */
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "updateAccount", method = RequestMethod.POST)
-	public ModelAndView updateAccount(
-			@Valid AuthUser accountUpdater, BindingResult result, HttpServletRequest request)
-					throws IllegalRequestException {
+	@RequestMapping(value = "update", params = {"updateAccount"}, method = RequestMethod.POST)
+	public ModelAndView updateAccount(@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
-		if (!authUser.getId().equals(accountUpdater.getId())) throw new IllegalRequestException();
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", accountUpdater);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (!accountUpdater.validForEditingAccount()) {
-			Map<String, String> rejectValueMap = accountUpdater.getRejectValueMap();
+		if (!user.validForEditingAccount()) {
+			Map<String, String> rejectValueMap = user.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", accountUpdater);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (userMasterMapper.countUserByEmail(accountUpdater.getEmail(), accountUpdater.getId()) != 0) {
+		if (userMasterMapper.countUserByEmail(user.getEmail(), user.getId()) != 0) {
 			result.rejectValue("email", "error.email.exists");
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", accountUpdater);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
 
-		userMasterMapper.updateAccount(accountUpdater.getId(), accountUpdater.getEmail());
+		userMasterMapper.updateAccount(user.getId(), user.getEmail());
 
-		request.getSession(false).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
+		request.getSession(false).setAttribute(User.SESSION_KEY_AUTH, userMasterMapper.getAuthUserById(user.getId()));
 
 		request.setAttribute("updated", "account");
 
@@ -94,34 +92,32 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "updatePassword", method = RequestMethod.POST)
-	public ModelAndView updatePassword(
-			@Valid AuthUser passwordUpdater, BindingResult result, HttpServletRequest request)
-					throws IllegalRequestException {
+	@RequestMapping(value = "update", params = {"updatePassword"}, method = RequestMethod.POST)
+	public ModelAndView updatePassword(@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
-		if (!authUser.getId().equals(passwordUpdater.getId())) throw new IllegalRequestException();
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 		
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", passwordUpdater);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-		if (!passwordUpdater.validForEditingPassword()) {
-			Map<String, String> rejectValueMap = passwordUpdater.getRejectValueMap();
+		if (!user.validForEditingPassword()) {
+			Map<String, String> rejectValueMap = user.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", passwordUpdater);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
 
-		userMasterMapper.updatePassword(passwordUpdater.getId(), passwordUpdater.getCryptoPassword());
+		userMasterMapper.updatePassword(user.getId(), user.getCryptoPassword());
 
-		request.getSession(false).setAttribute(AuthUser.class.getName(), userMasterMapper.getAuthUserById(authUser.getId()));
+		request.getSession(false).setAttribute(User.SESSION_KEY_AUTH, userMasterMapper.getAuthUserById(user.getId()));
 
 		request.setAttribute("updated", "password");
 
@@ -131,39 +127,28 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "updateProfile", method = RequestMethod.POST)
-	public ModelAndView updateProfile(
-			@Valid UserProfile userProfile, BindingResult result, HttpServletRequest request)
-					throws IllegalRequestException {
+	@RequestMapping(value = "update", params = {"updateProfile"}, method = RequestMethod.POST)
+	public ModelAndView updateProfile(@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
-		System.out.println("authid="+authUser.getId()+", reqid="+userProfile.getId());
-		if (!authUser.getId().equals(userProfile.getId())) throw new IllegalRequestException();
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
 		if (result.hasErrors()) {
-			/*
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
-			*/
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("forward:edit");
-			return modelAndView;
 		}
+
+		UserProfile userProfile = user.getUserProfile();
 		if (!userProfile.validForEditingProfile()) {
 			Map<String, String> rejectValueMap = userProfile.getRejectValueMap();
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
-			/*
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("authUser", authUser);
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
-			return modelAndView;
-			*/
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("forward:edit");
 			return modelAndView;
 		}
 
@@ -177,19 +162,40 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
-	public ModelAndView disconnect(
-			@RequestParam Integer id, @RequestParam String provider, HttpServletRequest request)
-					throws IllegalRequestException {
-		
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
-		if (!authUser.getId().equals(id)) throw new IllegalRequestException();
+	@RequestMapping(value = "update", params = {"connectFacebook", "connectTwitter"}, method = RequestMethod.POST)
+	public ModelAndView connect(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
+	
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());
-		if (provider.equals("facebook")) {
+		boolean connectFacebook = (request.getAttribute("connectFacebook") != null);
+		boolean connectTwitter = (request.getAttribute("connectTwitter") != null);
+
+		ModelAndView modelAndView = new ModelAndView();
+		if (connectFacebook) {
+			modelAndView.setViewName("forward:signin/facebook");
+		} else if (connectTwitter) {
+			modelAndView.setViewName("forward:signin/twitter");
+		}
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "update", params = {"disconnectFacebook", "disconnectTwitter"}, method = RequestMethod.POST)
+	public ModelAndView disconnect(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
+		
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
+
+		boolean disconnectFacebook = (request.getAttribute("disconnectFacebook") != null);
+		boolean disconnectTwitter = (request.getAttribute("disconnectTwitter") != null);
+
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
+		if (disconnectFacebook) {
 			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
-		} else if (provider.equals("twitter")) {
+		}
+		if (disconnectTwitter) {
 			Connection connection = connectionRepository.findPrimaryConnection(Twitter.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		}
@@ -204,18 +210,16 @@ public class UserSettingsController {
 	@RequestMapping(value = "edit", method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView edit(HttpServletRequest request) {
 
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 
-		UserProfile userProfile = userProfileMapper.getUserProfileById(authUser.getId());
-		if (userProfile == null) userProfile = authUser.newProfile();
+		User user = userMasterMapper.getUserById(authUser.getId());
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
 		boolean twitterConnected = (connectionRepository.findPrimaryConnection(Twitter.class) != null) ? true : false;
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("authUser", authUser);
-		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("user", user);
 		modelAndView.addObject("facebookConnected", facebookConnected);
 		modelAndView.addObject("twitterConnected", twitterConnected);
 		modelAndView.setViewName("user/edit");
@@ -223,18 +227,16 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "delete", method = RequestMethod.POST)
-	public ModelAndView delete(
-			@RequestParam Integer id, HttpServletRequest request)
-					throws IllegalRequestException {
+	@RequestMapping(value = "update", params = {"delete"}, method = RequestMethod.POST)
+	public ModelAndView delete(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
 
-		AuthUser authUser = (AuthUser)request.getSession(false).getAttribute(AuthUser.class.getName());
-		if (!authUser.getId().equals(id)) throw new IllegalRequestException();
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
-		userProfileMapper.deleteProfile(id);
-		userMasterMapper.deleteUser(id);
+		userProfileMapper.deleteProfile(user.getId());
+		userMasterMapper.deleteUser(user.getId());
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(id.toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 		if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		connection = connectionRepository.findPrimaryConnection(Twitter.class);

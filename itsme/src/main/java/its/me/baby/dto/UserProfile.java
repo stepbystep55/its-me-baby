@@ -18,7 +18,7 @@ public class UserProfile {
 	public static final String PROFILE_BOX_POSITION_LEFT = "left";
 	public static final String PROFILE_BOX_POSITION_RIGHT = "right";
 
-	private Integer id = null;
+	private Integer userId = null;
 
 	@Length(min=3,max=32)
 	private String name = null;
@@ -63,11 +63,11 @@ public class UserProfile {
 	@Length(max=512)
 	private String bgImgLayout = BG_IMG_LAYOUT_CENTER;
 
-	public Integer getId() {
-		return id;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	public String getName() {
 		return name;
@@ -157,7 +157,7 @@ public class UserProfile {
 	}
 	@Override
 	public String toString() {
-		return "UserProfile [id=" + id + ", name=" + name + "]";
+		return "UserProfile [id=" + userId + ", name=" + name + "]";
 	}
 
 	private Map<String, String> rejectValueMap = new HashMap<String, String>(0);

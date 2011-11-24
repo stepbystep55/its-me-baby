@@ -1,6 +1,6 @@
 package its.me.baby.social;
 
-import its.me.baby.dto.AuthUser;
+import its.me.baby.dto.User;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
@@ -13,8 +13,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 public final class ItsmeConnectionSignUp implements ConnectionSignUp {
 
 	public String execute(Connection<?> connection) {
-		AuthUser authUser = (AuthUser)RequestContextHolder.getRequestAttributes().getAttribute(AuthUser.class.getName(), RequestAttributes.SCOPE_SESSION);
-		return authUser.getId().toString();
+		User user = (User)RequestContextHolder.getRequestAttributes().getAttribute(User.SESSION_KEY_AUTH, RequestAttributes.SCOPE_SESSION);
+		return user.getId().toString();
 		//return connection.getKey().getProviderUserId();
 	}
 

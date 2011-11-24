@@ -3,7 +3,7 @@
 <mapper namespace="its.me.baby.mapper.UserProfileMapper">
 	
 	<resultMap id="userProfile" type="its.me.baby.dto.UserProfile">
-		<id property="id" column="ID"/>
+		<id property="userId" column="USER_ID"/>
 		<result property="name" column="NAME"/>
 		<result property="nameFontColor" column="NAME_FONT_COLOR"/>
 		<result property="nameFontSize" column="NAME_FONT_SIZE"/>
@@ -22,7 +22,7 @@
 
 	<select id="getUserProfileById" parameterType="Integer" resultMap="userProfile">
 		SELECT
-			ID,
+			USER_ID,
 			NAME,
 			NAME_FONT_COLOR,
 			NAME_FONT_SIZE,
@@ -40,13 +40,13 @@
 		FROM
 			USER_PROFILE
 		WHERE
-			ID = #{id}
+			USER_ID = #{userId}
 	</select>
 
 	<insert id="createUserProfile" parameterType="its.me.baby.dto.UserProfile">
 		INSERT INTO USER_PROFILE
 		(
-			ID,
+			USER_ID,
 			NAME,
 			NAME_FONT_COLOR,
 			NAME_FONT_SIZE,
@@ -64,7 +64,7 @@
 		)
 		VALUES
 		(
-			#{id},
+			#{userId},
 			#{name},
 			#{nameFontColor},
 			#{nameFontSize},
@@ -100,13 +100,13 @@
 				BG_IMG_URL = #{bgImgUrl},
 				BG_IMG_LAYOUT = #{bgImgLayout}
 			WHERE
-				ID = #{id}
+				USER_ID = #{userId}
 	</update>
 
 	<delete id="deleteProfile" parameterType="Integer">
 		DELETE FROM 
 			USER_PROFILE
 		WHERE 
-			ID = #{id}
+			USER_ID = #{userId}
 	</delete>
 </mapper>

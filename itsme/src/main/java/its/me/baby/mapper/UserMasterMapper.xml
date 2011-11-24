@@ -2,16 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="its.me.baby.mapper.UserMasterMapper">
 	
-	<resultMap id="authUser" type="its.me.baby.dto.AuthUser">
+	<resultMap id="user" type="its.me.baby.dto.User">
 		<id property="id" column="ID"/>
 		<result property="email" column="EMAIL"/>
+		<association property="profile" javaType="its.me.baby.dto.UserProfile">
+			<result property="userId" column="ID"/>
+			<result property="name" column="NAME"/>
+			<result property="nameFontColor" column="NAME_FONT_COLOR"/>
+			<result property="nameFontSize" column="NAME_FONT_SIZE"/>
+			<result property="title" column="TITLE"/>
+			<result property="titleFontColor" column="TITLE_FONT_COLOR"/>
+			<result property="titleFontSize" column="TITLE_FONT_SIZE"/>
+			<result property="content" column="CONTENT"/>
+			<result property="contentFontColor" column="CONTENT_FONT_COLOR"/>
+			<result property="contentFontSize" column="CONTENT_FONT_SIZE"/>
+			<result property="profileBoxColor" column="PROFILE_BOX_COLOR"/>
+			<result property="profileBoxOpacity" column="PROFILE_BOX_OPACITY"/>
+			<result property="profileBoxPosition" column="PROFILE_BOX_POSITION"/>
+			<result property="bgImgUrl" column="BG_IMG_URL"/>
+			<result property="bgImgLayout" column="BG_IMG_LAYOUT"/>
+		</association>
 	</resultMap>
 
 	<select id="newId" resultType="int">
 		SELECT SEQ_USER.NEXTVAL
 	</select>
 
-	<select id="getAuthUserById" parameterType="int" resultMap="authUser">
+	<select id="getUserById" parameterType="int" resultMap="user">
+		SELECT
+			UM.ID,
+			UM.EMAIL,
+			UP.NAME,
+			UP.NAME_FONT_COLOR,
+			UP.NAME_FONT_SIZE,
+			UP.TITLE,
+			UP.TITLE_FONT_COLOR,
+			UP.TITLE_FONT_SIZE,
+			UP.CONTENT,
+			UP.CONTENT_FONT_COLOR,
+			UP.CONTENT_FONT_SIZE,
+			UP.PROFILE_BOX_COLOR,
+			UP.PROFILE_BOX_OPACITY,
+			UP.PROFILE_BOX_POSITION,
+			UP.BG_IMG_URL,
+			UP.BG_IMG_LAYOUT
+		FROM
+			USER_MASTER UM, USER_PROFILE UP
+		WHERE
+			UM.ID = #{id}
+			AND UM.ID = UP.USER_ID
+	</select>
+
+	<select id="getAuthUserById" parameterType="int" resultMap="user">
 		SELECT
 			ID,
 			EMAIL
@@ -21,7 +63,7 @@
 			ID = #{id}
 	</select>
 
-	<select id="getAuthUserByEmailAndCryptoPassword" parameterType="map" resultMap="authUser">
+	<select id="getAuthUserByEmailAndCryptoPassword" parameterType="map" resultMap="user">
 		SELECT
 			ID,
 			EMAIL
@@ -43,7 +85,7 @@
 		</if>
 	</select>
 
-	<insert id="createUser" parameterType="its.me.baby.dto.AuthUser">
+	<insert id="createUser" parameterType="its.me.baby.dto.User">
 		INSERT INTO USER_MASTER
 		(
 			ID,

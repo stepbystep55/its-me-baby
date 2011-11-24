@@ -9,7 +9,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
 
-public class AuthUser {
+public class User {
+
+	public static final String SESSION_KEY_AUTH = "authUser";
 
 	private Integer id = null;
 
@@ -19,6 +21,12 @@ public class AuthUser {
 
 	@Length(min=8,max=32)
 	private String password = null;
+
+	private boolean facebookConnected = false;
+
+	private boolean twitterConnected = false;
+
+	private UserProfile userProfile = new UserProfile();
 
 	public Integer getId() {
 		return id;
@@ -42,18 +50,41 @@ public class AuthUser {
 		this.password = password;
 	}
 
+	public boolean getFacebookConnected() {
+		return facebookConnected;
+	}
+	public void setFacebookConnected(boolean facebookConnected) {
+		this.facebookConnected = facebookConnected;
+	}
+	public boolean getTwitterConnected() {
+		return twitterConnected;
+	}
+	public void setTwitterConnected(boolean twitterConnected) {
+		this.twitterConnected = twitterConnected;
+	}
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+	
+	/**
+	 * ログインユーザ識別用ユーザオブジェクトを返す。
+	 */
+	public User getAuthUser() {
+		User authUser = new User();
+		authUser.setId(id);
+		authUser.setEmail(email);
+		return authUser;
+	}
+
 	private Map<String, String> rejectValueMap = new HashMap<String, String>(0);
 
 	public Map<String, String> getRejectValueMap() {
 		return rejectValueMap;
 	}
 	
-	public UserProfile newProfile() {
-		UserProfile userProfile = new UserProfile();
-		userProfile.setId(id);
-		return userProfile;
-	}
-
 	public boolean validForCreating() {
 		if (email == null) rejectValueMap.put("email", "org.hibernate.validator.constraints.NotEmpty.message");
 		if (password == null) rejectValueMap.put("password", "org.hibernate.validator.constraints.NotEmpty.message");
@@ -76,6 +107,6 @@ public class AuthUser {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + "]";
+		return "User [id=" + id + ", email=" + email + ", profile=" + userProfile + "]";
 	}
 }

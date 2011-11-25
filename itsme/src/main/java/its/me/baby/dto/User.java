@@ -5,6 +5,8 @@ import its.me.baby.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -19,7 +21,8 @@ public class User {
 	@Length(max=128)
 	private String email = null;
 
-	@Length(min=8,max=32)
+	//@Length(min=8,max=32)
+	@Pattern(regexp=".{0}|.{8,32}")
 	private String password = null;
 
 	private boolean facebookConnected = false;

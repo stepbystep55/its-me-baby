@@ -63,6 +63,8 @@
 			</div>
 			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
+				a<spring:hasBindErrors name="userProfile"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
+				b<spring:hasBindErrors name="user.userProfile"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
@@ -169,7 +171,7 @@
 					<input type="submit" name="disconnectFacebook" value="disconnect" />
 				</c:when>
 				<c:otherwise>
-					<input type="button" value="connectFacebook" onclick="$('#facebookConnectForm').submit();" />
+					<input type="button" name="connectFacebook" value="connect" onclick="$('#facebookConnectForm').submit();" />
 				</c:otherwise>
 				</c:choose>
 			</div>

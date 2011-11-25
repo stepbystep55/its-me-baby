@@ -26,7 +26,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 		} else if (handler instanceof UserSettingsController) {
 			HttpSession session = request.getSession(false);
-			if ((session == null) || (session.getAttribute(User.class.getName()) == null)) {
+			if ((session == null) || (session.getAttribute(User.SESSION_KEY_AUTH) == null)) {
 				logger.info("Access without session: " + request.getRequestURI());
 				new RedirectView("/login", true).render(null, request, response);
 				return false;

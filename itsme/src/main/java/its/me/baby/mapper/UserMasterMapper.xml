@@ -5,7 +5,7 @@
 	<resultMap id="user" type="its.me.baby.dto.User">
 		<id property="id" column="ID"/>
 		<result property="email" column="EMAIL"/>
-		<association property="profile" javaType="its.me.baby.dto.UserProfile">
+		<association property="userProfile" javaType="its.me.baby.dto.UserProfile">
 			<result property="userId" column="ID"/>
 			<result property="name" column="NAME"/>
 			<result property="nameFontColor" column="NAME_FONT_COLOR"/>
@@ -47,8 +47,8 @@
 			UP.BG_IMG_URL,
 			UP.BG_IMG_LAYOUT
 		FROM
-			USER_MASTER UM, USER_PROFILE UP
-		WHERE
+			USER_MASTER UM LEFT OUTER JOIN USER_PROFILE UP
+		ON
 			UM.ID = #{id}
 			AND UM.ID = UP.USER_ID
 	</select>

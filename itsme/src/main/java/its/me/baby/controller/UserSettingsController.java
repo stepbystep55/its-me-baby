@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hibernate.validator.HibernateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -129,17 +129,17 @@ public class UserSettingsController {
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "update", params = {"updateProfile"}, method = RequestMethod.POST)
 	public ModelAndView updateProfile(@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
-System.out.println("updateProfile");
+
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
 		if (result.hasErrors()) {
-System.out.println("result="+result);
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
+		
 
 		UserProfile userProfile = user.getUserProfile();
 		if (!userProfile.validForEditingProfile()) {
@@ -147,14 +147,12 @@ System.out.println("result="+result);
 			for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
 				result.rejectValue(entry.getKey(), entry.getValue());
 			}
-System.out.println("result="+result);
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("user", user);
 			modelAndView.setViewName("user/edit");
 			return modelAndView;
 		}
-
-		userProfileMapper.updateUserProfile(userProfile);
+		userProfileMapper.mergeUserProfile(userProfile);
 
 		request.setAttribute("updated", "profile");
 
@@ -215,7 +213,6 @@ System.out.println("result="+result);
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 
 		User user = userMasterMapper.getUserById(authUser.getId());
-System.out.println("user="+user);
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
 		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
 		boolean twitterConnected = (connectionRepository.findPrimaryConnection(Twitter.class) != null) ? true : false;

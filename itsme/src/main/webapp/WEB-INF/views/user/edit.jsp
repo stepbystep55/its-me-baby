@@ -11,6 +11,7 @@
 	<style type="text/css">
 <!--
 .error { color: red; }
+#feed_message { width: 100%; position: absolute; margin: 15px auto; text-align: center; z-index: 99; }
 // -->
 	</style>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />
@@ -18,19 +19,16 @@
 <body>
 <jsp:include page="../_body_header.jsp"/>
 
+<div id="feed_message">
+	<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>
+	<c:if test="${updated != null}"><span class="confirm"><spring:message code="result.updated" /></span></c:if>
+</div>
+
 <div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">
 			<div id="page_title" style="text-align:center;">Settings</div>
 		</div>
-
-		<div class="clear"></div>
-		<div class="grid_16 align_center">
-			<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>
-			<c:if test="${updated != null}"><span class="confirm"><spring:message code="result.updated" /></span></c:if>
-		</div>
-		<div class="clear"></div>
-		<div class="grid_16">&nbsp;</div>
 
 		<div class="clear"></div>
 		<div class="grid_4">&nbsp;</div>
@@ -52,6 +50,7 @@
 
 		<form:form modelAttribute="user" action="update" method="post">
 		<form:hidden path="id" />
+		<form:hidden path="userProfile.userId" />
 
 		<div class="clear"></div>
 		<div id="form_profile" style="display:none;">
@@ -63,8 +62,6 @@
 			</div>
 			<div class="grid_6">
 				<spring:hasBindErrors name="user"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
-				a<spring:hasBindErrors name="userProfile"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
-				b<spring:hasBindErrors name="user.userProfile"><form:errors path="userProfile.name" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
@@ -333,7 +330,7 @@ $(function(){
 	});
 	*/
 	// 
-	if($('.confirm')!=null) $('.confirm').fadeOut(3000);
+	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
 	// choose tab
 	<c:choose>
 		<c:when test="${updated == 'account'}">activateAccountTab();</c:when>

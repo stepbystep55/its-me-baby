@@ -20,8 +20,8 @@ public class UserProfile {
 
 	private Integer userId = null;
 
-	//@Length(min=3,max=32) this annotation doesn't allow an empty string.
-	@Pattern(regexp=".{0}|.{3,6}")
+	//@Length(min=3,max=32)
+	@Pattern(regexp=".{0}|.{3,32}")
 	private String name = null;
 
 	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")

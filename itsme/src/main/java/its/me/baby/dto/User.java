@@ -29,8 +29,6 @@ public class User {
 
 	private boolean twitterConnected = false;
 
-	private UserProfile userProfile = new UserProfile();
-
 	public Integer getId() {
 		return id;
 	}
@@ -65,13 +63,7 @@ public class User {
 	public void setTwitterConnected(boolean twitterConnected) {
 		this.twitterConnected = twitterConnected;
 	}
-	public UserProfile getUserProfile() {
-		return userProfile;
-	}
-	public void setUserProfile(UserProfile userProfile) {
-		this.userProfile = userProfile;
-	}
-	
+
 	/**
 	 * ログインユーザ識別用ユーザオブジェクトを返す。
 	 */
@@ -110,6 +102,6 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", profile=" + userProfile + "]";
+		return "User [id=" + id + ", email=" + email + "]";
 	}
 }

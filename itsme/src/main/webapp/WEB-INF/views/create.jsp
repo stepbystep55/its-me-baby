@@ -21,7 +21,7 @@
 <div id="page_content">
 	<div class="container_16">
 		<div class="grid_16">
-			<div id="page_title" style="text-align:center;">Sign up</div>
+			<div id="page_title" class="align_center">Sign up</div>
 		</div>
 		<div class="clear"></div>
 		<div class="grid_16">&nbsp;</div>
@@ -30,10 +30,10 @@
 		<div class="grid_5 form_label align_right">
 			<label for="emal">Email</label>
 		</div>
-		<div class="grid_5 form_input_large form_input_stretch align_right">
+		<div class="grid_6 form_input_large form_input_stretch align_right">
 			<form:input path="email" maxlength="128"/>
 		</div>
-		<div class="grid_6">
+		<div class="grid_5">
 			<spring:hasBindErrors name="user"><form:errors path="email" cssStyle="color:red" /></spring:hasBindErrors>
 		</div>
 
@@ -41,10 +41,10 @@
 		<div class="grid_5 form_label align_right">
 			<label for="password">Password</label>
 		</div>
-		<div class="grid_5 form_input_large form_input_stretch align_right">
+		<div class="grid_6 form_input_large form_input_stretch align_right">
 			<form:password path="password" maxlength="32" />
 		</div>
-		<div class="grid_6">
+		<div class="grid_5">
 			<spring:hasBindErrors name="user"><form:errors path="password" cssStyle="color:red" /></spring:hasBindErrors>
 		</div>
 
@@ -52,16 +52,16 @@
 		<div class="grid_5 form_label_br align_right">
 			<label for="reenter_password">Re-enter<br/>Password</label>
 		</div>
-		<div class="grid_5 form_input_large form_input_stretch align_right">
+		<div class="grid_6 form_input_large form_input_stretch align_right">
 			<input type="password" id="reenter_password" name="reenter_password" maxlength="32" />
 		</div>
-		<div class="grid_6"></div>
+		<div class="grid_5"></div>
 
 		<div class="clear"></div>
-		<div class="grid_10 user_form_button align_right">
+		<div class="grid_11 user_form_button align_right">
 			<input type="submit" value="Sign up"/>
 		</div>
-		<div class="grid_6"></div>
+		<div class="grid_5"></div>
 	</div>
 
 	<div class="container_16">

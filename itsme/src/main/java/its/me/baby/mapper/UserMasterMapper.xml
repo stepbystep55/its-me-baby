@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="its.me.baby.mapper.UserMasterMapper">
-	
+
+	<resultMap id="user" type="its.me.baby.dto.User">
+		<id property="id" column="ID"/>
+		<result property="email" column="EMAIL"/>
+	</resultMap>
+<!--
 	<resultMap id="user" type="its.me.baby.dto.User">
 		<id property="id" column="ID"/>
 		<result property="email" column="EMAIL"/>
@@ -23,11 +29,23 @@
 			<result property="bgImgLayout" column="BG_IMG_LAYOUT"/>
 		</association>
 	</resultMap>
+-->
 
 	<select id="newId" resultType="int">
 		SELECT SEQ_USER.NEXTVAL
 	</select>
 
+	<select id="getUserById" parameterType="int" resultMap="user">
+		SELECT
+			UM.ID,
+			UM.EMAIL
+		FROM
+			USER_MASTER UM
+		WHERE
+			UM.ID = #{id}
+	</select>
+
+<!--
 	<select id="getUserById" parameterType="int" resultMap="user">
 		SELECT
 			UM.ID,
@@ -52,6 +70,7 @@
 			UM.ID = #{id}
 			AND UM.ID = UP.USER_ID
 	</select>
+-->
 
 	<select id="getAuthUserById" parameterType="int" resultMap="user">
 		SELECT

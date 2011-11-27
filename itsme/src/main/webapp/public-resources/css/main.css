@@ -64,6 +64,9 @@ a.appeal:hover, a.appeal:active {
 	font-size: 24px;
 	text-decoration: underline;
 }
+.align_center {
+	text-align: center;
+}
 .align_right {
 	text-align: right;
 }

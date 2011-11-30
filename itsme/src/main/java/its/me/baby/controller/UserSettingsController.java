@@ -3,6 +3,7 @@ package its.me.baby.controller;
 import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.IllegalRequestException;
+import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
 
@@ -41,20 +42,22 @@ public class UserSettingsController {
 	@Autowired
 	private UserProfileMapper userProfileMapper;
 
-	private class InvalidInputException extends Exception {
-		private static final long serialVersionUID = -4771506268156706310L;
-
-		public InvalidInputException() {
-			super();
-		}
-	}
-
 /*
 	@ModelAttribute
 	public User setUpForm(){
 		return new User();
 	}
 */
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "edit", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView edit(HttpServletRequest request) throws IllegalRequestException {
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("activeTab", "profile");
+		modelAndView.setViewName("user/edit");
+		return modelAndView;
+	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "updateAccount", method = RequestMethod.GET)
@@ -106,8 +109,8 @@ public class UserSettingsController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "account");
-		modelAndView.addObject("updated", "true");
-		modelAndView.setViewName("forward:edit");
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
 
@@ -180,8 +183,8 @@ public class UserSettingsController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "password");
-		modelAndView.addObject("updated", "true");
-		modelAndView.setViewName("forward:edit");
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
 
@@ -233,70 +236,72 @@ public class UserSettingsController {
 	
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "profile");
-		modelAndView.addObject("updated", "true");
-		modelAndView.setViewName("forward:edit");
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "update", params = {"connectFacebook", "connectTwitter"}, method = RequestMethod.POST)
-	public ModelAndView connect(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
+	@RequestMapping(value = "updateSocial", method = RequestMethod.GET)
+	public ModelAndView updateSocial(HttpServletRequest request) throws IllegalRequestException {
 
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
 
-		boolean connectFacebook = (request.getAttribute("connectFacebook") != null);
-		boolean connectTwitter = (request.getAttribute("connectTwitter") != null);
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		boolean facebookConnected = ((connectionRepository.findPrimaryConnection(Facebook.class)) != null);
+		boolean twitterConnected = ((connectionRepository.findPrimaryConnection(Twitter.class)) != null);
 
 		ModelAndView modelAndView = new ModelAndView();
-		if (connectFacebook) {
+		modelAndView.addObject("facebook", facebookConnected);
+		modelAndView.addObject("twitter", twitterConnected);
+		modelAndView.setViewName("user/editSocial");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "connect", params = {"connectFacebook", "connectTwitter"}, method = RequestMethod.POST)
+	public ModelAndView connect(HttpServletRequest request) throws IllegalRequestException {
+
+		ModelAndView modelAndView = new ModelAndView();
+		if (request.getAttribute("connectFacebook") != null) {
 			modelAndView.setViewName("forward:signin/facebook");
-		} else if (connectTwitter) {
+			modelAndView.addObject("scope", "email,read_stream,offline_access");
+
+		} else if (request.getAttribute("connectTwitter") != null) {
 			modelAndView.setViewName("forward:signin/twitter");
 		}
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "update", params = {"disconnectFacebook", "disconnectTwitter"}, method = RequestMethod.POST)
-	public ModelAndView disconnect(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
-		
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
-
-		boolean disconnectFacebook = (request.getAttribute("disconnectFacebook") != null);
-		boolean disconnectTwitter = (request.getAttribute("disconnectTwitter") != null);
-
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
-		if (disconnectFacebook) {
-			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
-			if (connection != null) connectionRepository.removeConnection(connection.getKey());
-		}
-		if (disconnectTwitter) {
-			Connection connection = connectionRepository.findPrimaryConnection(Twitter.class);
-			if (connection != null) connectionRepository.removeConnection(connection.getKey());
-		}
-		request.setAttribute("updated", "social");
+	@RequestMapping(value = "afterConnect", method = RequestMethod.POST)
+	public ModelAndView afterConnect(HttpServletRequest request) throws IllegalRequestException {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("forward:edit");
+		modelAndView.addObject("activeTab", "social");
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "edit", method={RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView edit(HttpServletRequest request) {
+	@RequestMapping(value = "disconnect", params = {"disconnectFacebook", "disconnectTwitter"}, method = RequestMethod.POST)
+	public ModelAndView disconnect(HttpServletRequest request) throws IllegalRequestException {
 
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 
-		User user = userMasterMapper.getUserById(authUser.getId());
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(user.getId().toString());
-		boolean facebookConnected = (connectionRepository.findPrimaryConnection(Facebook.class) != null) ? true : false;
-		boolean twitterConnected = (connectionRepository.findPrimaryConnection(Twitter.class) != null) ? true : false;
-
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		if (request.getAttribute("disconnectFacebook") != null) {
+			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
+			if (connection != null) connectionRepository.removeConnection(connection.getKey());
+		}
+		if (request.getAttribute("disconnectTwitter") != null) {
+			Connection connection = connectionRepository.findPrimaryConnection(Twitter.class);
+			if (connection != null) connectionRepository.removeConnection(connection.getKey());
+		}
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("facebookConnected", facebookConnected);
-		modelAndView.addObject("twitterConnected", twitterConnected);
+		modelAndView.addObject("activeTab", "social");
+		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}

@@ -41,6 +41,9 @@
 		<div class="grid_2">
 			<p id="edit_profile" class="tab_button">Profile</p>
 		</div>
+		<div class="grid_2">
+			<p id="edit_social" class="tab_button">Social</p>
+		</div>
 		<div class="grid_6">&nbsp;</div>
 		<div class="clear"></div>
 		<div class="grid_16">&nbsp;</div>
@@ -76,50 +79,33 @@ $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
 	// choose tab
 	<c:choose>
-		<c:when test="${activeTab == 'account'}">activateAccountTab();</c:when>
-		<c:when test="${activeTab == 'password'}">activatePasswordTab();</c:when>
-		<c:when test="${activeTab == 'profile'}">activateProfileTab();</c:when>
-		<c:otherwise>activateAccountTab();</c:otherwise>
+		<c:when test="${activeTab == 'password'}">activateTab('password');</c:when>
+		<c:when test="${activeTab == 'profile'}">activateTab('profile');</c:when>
+		<c:when test="${activeTab == 'social'}">activateTab('social');</c:when>
+		<c:otherwise>activateTab('account');</c:otherwise>
 	</c:choose>
-	$('#edit_account').click(activateAccountTab);
-	$('#edit_password').click(activatePasswordTab);
-	$('#edit_profile').click(activateProfileTab);
+	$('#edit_account').click(activateTab('account'));
+	$('#edit_password').click(activateTab('password'));
+	$('#edit_profile').click(activateTab('profile'));
+	$('#edit_social').click(activateTab('social'));
 });
-function activateAccountTab(){
+function activateTab(target){
+	var btnId = 'account';
+	var url = 'updateAccount';
+	if (target == 'password') { btnId = 'password'; url = 'updatePassword'; }
+	else if (target == 'profile') { btnId = 'profile'; url = 'updateProfile'; }
+	else if (target == 'social') { btnId = 'social'; url = 'updateSocial'; }
+	else { btnId = 'account'; url = 'updateAccount'; }
 	$.ajax({
 		type: "GET",
-		url: "updateAccount",
+		url: url,
 		cache: false,
 		success: function(formHtml){
 			$("#form_area").html(formHtml);
 		}
 	});
 	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_account').removeClass('tab_button').addClass('tab_button_disabled');
-}
-function activatePasswordTab(){
-	$.ajax({
-		type: "GET",
-		url: "updatePassword",
-		cache: false,
-		success: function(formHtml){
-			$("#form_area").html(formHtml);
-		}
-	});
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_password').removeClass('tab_button').addClass('tab_button_disabled');
-}
-function activateProfileTab(){
-	$.ajax({
-		type: "GET",
-		url: "updateProfile",
-		cache: false,
-		success: function(formHtml){
-			$("#form_area").html(formHtml);
-		}
-	});
-	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_profile').removeClass('tab_button').addClass('tab_button_disabled');
+	$('#edit_'+btnId).removeClass('tab_button').addClass('tab_button_disabled');
 }
 // -->
 </script>

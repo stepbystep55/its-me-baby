@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Edit</title>
@@ -77,35 +78,65 @@
 <!--
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
-	// choose tab
+	<%-- choose tab --%>
 	<c:choose>
-		<c:when test="${activeTab == 'password'}">activateTab('password');</c:when>
-		<c:when test="${activeTab == 'profile'}">activateTab('profile');</c:when>
-		<c:when test="${activeTab == 'social'}">activateTab('social');</c:when>
-		<c:otherwise>activateTab('account');</c:otherwise>
+		<c:when test="${activeTab == 'password'}">activatePasswordTab();</c:when>
+		<c:when test="${activeTab == 'profile'}">activateProfileTab();</c:when>
+		<c:when test="${activeTab == 'social'}">activateSocialTab();</c:when>
+		<c:otherwise>activateAccountTab();</c:otherwise>
 	</c:choose>
-	$('#edit_account').click(activateTab('account'));
-	$('#edit_password').click(activateTab('password'));
-	$('#edit_profile').click(activateTab('profile'));
-	$('#edit_social').click(activateTab('social'));
+	$('#edit_account').click(activateAccountTab);
+	$('#edit_password').click(activatePasswordTab);
+	$('#edit_profile').click(activateProfileTab);
+	$('#edit_social').click(activateSocialTab);
 });
-function activateTab(target){
-	var btnId = 'account';
-	var url = 'updateAccount';
-	if (target == 'password') { btnId = 'password'; url = 'updatePassword'; }
-	else if (target == 'profile') { btnId = 'profile'; url = 'updateProfile'; }
-	else if (target == 'social') { btnId = 'social'; url = 'updateSocial'; }
-	else { btnId = 'account'; url = 'updateAccount'; }
+function activateAccountTab(){
 	$.ajax({
 		type: "GET",
-		url: url,
+		url: 'updateAccount',
 		cache: false,
 		success: function(formHtml){
 			$("#form_area").html(formHtml);
 		}
 	});
 	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
-	$('#edit_'+btnId).removeClass('tab_button').addClass('tab_button_disabled');
+	$('#edit_account').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activatePasswordTab(){
+	$.ajax({
+		type: "GET",
+		url: 'updatePassword',
+		cache: false,
+		success: function(formHtml){
+			$("#form_area").html(formHtml);
+		}
+	});
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_password').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activateProfileTab(){
+	$.ajax({
+		type: "GET",
+		url: 'updateProfile',
+		cache: false,
+		success: function(formHtml){
+			$("#form_area").html(formHtml);
+		}
+	});
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_profile').removeClass('tab_button').addClass('tab_button_disabled');
+}
+function activateSocialTab(){
+	$.ajax({
+		type: "GET",
+		url: 'updateSocial',
+		cache: false,
+		success: function(formHtml){
+			$("#form_area").html(formHtml);
+		}
+	});
+	$('p[id^="edit_"]').removeClass('tab_button_disabled').addClass('tab_button');
+	$('#edit_social').removeClass('tab_button').addClass('tab_button_disabled');
 }
 // -->
 </script>

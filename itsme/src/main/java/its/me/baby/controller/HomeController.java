@@ -1,7 +1,6 @@
 package its.me.baby.controller;
 
 import its.me.baby.dto.User;
-import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
 

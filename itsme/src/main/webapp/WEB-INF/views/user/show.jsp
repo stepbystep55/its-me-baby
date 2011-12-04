@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Show</title>
@@ -65,7 +66,7 @@
 	</div>
 	&nbsp;
 	<div id="user_stream" class="align_right">
-		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.id}">view stream</a>
+		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.userId}">view stream</a>
 	</div>
 </div>
 

@@ -1,8 +1,10 @@
 package its.me.baby.controller;
 
 import its.me.baby.dto.User;
+import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
+import its.me.baby.mapper.UserProfileMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,9 @@ public class HomeController {
 
 	@Autowired
 	private UserMasterMapper userMasterMapper;
+
+	@Autowired
+	private UserProfileMapper userProfileMapper;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -117,6 +122,9 @@ public class HomeController {
 
 		user.setId(userMasterMapper.newId());
 		userMasterMapper.createUser(user);
+		UserProfile userProfile = new UserProfile();
+		userProfile.setUserId(user.getId());
+		userProfileMapper.createUserProfile(userProfile);
 
 		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
 		request.getSession(true).setAttribute(User.SESSION_KEY_AUTH, authUser);

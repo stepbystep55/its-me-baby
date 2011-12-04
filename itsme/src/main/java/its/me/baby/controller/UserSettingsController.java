@@ -232,7 +232,7 @@ public class UserSettingsController {
 			return modelAndView;
 		}
 	
-		userProfileMapper.mergeUserProfile(userProfile);
+		userProfileMapper.updateUserProfile(userProfile);
 	
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "profile");

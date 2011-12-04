@@ -52,7 +52,7 @@
 		<c:when test="${userProfile.profileBoxPosition == 'right'}">position:absolute;top:30%;right:20%;</c:when>
 		<c:when test="${userProfile.profileBoxPosition == 'center'}">margin:0 auto;</c:when>
 	</c:choose>
-	background-color:${userProfile.profileBoxColor} no-repeat fixed 0 0;"
+	background:${userProfile.profileBoxColor} no-repeat fixed 0 0;"
 >
 	<div id="user_name" style="font-size:${userProfile.nameFontSize}; color:${userProfile.nameFontColor}">
 		${userProfile.name}

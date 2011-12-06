@@ -25,10 +25,6 @@ public class User {
 	@Pattern(regexp=".{0}|.{8,32}")
 	private String password = null;
 
-	private boolean facebookConnected = false;
-
-	private boolean twitterConnected = false;
-
 	public Integer getId() {
 		return id;
 	}
@@ -51,21 +47,8 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean getFacebookConnected() {
-		return facebookConnected;
-	}
-	public void setFacebookConnected(boolean facebookConnected) {
-		this.facebookConnected = facebookConnected;
-	}
-	public boolean getTwitterConnected() {
-		return twitterConnected;
-	}
-	public void setTwitterConnected(boolean twitterConnected) {
-		this.twitterConnected = twitterConnected;
-	}
-
 	/**
-	 * ログインユーザ識別用ユーザオブジェクトを返す。
+	 * get the authenticated user info
 	 */
 	public User getAuthUser() {
 		User authUser = new User();

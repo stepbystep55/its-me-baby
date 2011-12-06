@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Show</title>
@@ -10,9 +9,6 @@
 	<%@ include file="../_head_grid.jsp"%>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
-	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jsticky.css">
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery-ui.custom.min.js"></script>
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.stickynote.js"></script>
 	<style type="text/css">
 <!--
 <c:if test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != ''}">
@@ -24,7 +20,14 @@
 		body { background: url(${userProfile.bgImgUrl}) repeat fixed 50% 50%; }
 	</c:when>
 	<c:when test="${userProfile.bgImgLayout == 'stretch'}">
-		#background { width: 100%; height: 100%; position: absolute; left: 0px; top: 0px; z-index: -1; }
+		#background {
+			width: 100%; 
+			height: 100%; 
+			position: absolute;
+			left: 0px; 
+			top: 0px; 
+			z-index: -1;
+		}
 		.stretch {width:100%;height:auto;min-height:100%;}
 	</c:when>
 </c:choose>
@@ -40,14 +43,29 @@
 </c:if>
 <jsp:include page="../_body_header.jsp"/>
 
-<div id="content" class="content"></div> 
-<div class="container_12">
-	<div class="grid_8">&nbsp;</div>
-	<div class="grid_2">
-		<a id="sticky" href="#">sticky</a>
+<div id="user_profile"
+	style="
+	z-index:999;
+	<c:choose>
+		<c:when test="${userProfile.profileBoxPosition == 'left'}">position:absolute;top:30%;left:20%;</c:when>
+		<c:when test="${userProfile.profileBoxPosition == 'right'}">position:absolute;top:30%;right:20%;</c:when>
+		<c:when test="${userProfile.profileBoxPosition == 'center'}">margin:0 auto;</c:when>
+	</c:choose>
+	background-color:${userProfile.profileBoxColor} no-repeat fixed 0 0;"
+>
+	<div id="user_name" style="font-size:${userProfile.nameFontSize}; color:${userProfile.nameFontColor}">
+		${userProfile.name}
 	</div>
-	<div class="grid_2">
-		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.userId}">view stream</a>
+	<div id="user_title" style="font-size:${userProfile.titleFontSize}; color:${userProfile.titleFontColor}">
+		${userProfile.title}
+	</div>
+	&nbsp;
+	<div id="user_content" style="font-size:${userProfile.contentFontSize}; color:${userProfile.contentFontColor}">
+		${userProfile.content}
+	</div>
+	&nbsp;
+	<div id="user_stream" class="align_right">
+		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.id}">view stream</a>
 	</div>
 </div>
 
@@ -56,13 +74,6 @@
 $(function(){
 	//$('#stream').colorbox({width:"80%", height:"50%"});
 	$('#stream').colorbox({iframe:true, width:"80%", height:"80%"});
-	/*
-	$("#sticky").stickynote();
-	*/
-	$("#sticky").stickynote({
-		color: '#FF0000',
-		ontop: true
-	});
 });
 // -->
 </script>

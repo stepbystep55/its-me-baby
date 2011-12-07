@@ -10,8 +10,9 @@
 	<%@ include file="../_head_grid.jsp"%>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
+	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jsticky.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery-ui.custom.min.js"></script>
-	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery-ui.custom.css">
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.stickynote.js"></script>
 	<style type="text/css">
 <!--
 <c:if test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != ''}">
@@ -28,21 +29,6 @@
 	</c:when>
 </c:choose>
 </c:if>
-#contentArea {
-	position: absolute;
-	top: 50px;
-	margin: auto;
-	width: 800px;
-	height: 600px;
-	background-color:#999999;
-}
-.sticky {
-	width: 250px;
-	height: 200px;
-	padding: 15px 20px;
-	background-color: #aaf;
-	cursor: pointer;
-}
 // -->
 	</style>
 </head>
@@ -54,40 +40,28 @@
 </c:if>
 <jsp:include page="../_body_header.jsp"/>
 
+<div id="content" class="content"></div> 
 <div class="container_12">
 	<div class="grid_8">&nbsp;</div>
 	<div class="grid_2">
-		<a id="stickyBtn" href="#">sticky</a>
+		<a id="sticky" href="#">sticky</a>
 	</div>
 	<div class="grid_2">
 		<a id="stream" href="<%= request.getContextPath() %>/stream/${userProfile.userId}">view stream</a>
 	</div>
 </div>
-<div id="contentArea">&nbsp;</div>
 
 <script type="text/javascript">
 <!--
-var stickyNum = 0;
 $(function(){
 	//$('#stream').colorbox({width:"80%", height:"50%"});
 	$('#stream').colorbox({iframe:true, width:"80%", height:"80%"});
 	/*
 	$("#sticky").stickynote();
 	*/
-	$('#stickyBtn').click(function() {
-		$('<div class="sticky">Drag & Double Click!</div>')
-		.appendTo('#contentArea')
-		.draggable()
-		.resizable()
-		.dblclick(function() {
-			$(this).wrapInner('<textarea id="txa'+stickyNum+'"></textarea>')
-			.find('textarea')
-			.focus()
-			.select()
-			.blur(function() {
-				$(this).parent().html($(this).val());
-			});
-		});
+	$("#sticky").stickynote({
+		size: large,
+		color: '#FF0000'
 	});
 });
 // -->

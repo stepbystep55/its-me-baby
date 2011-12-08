@@ -124,6 +124,7 @@ public class HomeController {
 		userMasterMapper.createUser(user);
 		UserProfile userProfile = new UserProfile();
 		userProfile.setUserId(user.getId());
+		userProfile.setName(user.getNameFromEmail());
 		userProfileMapper.createUserProfile(userProfile);
 
 		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());

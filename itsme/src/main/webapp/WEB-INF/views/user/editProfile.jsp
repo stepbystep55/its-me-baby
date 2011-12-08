@@ -67,12 +67,22 @@
 			</div>
 			<div class="grid_11">
 				<span class="form_sublabel">Color</span>&nbsp;<form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" />&nbsp;
-				<span class="form_sublabel">Opacity</span>&nbsp;<form:input path="profileBoxOpacity" size="3" maxlength="3" />
+				<span class="form_sublabel">Transparent</span>&nbsp;<form:checkbox path="profileBoxTransparent" />
+			</div>
+			<div class="clear"></div>
+			<div class="grid_5">&nbsp;</div>
+			<div class="grid_11">
 				<span class="form_sublabel">Position</span>&nbsp;
 				<form:select path="profileBoxPosition">
-					<form:option value="left"/>
-					<form:option value="right"/>
-					<form:option value="center"/>
+					<form:option value="top-left"/>
+					<form:option value="top-right"/>
+					<form:option value="top-center"/>
+					<form:option value="middle-left"/>
+					<form:option value="middle-right"/>
+					<form:option value="middle-center"/>
+					<form:option value="bottom-left"/>
+					<form:option value="bottom-right"/>
+					<form:option value="bottom-center"/>
 				</form:select>
 			</div>
 
@@ -80,7 +90,7 @@
 			<div class="grid_16">&nbsp;</div>
 			<div class="clear"></div>
 			<div class="grid_5 form_label align_right">
-				<label>Background</label>
+				<label>Background URL</label>
 			</div>
 			<div class="grid_5  form_input_stretch">
 				<form:input path="bgImgUrl" maxlength="512" />&nbsp;
@@ -91,6 +101,7 @@
 			<div class="clear"></div>
 			<div class="grid_5">&nbsp;</div>
 			<div class="grid_11">
+				<span class="form_sublabel">Layout</span>&nbsp;
 				<form:select path="bgImgLayout">
 					<form:option value="center"/>
 					<form:option value="tile"/>

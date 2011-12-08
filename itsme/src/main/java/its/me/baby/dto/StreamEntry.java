@@ -32,6 +32,14 @@ public class StreamEntry implements Comparable<StreamEntry>{
 		}
 		return TYPE_UNKNOWN;
 	}
+	
+	public boolean getIsFacebook() {
+		return (entry instanceof Post);
+	}
+
+	public boolean getIsTwitter() {
+		return (entry instanceof Tweet);
+	}
 
 	public Date getCreatedAt() {
 		if (entry instanceof Post) {

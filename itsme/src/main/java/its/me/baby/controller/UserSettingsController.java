@@ -252,29 +252,14 @@ public class UserSettingsController {
 		boolean twitterConnected = ((connectionRepository.findPrimaryConnection(Twitter.class)) != null);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("facebook", facebookConnected);
-		modelAndView.addObject("twitter", twitterConnected);
+		modelAndView.addObject("facebookConnected", facebookConnected);
+		modelAndView.addObject("twitterConnected", twitterConnected);
 		modelAndView.setViewName("user/editSocial");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "connect", params = {"connectFacebook", "connectTwitter"}, method = RequestMethod.POST)
-	public ModelAndView connect(HttpServletRequest request) throws IllegalRequestException {
-
-		ModelAndView modelAndView = new ModelAndView();
-		if (request.getAttribute("connectFacebook") != null) {
-			modelAndView.setViewName("forward:signin/facebook");
-			modelAndView.addObject("scope", "email,read_stream,offline_access");
-
-		} else if (request.getAttribute("connectTwitter") != null) {
-			modelAndView.setViewName("forward:signin/twitter");
-		}
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "afterConnect", method = RequestMethod.POST)
+	@RequestMapping(value = "afterConnect", method = RequestMethod.GET)
 	public ModelAndView afterConnect(HttpServletRequest request) throws IllegalRequestException {
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -285,7 +270,7 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "disconnect", params = {"disconnectFacebook", "disconnectTwitter"}, method = RequestMethod.POST)
+	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
 	public ModelAndView disconnect(HttpServletRequest request) throws IllegalRequestException {
 
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);

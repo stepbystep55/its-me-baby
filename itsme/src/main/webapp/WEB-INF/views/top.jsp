@@ -52,19 +52,21 @@
 	
 		<div class="clear"></div>
 		<div class="grid_1">&nbsp;</div>
-		<div class="grid_9">
+		<div class="grid_8">
 			<div id="profile">
 				<p>
 				You can create your online profile page in minutes.<br/>
 				It's easy to put all your online contents together.
 				</p>
+				<p>&nbsp;</p>
 				<p class="attention">
-				This site is just a showcase .The application stores nothing but your accout id.
+				This site is just a showcase.<br/>
+				This application will not store your privacy information.<br/>
 				Feel free to try!
 				</p>
 			</div>
 		</div>
-		<div class="grid_6">&nbsp;</div>
+		<div class="grid_7">&nbsp;</div>
 			
 		<div class="clear"></div>
 		<div class="grid_1">&nbsp;</div>

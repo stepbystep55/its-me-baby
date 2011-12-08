@@ -48,6 +48,14 @@ public class User {
 	}
 
 	/**
+	 * 
+	 * @return get the preceding string of at mark from email
+	 */
+	public String getNameFromEmail() {
+		return this.email.split("@")[0];
+	}
+
+	/**
 	 * get the authenticated user info
 	 */
 	public User getAuthUser() {

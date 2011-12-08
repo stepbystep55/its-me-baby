@@ -60,7 +60,10 @@ public class UserPageController {
 			Facebook facebook = connectionRepository.getPrimaryConnection(Facebook.class).getApi();
 			feedList = facebook.feedOperations().getFeed();
 			for (Post post : feedList) {
-				entryList.add(new StreamEntry(post));
+				dumpPost(post);
+				if (post.getMessage() != null) {
+					entryList.add(new StreamEntry(post));
+				}
 			}
 		}
 		List<Tweet> tweets = null;
@@ -80,5 +83,44 @@ public class UserPageController {
 		modelAndView.addObject("entryList", entryList);
 		modelAndView.setViewName("user/stream");
 		return modelAndView;
+	}
+	
+	private void dumpPost(Post post) {
+		if (post == null) {
+			logger.debug("post is null");
+			return;
+		}
+		String stype = "post";
+		 Post.PostType ptype = post.getType();
+		 if (ptype == Post.PostType.CHECKIN) { stype = "checkin"; }
+		 else if (ptype == Post.PostType.LINK) { stype = "link"; }
+		 else if (ptype == Post.PostType.MUSIC) { stype = "music"; }
+		 else if (ptype == Post.PostType.NOTE) { stype = "note"; }
+		 else if (ptype == Post.PostType.PHOTO) { stype = "photo"; }
+		 else if (ptype == Post.PostType.POST) { stype = "post"; }
+		 else if (ptype == Post.PostType.STATUS) { stype = "status"; }
+		 else if (ptype == Post.PostType.SWF) { stype = "swf"; }
+		 else if (ptype == Post.PostType.VIDEO) { stype = "video"; }
+		String val =
+				"post="
+				+" id="+post.getId()
+				+", type="+stype
+				+", caption="+post.getCaption()
+				+", comments="+post.getComments()
+				+", message="+post.getMessage()
+				+", createdTime="+post.getCreatedTime()
+				+", description="+post.getDescription()
+				+", icon="+post.getIcon()
+				+", link="+post.getLink()
+				+", name="+post.getName()
+				+", pic="+post.getPicture()
+				;
+		if (post.getApplication() != null) {
+			stype += ", application(id, name)=("+post.getApplication().getId()+","+post.getApplication().getName()+")";
+		}
+		if (post.getFrom() != null) {
+			stype += ", form(id, name)=("+post.getFrom().getId()+","+post.getFrom().getName()+")";
+		}
+		logger.debug(val);
 	}
 }

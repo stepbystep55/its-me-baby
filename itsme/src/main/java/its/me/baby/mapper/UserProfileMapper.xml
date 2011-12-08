@@ -14,7 +14,7 @@
 		<result property="contentFontColor" column="CONTENT_FONT_COLOR"/>
 		<result property="contentFontSize" column="CONTENT_FONT_SIZE"/>
 		<result property="profileBoxColor" column="PROFILE_BOX_COLOR"/>
-		<result property="profileBoxOpacity" column="PROFILE_BOX_OPACITY"/>
+		<result property="profileBoxTransparent" column="PROFILE_BOX_TRANSPARENT"/>
 		<result property="profileBoxPosition" column="PROFILE_BOX_POSITION"/>
 		<result property="bgImgUrl" column="BG_IMG_URL"/>
 		<result property="bgImgLayout" column="BG_IMG_LAYOUT"/>
@@ -33,7 +33,7 @@
 			CONTENT_FONT_COLOR,
 			CONTENT_FONT_SIZE,
 			PROFILE_BOX_COLOR,
-			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_TRANSPARENT,
 			PROFILE_BOX_POSITION,
 			BG_IMG_URL,
 			BG_IMG_LAYOUT
@@ -57,7 +57,7 @@
 			CONTENT_FONT_COLOR,
 			CONTENT_FONT_SIZE,
 			PROFILE_BOX_COLOR,
-			PROFILE_BOX_OPACITY,
+			PROFILE_BOX_TRANSPARENT,
 			PROFILE_BOX_POSITION,
 			BG_IMG_URL,
 			BG_IMG_LAYOUT
@@ -75,7 +75,7 @@
 			#{contentFontColor},
 			#{contentFontSize},
 			#{profileBoxColor},
-			#{profileBoxOpacity},
+			#{profileBoxTransparent},
 			#{profileBoxPosition},
 			#{bgImgUrl},
 			#{bgImgLayout}
@@ -95,7 +95,7 @@
 				CONTENT_FONT_COLOR = #{contentFontColor},
 				CONTENT_FONT_SIZE = #{contentFontSize},
 				PROFILE_BOX_COLOR = #{profileBoxColor},
-				PROFILE_BOX_OPACITY = #{profileBoxOpacity},
+				PROFILE_BOX_TRANSPARENT = #{profileBoxTransparent},
 				PROFILE_BOX_POSITION = #{profileBoxPosition},
 				BG_IMG_URL = #{bgImgUrl},
 				BG_IMG_LAYOUT = #{bgImgLayout}

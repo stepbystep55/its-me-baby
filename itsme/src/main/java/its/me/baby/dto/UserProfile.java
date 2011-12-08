@@ -11,12 +11,11 @@ import org.hibernate.validator.constraints.Range;
 public class UserProfile {
 
 	public static final String DEFAULT_FONT_COLOR = "#000000";
-	public static final String DEFAULT_BG_COLOR = "#FFFFFF";
+	public static final String DEFAULT_BG_COLOR = "#E6E6FA";
 	public static final String BG_IMG_LAYOUT_CENTER = "center";
 	public static final String BG_IMG_LAYOUT_TILE = "tile";
 	public static final String BG_IMG_LAYOUT_STRETCH = "stretch";
-	public static final String PROFILE_BOX_POSITION_LEFT = "left";
-	public static final String PROFILE_BOX_POSITION_RIGHT = "right";
+	public static final String PROFILE_BOX_POSITION_TOP_LEFT = "top-left";
 
 	private Integer userId = null;
 
@@ -51,10 +50,9 @@ public class UserProfile {
 	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String profileBoxColor = DEFAULT_BG_COLOR;
 
-	@Range(min=0,max=100)
-	private Integer profileBoxOpacity = 0;
+	private boolean profileBoxTransparent = false;
 
-	private String profileBoxPosition = PROFILE_BOX_POSITION_LEFT;
+	private String profileBoxPosition = PROFILE_BOX_POSITION_TOP_LEFT;
 
 	// TODO need to revise the regular expression for url
 	//@Pattern(regexp="https?://.*")
@@ -144,11 +142,11 @@ public class UserProfile {
 	public void setProfileBoxColor(String profileBoxColor) {
 		this.profileBoxColor = profileBoxColor;
 	}
-	public Integer getProfileBoxOpacity() {
-		return profileBoxOpacity;
+	public boolean getProfileBoxTransparent() {
+		return profileBoxTransparent;
 	}
-	public void setProfileBoxOpacity(Integer profileBoxOpacity) {
-		this.profileBoxOpacity = profileBoxOpacity;
+	public void setProfileBoxTransparent(boolean profileBoxTransparent) {
+		this.profileBoxTransparent = profileBoxTransparent;
 	}
 	public String getProfileBoxPosition() {
 		return profileBoxPosition;

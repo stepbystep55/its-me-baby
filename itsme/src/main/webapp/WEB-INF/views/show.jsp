@@ -1,12 +1,11 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
 	<title>Show</title>
-	<%@ include file="../_head_base.jsp"%>
-	<%@ include file="../_head_grid.jsp"%>
+	<%@ include file="_head_base.jsp"%>
+	<%@ include file="_head_grid.jsp"%>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
 	<style type="text/css">
@@ -46,7 +45,7 @@
 		<div id="background"><img src="${userProfile.bgImgUrl}" class="stretch" alt="" /></div>
 	</c:if>
 </c:if>
-<jsp:include page="../_body_header.jsp"/>
+<jsp:include page="_body_header.jsp"/>
 
 <div class="container_12">
 	<div class="grid_12">&nbsp;</div>

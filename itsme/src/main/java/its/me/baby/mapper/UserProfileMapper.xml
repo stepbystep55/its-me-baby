@@ -43,6 +43,16 @@
 			USER_ID = #{userId}
 	</select>
 
+	<select id="listUserProfile" resultMap="userProfile">
+		SELECT
+			USER_ID,
+			NAME
+		FROM
+			USER_PROFILE
+		ORDER BY
+			USER_ID
+	</select>
+
 	<insert id="createUserProfile" parameterType="its.me.baby.dto.UserProfile">
 		INSERT INTO USER_PROFILE
 		(

@@ -4,20 +4,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Top</title>
+	<title>People</title>
 	<%@ include file="_head_base.jsp"%>
 	<%@ include file="_head_grid.jsp"%>
 	<style type="text/css">
 <!--
-#profile {
-	font-size: 18px;
-	font-weight: bold;
-	margin: 0;
-	padding-bottom: 30px;
-}
-#reg_btn {
-	margin: 0;
-	padding-bottom: 30px;
+.user_box {
+	width: 250px;
+	margin: 3px;
+	padding: 5px 10px;
+	border-bottom: 1px solid #999999;
 }
 // -->
 	</style>
@@ -31,33 +27,14 @@
 		<div class="grid_16">&nbsp;</div>
 	</div>
 	<div class="container_16">
-		<div class="grid_1">&nbsp;</div>
-		<div class="grid_15">
-			<div id="page_title">It's me, baby!</div>
-			<div id="sub_title">Create your online profile page.</div>
-		</div>
-	
-		<div class="clear"></div>
-		<div class="grid_1">&nbsp;</div>
 		<div class="grid_8">
-			<div id="profile">
-				<p>
-				You can create your online profile page in minutes.<br/>
-				It's easy to put all your online contents together.
-				</p>
-				<p>&nbsp;</p>
-				<p class="notice">
-				This site is just a showcase.<br/>
-				This application will not store your privacy information.<br/>
-				Feel free to try!
-				</p>
-			</div>
+			<c:forEach items="${userProfileList}" var="userProfile">
+				<div class="user_box">
+					<a href="<%= request.getContextPath() %>/show/${userProfile.userId}"><c:out value="${userProfile.name}" /></a>
+				</div>
+			</c:forEach>
 		</div>
-		<div class="grid_7">&nbsp;</div>
-			
-		<div class="clear"></div>
-		<div class="grid_1">&nbsp;</div>
-		<div class="grid_15">
+		<div class="grid_8 align_center">
 			<div id="reg_btn"><a class="appeal" href="create">Register</a></div>
 		</div>
 	</div>

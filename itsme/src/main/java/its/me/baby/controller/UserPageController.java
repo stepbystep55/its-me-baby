@@ -37,6 +37,17 @@ public class UserPageController {
 	private UserProfileMapper userProfileMapper;
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "list", method={RequestMethod.GET})
+	public ModelAndView list() {
+
+		List<UserProfile> userProfileList = userProfileMapper.listUserProfile();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userProfileList", userProfileList);
+		modelAndView.setViewName("list");
+		return modelAndView;
+	}
+	
+	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "show/{id}", method={RequestMethod.GET})
 	public ModelAndView show(@PathVariable Integer id) {
 
@@ -44,7 +55,7 @@ public class UserPageController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("userProfile", userProfile);
-		modelAndView.setViewName("user/show");
+		modelAndView.setViewName("show");
 		return modelAndView;
 	}
 
@@ -81,7 +92,7 @@ public class UserPageController {
 		modelAndView.addObject("feedList", feedList);
 		modelAndView.addObject("tweets", tweets);
 		modelAndView.addObject("entryList", entryList);
-		modelAndView.setViewName("user/stream");
+		modelAndView.setViewName("stream");
 		return modelAndView;
 	}
 	

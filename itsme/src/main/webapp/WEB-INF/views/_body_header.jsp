@@ -2,7 +2,6 @@
 <%@ page import="its.me.baby.dto.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 	<script type="text/javascript"  charset="utf-8" src="<%=request.getContextPath()%>/resources/js/jquery.dropdownplain.js"></script>
 	<script type="text/javascript">
 <!--
@@ -30,16 +29,17 @@ ul.dropdown li:hover > ul { visibility: visible; margin: 0; padding: 0; }
 	</style>
 <div id="page_header">
 	<div class="container_12">
-		<div class="grid_1"><a href="<%=request.getContextPath()%>/">Its me</a></div>
+		<div class="grid_1"><a class="attention" href="<%=request.getContextPath()%>/">Its me</a></div>
+		<div class="grid_1"><a href="<%=request.getContextPath()%>/list">People</a></div>
 		<%
 			if (request.getSession(false) == null || request.getSession(false).getAttribute(User.SESSION_KEY_AUTH) == null) {
 		%>
-			<div class="grid_10">&nbsp;</div>
+			<div class="grid_9">&nbsp;</div>
 			<div class="grid_1 align_right"><a href="<%=request.getContextPath()%>/login">Sign in</a></div>
 		<%
 			} else { User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 		%>
-			<div class="grid_10">&nbsp;</div>
+			<div class="grid_9">&nbsp;</div>
 			<div class="grid_1 align_right">
 				<ul class="dropdown">
 					<li><a href="#">Account</a>

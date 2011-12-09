@@ -8,7 +8,7 @@
 <html>
 <head>
 	<title>Stream</title>
-	<%@ include file="../_head_base.jsp"%>
+	<%@ include file="_head_base.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.masonry.min.js"></script>
 	<style type="text/css">
 <!--

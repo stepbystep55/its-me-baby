@@ -6,6 +6,7 @@
 <head>
 	<title>Edit</title>
 	<%@ include file="../_head_base.jsp"%>
+	<%@ include file="../_head_menu_bar.jsp"%>
 	<%@ include file="../_head_grid.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.validate.min.js"></script>	
 	<style type="text/css">
@@ -17,7 +18,7 @@
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />
 </head>
 <body>
-<jsp:include page="../_body_header.jsp"/>
+<jsp:include page="../_menu_bar.jsp"/>
 
 <div id="feed_message">
 	<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>

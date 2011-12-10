@@ -7,6 +7,7 @@
 <head>
 	<title>Show</title>
 	<%@ include file="../_head_base.jsp"%>
+	<%@ include file="../_head_menu_bar.jsp"%>
 	<%@ include file="../_head_grid.jsp"%>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
@@ -52,7 +53,7 @@
 		<div id="background"><img src="${userProfile.bgImgUrl}" class="stretch" alt="" /></div>
 	</c:if>
 </c:if>
-<jsp:include page="../_body_header.jsp"/>
+<jsp:include page="../_menu_bar.jsp"/>
 
 <div class="container_12">
 	<div class="grid_8">&nbsp;</div>

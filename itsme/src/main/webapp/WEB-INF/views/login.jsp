@@ -6,6 +6,7 @@
 <head>
 	<title>Login</title>
 	<%@ include file="_head_base.jsp"%>
+	<%@ include file="_head_menu_bar.jsp"%>
 	<%@ include file="_head_grid.jsp"%>
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.validate.min.js"></script>	
 	<style type="text/css">
@@ -15,7 +16,7 @@
 	</style>
 </head>
 <body>
-<jsp:include page="_body_header.jsp"/>
+<jsp:include page="_menu_bar.jsp"/>
 
 <form:form modelAttribute="user" action="login" method="post">
 <div id="page_content">

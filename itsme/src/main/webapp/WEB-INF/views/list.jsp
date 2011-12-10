@@ -6,6 +6,7 @@
 <head>
 	<title>People</title>
 	<%@ include file="_head_base.jsp"%>
+	<%@ include file="_head_menu_bar.jsp"%>
 	<%@ include file="_head_grid.jsp"%>
 	<style type="text/css">
 <!--
@@ -20,7 +21,7 @@
 </head>
 <body>
 
-<jsp:include page="_body_header.jsp"/>
+<jsp:include page="_menu_bar.jsp"/>
 
 <div id="page_content">
 	<div class="container_16">

@@ -40,21 +40,6 @@ a:hover, a:active {
 	text-align: center;
 	line-height: 30px;
 }
-#page_header a:link, #page_header a:visited {
-	color: #606060;
-	font-weight: bold;
-	font-size: 15px;
-	text-decoration: none;
-}
-#page_header a:hover, #page_header a:active {
-	color: #000000;
-	font-weight: bold;
-	font-size: 15px;
-	text-decoration: underline;
-}
-#page_header a.attention {
-	color: #DC143C;
-}
 a.appeal:link, a.appeal:visited {
 	height: 200px;
 	font-weight: bold;

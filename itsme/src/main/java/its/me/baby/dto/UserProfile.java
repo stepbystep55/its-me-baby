@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 public class UserProfile {
 
 	public static final String DEFAULT_FONT_COLOR = "#000000";
-	public static final String DEFAULT_BG_COLOR = "#E6E6FA";
+	public static final String DEFAULT_BG_COLOR = "#FFFFFF";
 	public static final String BG_IMG_LAYOUT_CENTER = "center";
 	public static final String BG_IMG_LAYOUT_TILE = "tile";
 	public static final String BG_IMG_LAYOUT_STRETCH = "stretch";

@@ -16,6 +16,7 @@
 // -->
 	</style>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.minicolors.min.js"></script>
 </head>
 <body>
 <jsp:include page="../_menu_bar.jsp"/>
@@ -73,7 +74,6 @@
 	</div>
 </div>
 
-<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.minicolors.min.js"></script>
 <script type="text/javascript">
 <!--
 $(function(){

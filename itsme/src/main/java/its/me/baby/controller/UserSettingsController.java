@@ -23,6 +23,7 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -290,4 +291,19 @@ public class UserSettingsController {
 		modelAndView.setViewName("user/edit");
 		return modelAndView;
 	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "profile", method={RequestMethod.GET})
+	public ModelAndView profile(HttpServletRequest request) {
+
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+
+		UserProfile userProfile = userProfileMapper.getUserProfileById(authUser.getId());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.setViewName("user/show");
+		return modelAndView;
+	}
+
 }

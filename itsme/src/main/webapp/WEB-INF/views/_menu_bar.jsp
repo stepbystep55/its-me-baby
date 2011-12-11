@@ -11,18 +11,21 @@
 			if (request.getSession(false) == null || request.getSession(false).getAttribute(User.SESSION_KEY_AUTH) == null) {
 		%>
 			<div class="grid_9">&nbsp;</div>
-			<div class="grid_1 align_right"><a href="<%=request.getContextPath()%>/login">Sign in</a></div>
+			<div class="grid_1 align_right"><a class="normal" href="<%=request.getContextPath()%>/login">Sign in</a></div>
 		<%
 			} else { User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 		%>
 			<div class="grid_9">&nbsp;</div>
 			<div class="grid_1 align_right">
 				<ul class="dropdown">
-					<li><a href="#">Account</a>
+					<li><a class="normal" href="#">Account</a>
 						<ul class="sub_menu">
-							<li><a href="<%= request.getContextPath() %>/show/<%=authUser.getId() %>">My page</a></li>
-							<li><a href="<%= request.getContextPath() %>/edit">Settings</a></li>
-							<li><a href="<%= request.getContextPath() %>/logout">Sign out</a></li>
+						<%--
+							<li><a class="normal" href="<%= request.getContextPath() %>/show/<%=authUser.getId() %>">My page</a></li>
+						--%>
+							<li><a class="normal" href="<%= request.getContextPath() %>/profile">My page</a></li>
+							<li><a class="normal" href="<%= request.getContextPath() %>/edit">Settings</a></li>
+							<li><a class="normal" href="<%= request.getContextPath() %>/logout">Sign out</a></li>
 						</ul>
 					</li>
 				</ul>

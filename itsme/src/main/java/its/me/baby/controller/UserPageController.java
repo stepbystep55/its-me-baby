@@ -46,7 +46,7 @@ public class UserPageController {
 		modelAndView.setViewName("list");
 		return modelAndView;
 	}
-	
+
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "show/{id}", method={RequestMethod.GET})
 	public ModelAndView show(@PathVariable Integer id) {
@@ -54,8 +54,8 @@ public class UserPageController {
 		UserProfile userProfile = userProfileMapper.getUserProfileById(id);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userProfile", userProfile);
-		modelAndView.setViewName("show");
+		modelAndView.addObject("userProfileDisplay", userProfile);
+		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}
 

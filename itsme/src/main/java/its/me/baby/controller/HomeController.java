@@ -132,7 +132,7 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("created", "true");
-		modelAndView.setViewName("forward:edit");
+		modelAndView.setViewName("forward:gotoMyPage");
 		return modelAndView;
 	}
 

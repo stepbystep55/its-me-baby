@@ -15,7 +15,7 @@ public class UserProfile {
 	public static final String BG_IMG_LAYOUT_CENTER = "center";
 	public static final String BG_IMG_LAYOUT_TILE = "tile";
 	public static final String BG_IMG_LAYOUT_STRETCH = "stretch";
-	public static final String PROFILE_BOX_POSITION_TOP_LEFT = "top-left";
+	public static final String PROFILE_BOX_POSITION_TOP_RIGHT = "top-right";
 
 	private Integer userId = null;
 
@@ -52,7 +52,7 @@ public class UserProfile {
 
 	private boolean profileBoxTransparent = false;
 
-	private String profileBoxPosition = PROFILE_BOX_POSITION_TOP_LEFT;
+	private String profileBoxPosition = PROFILE_BOX_POSITION_TOP_RIGHT;
 
 	// TODO need to revise the regular expression for url
 	//@Pattern(regexp="https?://.*")

@@ -23,7 +23,6 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -293,15 +292,54 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "profile", method={RequestMethod.GET})
-	public ModelAndView profile(HttpServletRequest request) {
+	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView gotoMyPage(HttpServletRequest request) throws IllegalRequestException {
 
 		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
 
-		UserProfile userProfile = userProfileMapper.getUserProfileById(authUser.getId());
-
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("userProfile", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("editMode", true);
+		modelAndView.setViewName("user/show");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "updateMyPage", method={RequestMethod.POST})
+	public ModelAndView updateMyPage(
+		@Valid UserProfile userProfile, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
+
+		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		if (!authUser.getId().equals(userProfile.getUserId())) throw new IllegalRequestException();
+	
+		try {
+			if (result.hasErrors()) {
+				throw new InvalidInputException();
+			}
+			if (!userProfile.validForEditingProfile()) {
+				Map<String, String> rejectValueMap = userProfile.getRejectValueMap();
+				for (Map.Entry<String, String> entry : rejectValueMap.entrySet()) {
+					result.rejectValue(entry.getKey(), entry.getValue());
+				}
+				throw new InvalidInputException();
+			}
+		} catch (InvalidInputException e) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
+			modelAndView.addObject("userProfile", userProfile);
+			modelAndView.addObject("editMode", true);
+			modelAndView.setViewName("user/show");
+			return modelAndView;
+		}
+	
+		userProfileMapper.updateUserProfile(userProfile);
+	
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("userProfile", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("editMode", true);
+		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}

@@ -12,7 +12,7 @@
 	<style type="text/css">
 <!--
 .error { color: red; }
-#feed_message { width: 100%; position: absolute; margin: 15px auto; text-align: center; z-index: 99; }
+#feed_message { width: 100%; position: absolute; margin: -26px auto; text-align: center; z-index: 99; }
 // -->
 	</style>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />

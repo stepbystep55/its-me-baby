@@ -23,7 +23,7 @@
 						<%--
 							<li><a class="normal" href="<%= request.getContextPath() %>/show/<%=authUser.getId() %>">My page</a></li>
 						--%>
-							<li><a class="normal" href="<%= request.getContextPath() %>/profile">My page</a></li>
+							<li><a class="normal" href="<%= request.getContextPath() %>/gotoMyPage">My page</a></li>
 							<li><a class="normal" href="<%= request.getContextPath() %>/edit">Settings</a></li>
 							<li><a class="normal" href="<%= request.getContextPath() %>/logout">Sign out</a></li>
 						</ul>

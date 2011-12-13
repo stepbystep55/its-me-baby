@@ -19,30 +19,13 @@
 	<style type="text/css">
 <!--
 /* background style */
-<c:choose>
-<c:when test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != ''}">
-	<c:choose>
-	<c:when test="${userProfile.bgImgLayout == 'center'}">
-		body { background: url(${userProfile.bgImgUrl}) no-repeat fixed 50% 50%; }
-	</c:when>
-	<c:when test="${userProfile.bgImgLayout == 'tile'}">
-		body { background: url(${userProfile.bgImgUrl}) repeat fixed 0 30px; }
-	</c:when>
-	<c:when test="${userProfile.bgImgLayout == 'stretch'}">
-		#background { width: 100%; height: 100%; position: absolute; left: 0px; top: 0px; z-index: -1; }
-		.stretch {width:100%;height:auto;min-height:100%;}
-	</c:when>
-	</c:choose>
-</c:when>
-<c:otherwise>
-	body { background: url(<%= request.getContextPath() %>/resources/img/sample/brick01.jpg) repeat fixed 0 30px; }
-</c:otherwise>
-</c:choose>
+#background { width: 100%; height: 100%; position: absolute; left: 0px; top: 0px; z-index: -1; }
+.stretch {width:100%;height:auto;min-height:100%;}
 
 /* profile box */
 #user_name { font-size:${userProfile.nameFontSize}px; color:${userProfile.nameFontColor}; }
 #user_title { font-size:${userProfile.titleFontSize}px; color:${userProfile.titleFontColor}; }
-#user_content { font-size:${userProfile.contentFontSize}px; color:${userProfile.contentFontColor}; }
+#user_content { margin: 5px 0; font-size:${userProfile.contentFontSize}px; color:${userProfile.contentFontColor}; }
 
 /* etc */
 .func_element { background-color: #333333; text-align: center; height: 24px; line-height: 20px; }
@@ -100,9 +83,8 @@
 	</style>
 </head>
 <body>
-<c:if test="${userProfile.bgImgUrl != null and userProfile.bgImgUrl != '' and userProfile.bgImgLayout == 'stretch'}">
-	<div id="background"><img src="${userProfile.bgImgUrl}" class="stretch" alt="" /></div>
-</c:if>
+<div id="background">
+</div>
 <jsp:include page="../_menu_bar.jsp"/>
 
 <div class="container_12">
@@ -115,163 +97,196 @@
 	</div>
 </div>
 
-
 <div id="user_profile" style="z-index:99; padding: 20px 15px; <c:choose><c:when test="${userProfile.profileBoxTransparent}">background-color: transparent;</c:when><c:otherwise>background-color: ${userProfile.profileBoxColor};</c:otherwise></c:choose>">
-	<div id="user_name">
-		<c:out value="${userProfile.name}" />
-	</div>
-	<div id="user_title">
-		<c:out value="${userProfile.title}" />
-	</div>
-	&nbsp;
-	<div id="user_content">
-		<pre><c:out value="${userProfile.content}" /></pre>
-	</div>
+	<div id="user_name"><c:out value="${userProfile.name}" /></div>
+	<div id="user_title"><c:out value="${userProfile.title}" /></div>
+	<div id="user_content"><pre><c:out value="${userProfile.content}" /></pre></div>
 </div>
 
 <div id="prof_edit_box">
+	<div><a id="prof_edit_toggle" href="#">Open/Close</a></div>
 	<div id="prof_tabs">
-	<ul>
-		<li><a href="#prof_edit_tab1"><span>Content</span></a></li>
-		<li><a href="#prof_edit_tab2"><span>Box</span></a></li>
-		<%--
-		<li><a href="#prof_edit_tab3"><span>Backgrounds</span></a></li>
-		--%>
-	</ul>
-
-	<form:form modelAttribute="userProfile" action="updateProfile" method="post">
-	<div id="prof_edit_tab1">
-			<table id="prof_edit_tbl">
-				<tr>
-					<td class="prof_edit_label">Name</td>
-					<td class="prof_edit_txtinput"><form:input path="name" maxlength="32" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-					 	<span class="prof_edit_sublabel">Color</span>
-						<span class="prof_edit_input"><form:input path="nameFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
-						<span class="prof_edit_sublabel">Font</span>
-						<span><form:input path="nameFontSize" size="3" maxlength="3" /></span>
-					</td>
-				</tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-				<tr>
-					<td class="prof_edit_label">Title</td>
-					<td class="prof_edit_txtinput"><form:input path="title" maxlength="128" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<span class="prof_edit_sublabel">Color</span>
-						<span class="prof_edit_input"><form:input path="titleFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
-						<span class="prof_edit_sublabel">Font</span>
-						<span><form:input path="titleFontSize" size="3" maxlength="3" /></span>
-					</td>
-				</tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-				<tr>
-					<td class="prof_edit_label">Content</td>
-					<td class="prof_edit_txtinput"><form:textarea path="content" rows="5" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<span class="prof_edit_sublabel">Color</span>
-						<span class="prof_edit_input"><form:input path="contentFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
-						<span class="prof_edit_sublabel">Font</span>
-						<span><form:input path="contentFontSize" size="3" maxlength="3" /></span>
-					</td>
-				</tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-				<tr>
-					<td class="prof_edit_panel" colspan="2">
-						<input id="previewContentBtn" type="button" value="preview" />
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div id="prof_edit_tab2">
-			<table id="prof_edit_tbl">
-				<tr>
-					<td class="prof_edit_label">Box</td>
-					<td>
-						<span class="prof_edit_sublabel">Position</span>
-					</td>
-					<td>
-						<table id="box_pos_tbl">
-							<tr><td><form:radiobutton path="profileBoxPosition" value="top-left"/></td><td><form:radiobutton path="profileBoxPosition" value="top-center"/></td><td><form:radiobutton path="profileBoxPosition" value="top-right"/></td></tr>
-							<tr><td><form:radiobutton path="profileBoxPosition" value="middle-left"/></td><td><form:radiobutton path="profileBoxPosition" value="middle-center"/></td><td><form:radiobutton path="profileBoxPosition" value="middle-right"/></td></tr>
-							<tr><td><form:radiobutton path="profileBoxPosition" value="bottom-left"/></td><td><form:radiobutton path="profileBoxPosition" value="bottom-center"/></td><td><form:radiobutton path="profileBoxPosition" value="bottom-right"/></td></tr>
-						</table>
-					</td>
-				</tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-				<tr>
-					<td></td>
-					<td>
-					 	<span class="prof_edit_sublabel">Color</span>
-					</td>
-					<td>
-						<span class="prof_edit_input"><form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
-						<span class="prof_edit_sublabel">Transparent</span>
-						<span><form:checkbox path="profileBoxTransparent" /></span>
-					</td>
-				</tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-				<tr>
-					<td class="prof_edit_panel" colspan="3">
-						<input id="previewBoxBtn" type="button" value="preview" />
-					</td>
-				</tr>
-			</table>
-		</div>
-	</form:form>
+		<ul>
+			<li><a href="#prof_edit_tab1"><span>Content</span></a></li>
+			<li><a href="#prof_edit_tab2"><span>Box</span></a></li>
+			<li><a href="#prof_edit_tab3"><span>Backgrounds</span></a></li>
+		</ul>
+	
+		<form:form modelAttribute="userProfile" action="updateProfile" method="post">
+		<div id="prof_edit_tab1">
+				<table id="prof_edit_tbl">
+					<tr>
+						<td class="prof_edit_label">Name</td>
+						<td class="prof_edit_txtinput"><form:input path="name" maxlength="32" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+						 	<span class="prof_edit_sublabel">Color</span>
+							<span class="prof_edit_input"><form:input path="nameFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
+							<span class="prof_edit_sublabel">Font</span>
+							<span><form:input path="nameFontSize" size="3" maxlength="3" /></span>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td class="prof_edit_label">Title</td>
+						<td class="prof_edit_txtinput"><form:input path="title" maxlength="128" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<span class="prof_edit_sublabel">Color</span>
+							<span class="prof_edit_input"><form:input path="titleFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
+							<span class="prof_edit_sublabel">Font</span>
+							<span><form:input path="titleFontSize" size="3" maxlength="3" /></span>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td class="prof_edit_label">Content</td>
+						<td class="prof_edit_txtinput"><form:textarea path="content" rows="5" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<span class="prof_edit_sublabel">Color</span>
+							<span class="prof_edit_input"><form:input path="contentFontColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
+							<span class="prof_edit_sublabel">Font</span>
+							<span><form:input path="contentFontSize" size="3" maxlength="3" /></span>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td class="prof_edit_panel" colspan="2">
+							<input id="previewContentBtn" type="button" value="preview" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="prof_edit_tab2">
+				<table id="prof_edit_tbl">
+					<tr>
+						<td class="prof_edit_label">Box</td>
+						<td>
+							<span class="prof_edit_sublabel">Position</span>
+						</td>
+						<td>
+							<table id="box_pos_tbl">
+								<tr><td><form:radiobutton path="profileBoxPosition" value="top-left"/></td><td><form:radiobutton path="profileBoxPosition" value="top-center"/></td><td><form:radiobutton path="profileBoxPosition" value="top-right"/></td></tr>
+								<tr><td><form:radiobutton path="profileBoxPosition" value="middle-left"/></td><td><form:radiobutton path="profileBoxPosition" value="middle-center"/></td><td><form:radiobutton path="profileBoxPosition" value="middle-right"/></td></tr>
+								<tr><td><form:radiobutton path="profileBoxPosition" value="bottom-left"/></td><td><form:radiobutton path="profileBoxPosition" value="bottom-center"/></td><td><form:radiobutton path="profileBoxPosition" value="bottom-right"/></td></tr>
+							</table>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td></td>
+						<td>
+						 	<span class="prof_edit_sublabel">Color</span>
+						</td>
+						<td>
+							<span class="prof_edit_input"><form:input path="profileBoxColor" readonly="true" cssClass="minicolors" size="8" maxlength="6" /></span>
+							<span class="prof_edit_sublabel">Transparent</span>
+							<span><form:checkbox path="profileBoxTransparent" /></span>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td class="prof_edit_panel" colspan="3">
+							<input id="previewBoxBtn" type="button" value="preview" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="prof_edit_tab3">
+				<table id="prof_edit_tbl">
+					<tr>
+						<td class="prof_edit_label">Backgrounds</td>
+						<td>
+							<span class="prof_edit_sublabel">URL</span>
+						</td>
+						<td>
+							<form:input path="bgImgUrl" maxlength="512" />
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td></td>
+						<td>
+						 	<span class="prof_edit_sublabel">Layout</span>
+						</td>
+						<td>
+							<form:select path="bgImgLayout">
+								<form:option value="center"/>
+								<form:option value="tile"/>
+								<form:option value="stretch"/>
+							</form:select>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr>
+						<td class="prof_edit_panel" colspan="3">
+							<input id="previewBgBtn" type="button" value="preview" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form:form>
 	</div>
 </div>
 
 <script type="text/javascript">
 <!--
 $(function(){
-	//$('#stream').colorbox({width:"80%", height:"50%"});
 	$('#stream').colorbox({iframe:true, width:"82%", height:"80%"});
 
+	// position fix function
 	//referece from http://stackoverflow.com/questions/210717/using-jquery-to-center-a-div-on-the-screen
-	jQuery.fn.fixPos = function () {
-		this.css("position","absolute");
-		<c:choose>
-		<c:when test="${userProfile.profileBoxPosition == 'top-right' or userProfile.profileBoxPosition == 'middle-right' or userProfile.profileBoxPosition == 'bottom-right'}">
-			this.css("left", (($(window).width() - this.outerWidth())*3 / 4));
-		</c:when>
-		<c:when test="${userProfile.profileBoxPosition == 'top-left' or userProfile.profileBoxPosition == 'middle-left' or userProfile.profileBoxPosition == 'bottom-left'}">
-			this.css("left", (($(window).width() - this.outerWidth()) / 4));
-		</c:when>
-		<c:when test="${userProfile.profileBoxPosition == 'top-center' or userProfile.profileBoxPosition == 'middle-center' or userProfile.profileBoxPosition == 'bottom-center'}">
-			this.css("left", (($(window).width() - this.outerWidth()) / 2));
-		</c:when>
-		</c:choose>
-		<c:choose>
-		<c:when test="${userProfile.profileBoxPosition == 'top-right' or userProfile.profileBoxPosition == 'top-center' or userProfile.profileBoxPosition == 'top-left'}">
-			this.css("top", (($(window).height() - this.outerHeight()) / 4));
-		</c:when>
-		<c:when test="${userProfile.profileBoxPosition == 'middle-right' or userProfile.profileBoxPosition == 'middle-center' or userProfile.profileBoxPosition == 'middle-left'}">
-			this.css("top", (($(window).height() - this.outerHeight()) / 2));
-		</c:when>
-		<c:when test="${userProfile.profileBoxPosition == 'bottom-right' or userProfile.profileBoxPosition == 'bottom-center' or userProfile.profileBoxPosition == 'bottom-left'}">
-			this.css("top", (($(window).height() - this.outerHeight())*3 / 4));
-		</c:when>
-		</c:choose>
+	jQuery.fn.fixPos = function (pos) {
+		this.css('position','absolute');
+		if (pos.match(/top/)) {
+			this.css('top', (($(window).height() - this.outerHeight()) / 4));
+		} else if (pos.match(/middle/)) {
+			this.css('top', (($(window).height() - this.outerHeight()) / 2));
+		} else if (pos.match(/bottom/)) {
+			this.css('top', (($(window).height() - this.outerHeight())*3 / 4));
+		}
+		if (pos.match(/left/)) {
+			this.css('left', (($(window).width() - this.outerWidth()) / 4));
+		} else if (pos.match(/center/)) {
+			this.css('left', (($(window).width() - this.outerWidth()) / 2));
+		} else if (pos.match(/right/)) {
+			this.css('left', (($(window).width() - this.outerWidth())*3 / 4));
+		}
 		return this;
-	}
-	$('#user_profile').fixPos();
-	
+	};
+	jQuery.fn.setBg = function (url, layout) {
+		if (layout == 'center') {
+			this.css('background', 'url('+url+') no-repeat fixed 50% 50%');
+			this.html('');
+		} else if (layout == 'tile') {
+			this.css('background', 'url('+url+') repeat fixed 0 30px');
+			this.html('');
+		} else if (layout == 'stretch') {
+			this.css('background', '');
+			this.html('<img src="'+url+'" class="stretch" alt="background image" />');
+		}
+	};
+
+	$('#user_profile').fixPos('${userProfile.profileBoxPosition}');
+	$('#background').setBg('${userProfile.bgImgUrl}', '${userProfile.bgImgLayout}');
+
 	$('.func_element').corner('5px');
 	$('#prof_edit_box').corner('10px');
 
-	$('.minicolors').miniColors();
-
 	$('#prof_tabs').tabs();
 
+	$('.minicolors').miniColors();
+
+	$('#prof_edit_toggle').click(function() { $('#prof_tabs').toggle(); });
+
+	// preview
 	$('#previewContentBtn').click(function() {
 		$('#user_name').text($('#name').val());
 		$('#user_name').css('font-size', $('#nameFontSize').val()+'px');
@@ -289,6 +304,10 @@ $(function(){
 		} else {
 			$('#user_profile').css('background-color', $('#profileBoxColor').val());
 		}
+		$('#user_profile').fixPos($('input[name="profileBoxPosition"]:checked').val());
+	});
+	$('#previewBgBtn').click(function() {
+		$('#background').setBg($('#bgImgUrl').val(), $('#bgImgLayout option:selected').val());
 	});
 });
 // -->

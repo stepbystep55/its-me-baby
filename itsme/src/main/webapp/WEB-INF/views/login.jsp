@@ -93,7 +93,7 @@ $(function(){
 	$("#user").validate({
 		rules: {
 			password: { required: true },
-			email: { required: true },
+			email: { required: true }
 		},
 		messages: {
 			password: { required: "Please provide a password" },

@@ -50,7 +50,7 @@ public class UserProfile {
 	@Pattern(regexp="#[abcdefABCDEF0-9]{6}")
 	private String profileBoxColor = DEFAULT_BG_COLOR;
 
-	private boolean profileBoxTransparent = false;
+	private boolean profileBoxTransparent = true;
 
 	private String profileBoxPosition = PROFILE_BOX_POSITION_TOP_RIGHT;
 

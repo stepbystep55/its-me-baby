@@ -33,6 +33,17 @@
 		<beans:property name="basename" value="messages" />
 	</beans:bean>
 
+	<!-- doesn't work
+	<beans:bean id="propertyPlaceholderConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<beans:property name="locations">
+			<beans:list>
+				<beans:value>classpath:application.properties</beans:value>
+				<beans:value>classpath:social.properties</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	-->
+
 	<!-- エラーページの設定-->
 	<!--
 	<beans:bean id="exceptionResolver"
@@ -47,5 +58,6 @@
 
 	<beans:import resource="datasrc.xml" />
 	<beans:import resource="social.xml" />
+	<beans:import resource="properties.xml" />
 
 </beans:beans>

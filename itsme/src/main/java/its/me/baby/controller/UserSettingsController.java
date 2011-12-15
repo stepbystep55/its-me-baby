@@ -6,10 +6,12 @@ import its.me.baby.exception.IllegalRequestException;
 import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
+import its.me.baby.util.UserCookieGenerator;
 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -42,6 +44,8 @@ public class UserSettingsController {
 	@Autowired
 	private UserProfileMapper userProfileMapper;
 
+	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
+
 /*
 	@ModelAttribute
 	public User setUpForm(){
@@ -51,7 +55,7 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "edit", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView edit(HttpServletRequest request) throws IllegalRequestException {
+	public ModelAndView edit() throws IllegalRequestException {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "profile");
@@ -63,8 +67,8 @@ public class UserSettingsController {
 	@RequestMapping(value = "updateAccount", method = RequestMethod.GET)
 	public ModelAndView updateAccount(HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		User user = userMasterMapper.getUserById(authUser.getId());
+		User user = userMasterMapper.getUserById(userCookieGenerator.getUserId(request));
+		if (user == null) throw new IllegalRequestException();
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -77,8 +81,7 @@ public class UserSettingsController {
 	public ModelAndView updateAccount(
 			@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
+		if (!userCookieGenerator.getUserId(request).equals(user.getId())) throw new IllegalRequestException();
 
 		try {
 			if (result.hasErrors()) {
@@ -105,8 +108,6 @@ public class UserSettingsController {
 
 		userMasterMapper.updateAccount(user.getId(), user.getEmail());
 
-		request.getSession(false).setAttribute(User.SESSION_KEY_AUTH, userMasterMapper.getAuthUserById(user.getId()));
-
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "account");
 		modelAndView.addObject("updated", true);
@@ -116,16 +117,15 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "updateAccount", params = {"delete"}, method = RequestMethod.POST)
-	public ModelAndView deleteAccount(
-			@Valid User user, HttpServletRequest request) throws IllegalRequestException {
+	public ModelAndView deleteAccount(@Valid User user, HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
+		Integer authUserId = userCookieGenerator.getUserId(request);
+		if (!authUserId.equals(user.getId())) throw new IllegalRequestException();
 
-		userProfileMapper.deleteProfile(authUser.getId());
-		userMasterMapper.deleteUser(authUser.getId());
+		userProfileMapper.deleteProfile(authUserId);
+		userMasterMapper.deleteUser(authUserId);
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUserId.toString());
 		Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 		if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		connection = connectionRepository.findPrimaryConnection(Twitter.class);
@@ -141,8 +141,8 @@ public class UserSettingsController {
 	@RequestMapping(value = "updatePassword", method = RequestMethod.GET)
 	public ModelAndView updatePassword(HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		User user = userMasterMapper.getUserById(authUser.getId());
+		User user = userMasterMapper.getUserById(userCookieGenerator.getUserId(request));
+		if (user == null) throw new IllegalRequestException();
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", user);
@@ -155,8 +155,7 @@ public class UserSettingsController {
 	public ModelAndView updatePassword(
 			@Valid User user, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(user.getId())) throw new IllegalRequestException();
+		if (!userCookieGenerator.getUserId(request).equals(user.getId())) throw new IllegalRequestException();
 
 		try {
 			if (result.hasErrors()) {
@@ -179,8 +178,6 @@ public class UserSettingsController {
 	
 		userMasterMapper.updatePassword(user.getId(), user.getCryptoPassword());
 
-		request.getSession(false).setAttribute(User.SESSION_KEY_AUTH, userMasterMapper.getAuthUserById(user.getId()));
-
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "password");
 		modelAndView.addObject("updated", true);
@@ -192,12 +189,8 @@ public class UserSettingsController {
 	@RequestMapping(value = "updateProfile", method = RequestMethod.GET)
 	public ModelAndView updateProfile(HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		UserProfile userProfile = userProfileMapper.getUserProfileById(authUser.getId());
-		if (userProfile == null) {
-			userProfile = new UserProfile();
-			userProfile.setUserId(authUser.getId());
-		}
+		UserProfile userProfile = userProfileMapper.getUserProfileById(userCookieGenerator.getUserId(request));
+		if (userProfile == null) throw new IllegalRequestException();
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("userProfile", userProfile);
@@ -210,8 +203,7 @@ public class UserSettingsController {
 	public ModelAndView updateProfile(
 			@Valid UserProfile userProfile, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(userProfile.getUserId())) throw new IllegalRequestException();
+		if (!userCookieGenerator.getUserId(request).equals(userProfile.getUserId())) throw new IllegalRequestException();
 
 		try {
 			if (result.hasErrors()) {
@@ -245,9 +237,9 @@ public class UserSettingsController {
 	@RequestMapping(value = "updateSocial", method = RequestMethod.GET)
 	public ModelAndView updateSocial(HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		Integer authUserId = userCookieGenerator.getUserId(request);
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUserId.toString());
 		boolean facebookConnected = ((connectionRepository.findPrimaryConnection(Facebook.class)) != null);
 		boolean twitterConnected = ((connectionRepository.findPrimaryConnection(Twitter.class)) != null);
 
@@ -260,7 +252,7 @@ public class UserSettingsController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "afterConnect", method = RequestMethod.GET)
-	public ModelAndView afterConnect(HttpServletRequest request) throws IllegalRequestException {
+	public ModelAndView afterConnect() throws IllegalRequestException {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("activeTab", "social");
@@ -273,9 +265,9 @@ public class UserSettingsController {
 	@RequestMapping(value = "disconnect", method = RequestMethod.POST)
 	public ModelAndView disconnect(HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+		Integer authUserId = userCookieGenerator.getUserId(request);
 
-		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUser.getId().toString());
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUserId.toString());
 		if (request.getAttribute("disconnectFacebook") != null) {
 			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
@@ -294,12 +286,13 @@ public class UserSettingsController {
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView gotoMyPage(HttpServletRequest request) throws IllegalRequestException {
-
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
+System.out.println("userCookieGenerator.getUserId(request)="+userCookieGenerator.getUserId(request));
+		UserProfile userProfile = userProfileMapper.getUserProfileById(userCookieGenerator.getUserId(request));
+		if (userProfile == null) throw new IllegalRequestException();
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
-		modelAndView.addObject("userProfile", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("userProfileDisplay", userProfile);
+		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("editMode", true);
 		modelAndView.setViewName("user/show");
 		return modelAndView;
@@ -310,8 +303,8 @@ public class UserSettingsController {
 	public ModelAndView updateMyPage(
 		@Valid UserProfile userProfile, BindingResult result, HttpServletRequest request) throws IllegalRequestException {
 
-		User authUser = (User)request.getSession(false).getAttribute(User.SESSION_KEY_AUTH);
-		if (!authUser.getId().equals(userProfile.getUserId())) throw new IllegalRequestException();
+		Integer authUserId = userCookieGenerator.getUserId(request);
+		if (!authUserId.equals(userProfile.getUserId())) throw new IllegalRequestException();
 	
 		try {
 			if (result.hasErrors()) {
@@ -326,7 +319,7 @@ public class UserSettingsController {
 			}
 		} catch (InvalidInputException e) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
+			modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUserId));
 			modelAndView.addObject("userProfile", userProfile);
 			modelAndView.addObject("editMode", true);
 			modelAndView.setViewName("user/show");
@@ -334,10 +327,11 @@ public class UserSettingsController {
 		}
 	
 		userProfileMapper.updateUserProfile(userProfile);
+		userProfile = userProfileMapper.getUserProfileById(authUserId);
 	
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUser.getId()));
-		modelAndView.addObject("userProfile", userProfileMapper.getUserProfileById(authUser.getId()));
+		modelAndView.addObject("userProfileDisplay", userProfile);
+		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("editMode", true);
 		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("user/show");

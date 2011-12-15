@@ -10,7 +10,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 public final class ItsmeSignInAdapter implements SignInAdapter {
 
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
-		request.setAttribute("updated", "social", NativeWebRequest.SCOPE_REQUEST);
 		return null;
 	}
 

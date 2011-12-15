@@ -5,8 +5,10 @@ import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
+import its.me.baby.util.UserCookieGenerator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -30,6 +32,8 @@ public class HomeController {
 	@Autowired
 	private UserProfileMapper userProfileMapper;
 
+	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Transactional(rollbackForClassName="java.lang.Exception")
@@ -40,7 +44,6 @@ public class HomeController {
 		modelAndView.setViewName("top");
 		return modelAndView;
 	}
-
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "login", method= RequestMethod.GET)
@@ -54,18 +57,17 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "login", method= RequestMethod.POST)
-	public ModelAndView login(@Valid User user, BindingResult result, HttpServletRequest request) {
+	public ModelAndView login(@Valid User user, BindingResult result, HttpServletResponse response) {
 	
 		try {
-			if (result.hasErrors()) {
-				throw new InvalidInputException();
-			}
+			if (result.hasErrors()) throw new InvalidInputException();
+
 			User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
 			if (authUser == null) {
 				result.rejectValue("email", "error.login.failed");
 				throw new InvalidInputException();
 			}
-			request.getSession(true).setAttribute(User.SESSION_KEY_AUTH, authUser);
+			userCookieGenerator.addUserIdForTemporary(response, authUser.getId());
 
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("user/edit");
@@ -81,10 +83,9 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "logout", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView logout(HttpServletRequest request) {
+	public ModelAndView logout(HttpServletResponse response) {
 
-		HttpSession session = request.getSession(false);
-		if (session != null) session.invalidate();
+		userCookieGenerator.removeUserId(response);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("top");
@@ -93,7 +94,7 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "create", method = RequestMethod.GET)
-	public ModelAndView create(HttpServletRequest request) {
+	public ModelAndView create() {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", new User());
@@ -103,12 +104,11 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public ModelAndView create(@Valid User user, BindingResult result, HttpServletRequest request) {
+	public ModelAndView create(@Valid User user, BindingResult result, HttpServletResponse response) {
 
 		try {
-			if (result.hasErrors()) {
-				throw new InvalidInputException();
-			}
+			if (result.hasErrors()) throw new InvalidInputException();
+
 			if (userMasterMapper.countUserByEmail(user.getEmail(), null) != 0) {
 				result.rejectValue("email", "error.email.exists");
 				throw new InvalidInputException();
@@ -128,7 +128,7 @@ public class HomeController {
 		userProfileMapper.createUserProfile(userProfile);
 
 		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
-		request.getSession(true).setAttribute(User.SESSION_KEY_AUTH, authUser);
+		userCookieGenerator.addUserIdForTemporary(response, authUser.getId());
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("created", "true");

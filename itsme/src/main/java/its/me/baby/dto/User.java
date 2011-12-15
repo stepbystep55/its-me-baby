@@ -48,7 +48,6 @@ public class User {
 	}
 
 	/**
-	 * 
 	 * @return get the preceding string of at mark from email
 	 */
 	public String getNameFromEmail() {

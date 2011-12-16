@@ -77,7 +77,7 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
+	if($('#feed_message')!=null) $('#feed_message').fadeOut(5000);
 	<%-- choose tab --%>
 	<c:choose>
 		<c:when test="${activeTab == 'password'}">activatePasswordTab();</c:when>

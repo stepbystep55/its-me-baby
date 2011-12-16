@@ -35,7 +35,7 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
+	if($('#feed_message')!=null) $('#feed_message').fadeOut(5000);
 
 	$('#stream').colorbox({iframe:true, width:"82%", height:"80%"});
 
@@ -145,7 +145,7 @@ $(function(){
 	<script type="text/javascript">
 	<!--
 	$(function(){
-		$('#prof_edit_box').corner('10px');
+		$('#prof_edit_box').corner('5px');
 		$('#prof_tabs').tabs();
 		$('.minicolors').miniColors();
 		$('#prof_edit_toggle').click(function() { $('#prof_tabs').toggle('fast'); });

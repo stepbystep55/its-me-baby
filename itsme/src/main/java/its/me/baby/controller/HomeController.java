@@ -1,5 +1,7 @@
 package its.me.baby.controller;
 
+import java.util.Enumeration;
+
 import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.InvalidInputException;
@@ -7,7 +9,7 @@ import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
 import its.me.baby.util.UserCookieGenerator;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -38,8 +40,21 @@ public class HomeController {
 	
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView top() {
+	public ModelAndView top(HttpSession session) {
 
+		ServletContext context = session.getServletContext();
+		Enumeration<String> enm =  context.getAttributeNames();
+		System.out.println("attrs:");
+		while (enm.hasMoreElements()) {
+			String key = enm.nextElement();
+			System.out.println("key="+key+", val="+context.getAttribute(key));
+		}
+		enm =  context.getInitParameterNames();
+		System.out.println("inits:");
+		while (enm.hasMoreElements()) {
+			String key = enm.nextElement();
+			System.out.println("key="+key+", val="+context.getAttribute(key));
+		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("top");
 		return modelAndView;
@@ -58,7 +73,7 @@ public class HomeController {
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "login", method= RequestMethod.POST)
 	public ModelAndView login(@Valid User user, BindingResult result, HttpServletResponse response) {
-	
+
 		try {
 			if (result.hasErrors()) throw new InvalidInputException();
 
@@ -127,12 +142,14 @@ public class HomeController {
 		userProfile.setName(user.getNameFromEmail());
 		userProfileMapper.createUserProfile(userProfile);
 
-		User authUser = userMasterMapper.getAuthUserByEmailAndCryptoPassword(user.getEmail(), user.getCryptoPassword());
-		userCookieGenerator.addUserIdForTemporary(response, authUser.getId());
+		userCookieGenerator.addUserIdForTemporary(response, user.getId());
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("created", "true");
-		modelAndView.setViewName("forward:gotoMyPage");
+		modelAndView.addObject("userProfileDisplay", userProfile);
+		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("created", true);
+		modelAndView.addObject("editMode", true);
+		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}
 

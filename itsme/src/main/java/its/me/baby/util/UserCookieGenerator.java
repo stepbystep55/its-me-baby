@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.CookieGenerator;
 
 public class UserCookieGenerator {
@@ -19,31 +21,65 @@ public class UserCookieGenerator {
 	//@Value("#{encryption.salt}")
 	private String encryptionSalt = "5c0744940b5c369b";
 
-	private CookieGenerator cookieGenerator = new CookieGenerator();
+	private CookieGenerator userIdCookieGenerator = new CookieGenerator();
 
 	private TextEncryptor textEncryptor = Encryptors.text(encryptionPassword, encryptionSalt);
 
 	private static final int ONE_WEEK = 7 * 24 * 60 * 60;
 
+	// cookie control in case of in-momory DB
+	// -->
+	private static final String KEY_UPDATED_AT = "updatedAt";
+	private CookieGenerator updatedAtCookieGenerator = new CookieGenerator();
+	// <--
+
 	public UserCookieGenerator() {
-		this.cookieGenerator.setCookieName(User.SESSION_KEY_AUTH);
+		this.userIdCookieGenerator.setCookieName(User.SESSION_KEY_AUTH);
+		this.updatedAtCookieGenerator.setCookieName(KEY_UPDATED_AT);
 	}
 
 	public void addUserIdForTemporary(HttpServletResponse response, Integer userId) {
-		this.cookieGenerator.setCookieMaxAge(-1);
-		this.cookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		this.userIdCookieGenerator.setCookieMaxAge(-1);
+		this.userIdCookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		// cookie control in case of in-momory DB
+		// -->
+		this.updatedAtCookieGenerator.setCookieMaxAge(-1);
+		this.updatedAtCookieGenerator.addCookie(response, ""+System.currentTimeMillis());
+		// <--
 	}
 
 	public void addUserIdForOneWeek(HttpServletResponse response, Integer userId) {
-		this.cookieGenerator.setCookieMaxAge(ONE_WEEK);
-		this.cookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
+		this.userIdCookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		// cookie control in case of in-momory DB
+		// -->
+		this.updatedAtCookieGenerator.setCookieMaxAge(ONE_WEEK);
+		this.updatedAtCookieGenerator.addCookie(response, ""+System.currentTimeMillis());
+		// <--
 	}
 
 	public void removeUserId(HttpServletResponse response) {
-		this.cookieGenerator.addCookie(response, "");
+		this.userIdCookieGenerator.addCookie(response, "");
+		// cookie control in case of in-momory DB
+		// -->
+		this.updatedAtCookieGenerator.addCookie(response, "");
+		// <--
 	}
-	
+
 	public Integer getUserId(HttpServletRequest request) {
+		// cookie control in case of in-momory DB
+		WebApplicationContext context
+			= WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
+		long startupTime = context.getStartupDate();
+		long updatedAt = 0;
+		for (Cookie cookie : request.getCookies()) {
+			if (cookie.getName().equals(KEY_UPDATED_AT)) {
+				updatedAt = Long.parseLong(cookie.getValue());
+				break;
+			}
+		}
+		if (updatedAt < startupTime) return null;
+		// <--
 		Integer userId = null;
 		for (Cookie cookie : request.getCookies()) {
 			if (cookie.getName().equals(User.SESSION_KEY_AUTH)) {

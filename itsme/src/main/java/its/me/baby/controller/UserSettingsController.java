@@ -286,7 +286,7 @@ public class UserSettingsController {
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView gotoMyPage(HttpServletRequest request) throws IllegalRequestException {
-System.out.println("userCookieGenerator.getUserId(request)="+userCookieGenerator.getUserId(request));
+
 		UserProfile userProfile = userProfileMapper.getUserProfileById(userCookieGenerator.getUserId(request));
 		if (userProfile == null) throw new IllegalRequestException();
 

@@ -10,7 +10,7 @@
 			<div class="grid_5 form_input_stretch">
 				<form:input path="name" maxlength="32" />&nbsp;
 			</div>
-			<div class="grid_6">
+			<div id="errmsg_name" class="grid_6">
 				<spring:hasBindErrors name="userProfile"><form:errors path="name" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
@@ -29,7 +29,7 @@
 			<div class="grid_5  form_input_stretch">
 				<form:input path="title" maxlength="128" />&nbsp;
 			</div>
-			<div class="grid_6">
+			<div id="errmsg_title" class="grid_6">
 				<spring:hasBindErrors name="userProfile"><form:errors path="title" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
@@ -48,7 +48,7 @@
 			<div class="grid_5 form_input_stretch">
 				<form:textarea path="content" rows="5" />&nbsp;
 			</div>
-			<div class="grid_6">
+			<div id="errmsg_content" class="grid_6">
 				<spring:hasBindErrors name="userProfile"><form:errors path="content" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
@@ -94,7 +94,7 @@
 			<div class="grid_5  form_input_stretch">
 				<form:input path="bgImgUrl" maxlength="512" />&nbsp;
 			</div>
-			<div class="grid_6">
+			<div id="errmsg_bgurl" class="grid_6">
 				<spring:hasBindErrors name="userProfile"><form:errors path="bgImgUrl" cssStyle="color:red" /></spring:hasBindErrors>
 			</div>
 			<div class="clear"></div>
@@ -129,8 +129,23 @@ $(function(){
 				required: true,
 				minlength: 3
 			},
+			nameFontSize: {
+				required: true,
+				number: true
+			},
+			title: {
+				minlength: 128
+			},
+			titleFontSize: {
+				required: true,
+				number: true
+			},
 			content: {
 				maxlength: 2048
+			},
+			contentFontSize: {
+				required: true,
+				number: true
 			},
 			bgImgUrl: {
 				url:true 
@@ -141,15 +156,55 @@ $(function(){
 				required: "Please provide a name",
 				minlength: "must be at least 3 characters long"
 			},
+			nameFontSize: {
+				required: "Please provide the font size",
+				number: "The font size must be number"
+			},
+			title: {
+				minlength: "must be at most 128 characters long"
+			},
+			titleFontSize: {
+				required: "Please provide the font size",
+				number: "The font size must be number"
+			},
 			content: {
 				maxlength: "must be at most 2048 characters long"
+			},
+			contentFontSize: {
+				required: "Please provide the font size",
+				number: "The font size must be number"
 			},
 			bgImgUrl: {
 				url: "Please enter a valid url"
 			}
 		},
 		errorPlacement: function(error, element) {
-			error.appendTo( element.parent("div").next("div") );
+			switch (element.attr('id')) {
+			case 'name':
+				error.appendTo($('#errmsg_name'));
+				break;
+			case 'nameFontSize':
+				error.appendTo($('#errmsg_name'));
+				break;
+			case 'title':
+				error.appendTo($('#errmsg_title'));
+				break;
+			case 'titleFontSize':
+				error.appendTo($('#errmsg_title'));
+				break;
+			case 'content':
+				error.appendTo($('#errmsg_content'));
+				break;
+			case 'contentFontSize':
+				error.appendTo($('#errmsg_content'));
+				break;
+			case 'bgImgUrl':
+				error.appendTo($('#errmsg_bgurl'));
+				break;
+			default:
+				break;
+			}
+			//error.appendTo( element.parent("div").next("div") );
 		}
 	});
 	$('.minicolors').miniColors();

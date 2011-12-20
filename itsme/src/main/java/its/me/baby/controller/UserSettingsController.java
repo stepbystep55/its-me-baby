@@ -11,7 +11,6 @@ import its.me.baby.util.UserCookieGenerator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -284,7 +283,17 @@ public class UserSettingsController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "newMyPage", method={RequestMethod.GET})
+	public ModelAndView newMyPage(HttpServletRequest request) throws IllegalRequestException {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("created", true);
+		modelAndView.setViewName("forward:gotoMyPage");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET})
 	public ModelAndView gotoMyPage(HttpServletRequest request) throws IllegalRequestException {
 
 		UserProfile userProfile = userProfileMapper.getUserProfileById(userCookieGenerator.getUserId(request));

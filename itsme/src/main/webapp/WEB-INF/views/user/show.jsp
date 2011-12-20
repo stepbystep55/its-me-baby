@@ -35,7 +35,7 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	if($('#feed_message')!=null) $('#feed_message').fadeOut(5000);
+	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
 
 	$('#stream').colorbox({iframe:true, width:"82%", height:"80%"});
 

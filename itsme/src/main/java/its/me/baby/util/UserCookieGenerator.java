@@ -59,20 +59,23 @@ public class UserCookieGenerator {
 	}
 
 	public void removeUserId(HttpServletResponse response) {
-		this.userIdCookieGenerator.addCookie(response, "");
+		this.userIdCookieGenerator.removeCookie(response);
 		// cookie control in case of in-momory DB
 		// -->
-		this.updatedAtCookieGenerator.addCookie(response, "");
+		this.updatedAtCookieGenerator.removeCookie(response);
 		// <--
 	}
 
 	public Integer getUserId(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null) return null;
+
 		// cookie control in case of in-momory DB
 		WebApplicationContext context
 			= WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
 		long startupTime = context.getStartupDate();
 		long updatedAt = 0;
-		for (Cookie cookie : request.getCookies()) {
+		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(KEY_UPDATED_AT)) {
 				updatedAt = Long.parseLong(cookie.getValue());
 				break;
@@ -81,7 +84,7 @@ public class UserCookieGenerator {
 		if (updatedAt < startupTime) return null;
 		// <--
 		Integer userId = null;
-		for (Cookie cookie : request.getCookies()) {
+		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(User.SESSION_KEY_AUTH)) {
 				userId = new Integer(textEncryptor.decrypt(cookie.getValue()));
 				break;

@@ -111,10 +111,7 @@
 			<div class="grid_16">&nbsp;</div>
 
 			<div class="clear"></div>
-			<div class="grid_8 form_button align_right">
-				<input type="button" value="preview"/>
-			</div>
-			<div class="grid_2 form_button align_right">
+			<div class="grid_10 form_button align_right">
 				<input type="submit" name="updateProfile" value="update"/>
 			</div>
 			<div class="grid_6">&nbsp;</div>

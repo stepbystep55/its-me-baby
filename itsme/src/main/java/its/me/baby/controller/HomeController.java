@@ -1,7 +1,5 @@
 package its.me.baby.controller;
 
-import java.util.Enumeration;
-
 import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
 import its.me.baby.exception.InvalidInputException;
@@ -9,9 +7,7 @@ import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
 import its.me.baby.util.UserCookieGenerator;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -37,24 +33,11 @@ public class HomeController {
 	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView top(HttpSession session) {
+	public ModelAndView top() {
 
-		ServletContext context = session.getServletContext();
-		Enumeration<String> enm =  context.getAttributeNames();
-		System.out.println("attrs:");
-		while (enm.hasMoreElements()) {
-			String key = enm.nextElement();
-			System.out.println("key="+key+", val="+context.getAttribute(key));
-		}
-		enm =  context.getInitParameterNames();
-		System.out.println("inits:");
-		while (enm.hasMoreElements()) {
-			String key = enm.nextElement();
-			System.out.println("key="+key+", val="+context.getAttribute(key));
-		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("top");
 		return modelAndView;
@@ -85,12 +68,12 @@ public class HomeController {
 			userCookieGenerator.addUserIdForTemporary(response, authUser.getId());
 
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("user/edit");
+			modelAndView.setViewName("redirect:gotoMyPage");
 			return modelAndView;
 
 		} catch (InvalidInputException e) {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("user", new User());
+			modelAndView.addObject("user", user);
 			modelAndView.setViewName("login");
 			return modelAndView;
 		}
@@ -103,7 +86,7 @@ public class HomeController {
 		userCookieGenerator.removeUserId(response);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("top");
+		modelAndView.setViewName("redirect:/");
 		return modelAndView;
 	}
 
@@ -145,11 +128,7 @@ public class HomeController {
 		userCookieGenerator.addUserIdForTemporary(response, user.getId());
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("userProfileDisplay", userProfile);
-		modelAndView.addObject("userProfile", userProfile);
-		modelAndView.addObject("created", true);
-		modelAndView.addObject("editMode", true);
-		modelAndView.setViewName("user/show");
+		modelAndView.setViewName("redirect:newMyPage");
 		return modelAndView;
 	}
 

@@ -40,11 +40,11 @@ $(function(){
 	$('#stream').colorbox({iframe:true, width:"82%", height:"80%"});
 
 	// utility functions
-	//referece from http://stackoverflow.com/questions/210717/using-jquery-to-center-a-div-on-the-screen
 	jQuery.fn.setFont = function (size, color) {
 		this.css('font-size', size+'px');
 		this.css('color', color);
 	};
+	//referece from http://stackoverflow.com/questions/210717/using-jquery-to-center-a-div-on-the-screen
 	jQuery.fn.setPos = function (pos) {
 		this.css('position','absolute');
 		if (pos.match(/top/)) {
@@ -114,8 +114,33 @@ $(function(){
 		z-index: 99;
 		width: 500px;
 		padding: 5px 10px;
-		background-color: transparent;
+		background-color: #FFFFFF;
 		border: 3px solid #666666;
+	}
+	#prof_menu {
+		background-color: #000000;
+		padding: 3px;
+		width: 80px;
+		text-align: center;
+	}
+	#prof_menu a:link, #prof_menu a:visited, #prof_menu a:hover, #prof_menu a:active {
+		color: #FFFFFF;
+	}
+	#prof_tab_btns {
+		margin: 30px 0;
+	}
+	#prof_tab_btns ul {
+		margin:0;
+		padding:0;
+		list-style:none;
+		height:30px;
+	}
+	#prof_tab_btns li {
+		float:left;
+		width:120px;
+		margin:0 20px 0 0;
+		padding:5px 0 0 0;
+		text-align:center;
 	}
 	#prof_edit_tbl {
 		/*border-spacing: 10px 50px;*/
@@ -146,9 +171,24 @@ $(function(){
 	<!--
 	$(function(){
 		$('#prof_edit_box').corner('5px');
-		$('#prof_tabs').tabs();
+		$('#prof_menu').corner('20px');
 		$('.minicolors').miniColors();
-		$('#prof_edit_toggle').click(function() { $('#prof_tabs').toggle('fast'); });
+		$('#prof_edit_toggle').click(function() {
+			$('#prof_tabs').toggle('fast', function() {
+				if ($('#prof_edit_toggle').text() == 'Close') {
+					$('#prof_edit_toggle').text('Open');
+				} else {
+					$('#prof_edit_toggle').text('Close');
+				}
+			});
+		});
+
+		$('#edit_content').click(activateTab);
+		$('#edit_box').click(activateTab);
+		$('#edit_bg').click(activateTab);
+
+		$('#edit_content').trigger('click');
+
 		// preview
 		$('#previewContentBtn').click(function() {
 			$('#user_name').text($('#name').val());
@@ -166,6 +206,46 @@ $(function(){
 			$('#background').setBg($('#bgImgUrl').val(), $('#bgImgLayout option:selected').val());
 		});
 	});
+
+	function activateTab(){
+		switch ($(this).attr('id')) {
+		case 'edit_content':
+			$('#prof_edit_tab1').show();
+			$('#prof_edit_tab2').hide();
+			$('#prof_edit_tab3').hide();
+			break;
+		case 'edit_box':
+			$('#prof_edit_tab1').hide();
+			$('#prof_edit_tab2').show();
+			$('#prof_edit_tab3').hide();
+			break;
+		case 'edit_bg':
+			$('#prof_edit_tab1').hide();
+			$('#prof_edit_tab2').hide();
+			$('#prof_edit_tab3').show();
+			break;
+		default:
+			$('#prof_edit_tab1').show();
+			$('#prof_edit_tab2').hide();
+			$('#prof_edit_tab3').hide();
+			break;
+		}
+		$('p[class="tab_button_disabled"]').removeClass('tab_button_disabled').addClass('tab_button');
+		$(this).removeClass('tab_button').addClass('tab_button_disabled');
+		$('p[class="tab_button"]').each(function(){
+			var bgColor = $(this).css('backgroundColor');
+			$(this).hover(function(){
+				$(this).css({ backgroundColor:'#E6E6FA' });
+			},
+			function(){
+				$(this).css({ backgroundColor:bgColor });
+			});
+		});
+		$('p[class="tab_button_disabled"]').each(function() {
+			$(this).unbind('hover');
+			$(this).css({ backgroundColor: ''});
+		});
+	}
 	// -->
 	</script>
 </c:if>
@@ -178,7 +258,7 @@ $(function(){
 
 <div id="feed_message">
 	<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>
-	<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated" /></span></c:if>
+	<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated.page" /></span></c:if>
 </div>
 
 <div class="container_12">
@@ -199,21 +279,22 @@ $(function(){
 
 <c:if test="${editMode}">
 	<div id="prof_edit_box">
-		<div><a id="prof_edit_toggle" href="#">Open&nbsp;/&nbsp;Close</a></div>
-	
+		<div id="prof_menu"><a id="prof_edit_toggle" href="#">Close</a></div>
 		<form:form modelAttribute="userProfile" action="updateMyPage" method="post">
 		<form:hidden path="userId" />
 		<div id="prof_tabs">
-			<ul>
-				<li><a href="#prof_edit_tab1"><span>Content</span></a></li>
-				<li><a href="#prof_edit_tab2"><span>Box</span></a></li>
-				<li><a href="#prof_edit_tab3"><span>Backgrounds</span></a></li>
-			</ul>
+			<div id="prof_tab_btns">
+				<ul>
+					<li><p id="edit_content" class="tab_button_disabled">Content</p></li>
+					<li><p id="edit_box" class="tab_button">Box</p></li>
+					<li><p id="edit_bg" class="tab_button">Backgrounds</p></li>
+				</ul>
+			</div>
 		
 			<div id="prof_edit_tab1">
 				<table id="prof_edit_tbl">
 					<tr>
-						<td class="prof_edit_label">Name</td>
+						<td class="prof_edit_label align_right">Name</td>
 						<td class="prof_edit_txtinput"><form:input path="name" maxlength="32" /></td>
 					</tr>
 					<tr>
@@ -227,7 +308,7 @@ $(function(){
 					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					<tr>
-						<td class="prof_edit_label">Title</td>
+						<td class="prof_edit_label align_right">Title</td>
 						<td class="prof_edit_txtinput"><form:input path="title" maxlength="128" /></td>
 					</tr>
 					<tr>
@@ -241,7 +322,7 @@ $(function(){
 					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					<tr>
-						<td class="prof_edit_label">Content</td>
+						<td class="prof_edit_label align_right">Content</td>
 						<td class="prof_edit_txtinput"><form:textarea path="content" rows="5" /></td>
 					</tr>
 					<tr>
@@ -264,7 +345,7 @@ $(function(){
 			<div id="prof_edit_tab2">
 				<table id="prof_edit_tbl">
 					<tr>
-						<td class="prof_edit_label">Box</td>
+						<td class="prof_edit_label align_right">Box</td>
 						<td>
 							<span class="prof_edit_sublabel">Position</span>
 						</td>
@@ -299,7 +380,7 @@ $(function(){
 			<div id="prof_edit_tab3">
 				<table id="prof_edit_tbl">
 					<tr>
-						<td class="prof_edit_label">Backgrounds</td>
+						<td class="prof_edit_label align_right">Backgrounds</td>
 						<td>
 							<span class="prof_edit_sublabel">URL</span>
 						</td>

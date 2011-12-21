@@ -23,7 +23,7 @@
 
 <div id="feed_message">
 	<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>
-	<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated" /></span></c:if>
+	<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated.account" /></span></c:if>
 </div>
 
 <div id="page_content">
@@ -53,7 +53,6 @@
 		<div class="clear"></div>
 		<div id="form_area">
 		</div>
-
 	</div>
 
 	<div class="container_16">
@@ -78,6 +77,7 @@
 <!--
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
+
 	$('#edit_account').click(activateTab);
 	$('#edit_password').click(activateTab);
 	$('#edit_profile').click(activateTab);

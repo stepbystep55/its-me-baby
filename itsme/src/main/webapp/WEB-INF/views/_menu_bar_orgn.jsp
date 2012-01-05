@@ -16,12 +16,20 @@
 			<div class="grid_1 align_right"><a class="normal" href="<%=request.getContextPath()%>/login">Sign in</a></div>
 
 		<% } else { %>
-			<div class="grid_10 align_right">
-				<a class="normal" href="<%= request.getContextPath() %>/gotoMyPage">My page</a>
-				&nbsp;&nbsp;&nbsp;
-				<a class="normal" href="<%= request.getContextPath() %>/edit">Settings</a>
-				&nbsp;&nbsp;&nbsp;
-				<a class="normal" href="<%= request.getContextPath() %>/logout">Sign out</a>
+			<div class="grid_9">&nbsp;</div>
+			<div class="grid_1 align_right">
+				<ul class="dropdown">
+					<li><a class="normal" href="#">Account</a>
+						<ul class="sub_menu">
+						<%--
+							<li><a class="normal" href="<%= request.getContextPath() %>/show/<%=authUser.getId() %>">My page</a></li>
+						--%>
+							<li><a class="normal" href="<%= request.getContextPath() %>/gotoMyPage">My page</a></li>
+							<li><a class="normal" href="<%= request.getContextPath() %>/edit">Settings</a></li>
+							<li><a class="normal" href="<%= request.getContextPath() %>/logout">Sign out</a></li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 		<% } %>
 

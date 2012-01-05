@@ -40,7 +40,7 @@ public class UserCookieGenerator {
 
 	public void addUserIdForTemporary(HttpServletResponse response, Integer userId) {
 		this.userIdCookieGenerator.setCookieMaxAge(-1);
-		this.userIdCookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		this.userIdCookieGenerator.addCookie(response, ""+getEncrypted(new Integer(userId.toString()), false));
 		// cookie control in case of in-momory DB
 		// -->
 		this.updatedAtCookieGenerator.setCookieMaxAge(-1);
@@ -50,7 +50,7 @@ public class UserCookieGenerator {
 
 	public void addUserIdForOneWeek(HttpServletResponse response, Integer userId) {
 		this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
-		this.userIdCookieGenerator.addCookie(response, textEncryptor.encrypt(userId.toString()));
+		this.userIdCookieGenerator.addCookie(response, ""+getEncrypted(new Integer(userId.toString()), false));
 		// cookie control in case of in-momory DB
 		// -->
 		this.updatedAtCookieGenerator.setCookieMaxAge(ONE_WEEK);
@@ -86,10 +86,23 @@ public class UserCookieGenerator {
 		Integer userId = null;
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(User.SESSION_KEY_AUTH)) {
-				userId = new Integer(textEncryptor.decrypt(cookie.getValue()));
+				userId = getEncrypted(new Integer(cookie.getValue()), true);
 				break;
 			}
 		}
 		return userId;
+	}
+
+	private Integer getEncrypted(Integer target, boolean isDecryption) {
+
+		if (isDecryption) {
+			//return new Integer(textEncryptor.decrypt(cookie.getValue()));
+			// the above code doesn't work with the standard jvm's security policy, then as below
+			return ((target - 7) / 330);
+		} else {
+			//return new Integer(textEncryptor.encrypt(target.toString()));
+			// the above code doesn't work with the standard jvm's security policy, then as below
+			return target * 330 + 7;
+		}
 	}
 }

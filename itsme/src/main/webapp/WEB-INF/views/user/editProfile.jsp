@@ -131,7 +131,7 @@ $(function(){
 				number: true
 			},
 			title: {
-				minlength: 128
+				maxlength: 128
 			},
 			titleFontSize: {
 				required: true,

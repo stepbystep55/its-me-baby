@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="its.me.baby.mapper.UserStickyMapper">
+
+	<resultMap id="userSticky" type="its.me.baby.dto.UserSticky">
+		<id property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="positionTop" column="POSITION_TOP"/>
+		<result property="positionLeft" column="POSITION_LEFT"/>
+		<result property="content" column="CONTENT"/>
+	</resultMap>
+
+	<select id="listByUserId" parameterType="Integer" resultMap="userSticky">
+		SELECT
+			ID,
+			USER_ID,
+			POSITION_TOP,
+			POSITION_LEFT,
+			CONTENT
+		FROM
+			USER_STICKY
+		WHERE
+			USER_ID = #{userId}
+	</select>
+
+	<insert id="create" parameterType="its.me.baby.dto.UserSticky">
+		INSERT INTO USER_STICKY
+		(
+			ID,
+			USER_ID,
+			POSITION_TOP,
+			POSITION_LEFT,
+			CONTENT
+		)
+		VALUES
+		(
+			#{id},
+			#{userId},
+			#{positionTop},
+			#{positionLeft},
+			#{content}
+		)
+	</insert>
+
+	<update id="update" parameterType="its.me.baby.dto.UserSticky">
+		UPDATE USER_STICKY
+			SET
+				USER_ID = #{userId},
+				POSITION_TOP = #{positionTop},
+				POSITION_LEFT = #{positionLeft},
+				CONTENT = #{content}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<delete id="deleteByUserId" parameterType="Integer">
+		DELETE FROM 
+			USER_STICKY
+		WHERE 
+			USER_ID = #{userId}
+	</delete>
+</mapper>

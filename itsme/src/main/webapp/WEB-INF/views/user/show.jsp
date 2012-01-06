@@ -34,57 +34,53 @@
 
 <script type="text/javascript">
 <!--
+// utility functions
+jQuery.fn.setFont = function (size, color) {
+	this.css('font-size', size+'px');
+	this.css('color', color);
+};
+//referece from http://stackoverflow.com/questions/210717/using-jquery-to-center-a-div-on-the-screen
+jQuery.fn.setPos = function (pos) {
+	this.css('position','absolute');
+	if (pos.match(/top/)) {
+		this.css('top', (($(window).height() - this.outerHeight()) / 4));
+	} else if (pos.match(/middle/)) {
+		this.css('top', (($(window).height() - this.outerHeight()) / 2));
+	} else if (pos.match(/bottom/)) {
+		this.css('top', (($(window).height() - this.outerHeight())*3 / 4));
+	}
+	if (pos.match(/left/)) {
+		this.css('left', (($(window).width() - this.outerWidth()) / 4));
+	} else if (pos.match(/center/)) {
+		this.css('left', (($(window).width() - this.outerWidth()) / 2));
+	} else if (pos.match(/right/)) {
+		this.css('left', (($(window).width() - this.outerWidth())*3 / 4));
+	}
+	return this;
+};
+jQuery.fn.setBg = function (url, layout) {
+	if (url == '') {
+		url = '<%= request.getContextPath() %>/resources/img/sample/brick01.jpg';
+		layout = 'tile';
+	}
+	if (layout == 'center') {
+		this.css('background', 'url('+url+') no-repeat fixed 50% 50%').html('');
+	} else if (layout == 'tile') {
+		this.css('background', 'url('+url+') repeat fixed 0 30px');
+		this.html('');
+	} else if (layout == 'stretch') {
+		this.css('background', '');
+		this.html('<img src="'+url+'" class="stretch" alt="background image" />');
+	}
+};
+jQuery.fn.setBgColor = function (color, isTransparent) {
+	this.css('background-color', ((isTransparent == 'true') ? 'transparent' : color));
+};
+
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
 
 	$('#stream').colorbox({iframe:true, width:"82%", height:"80%"});
-
-	// utility functions
-	jQuery.fn.setFont = function (size, color) {
-		this.css('font-size', size+'px');
-		this.css('color', color);
-	};
-	//referece from http://stackoverflow.com/questions/210717/using-jquery-to-center-a-div-on-the-screen
-	jQuery.fn.setPos = function (pos) {
-		this.css('position','absolute');
-		if (pos.match(/top/)) {
-			this.css('top', (($(window).height() - this.outerHeight()) / 4));
-		} else if (pos.match(/middle/)) {
-			this.css('top', (($(window).height() - this.outerHeight()) / 2));
-		} else if (pos.match(/bottom/)) {
-			this.css('top', (($(window).height() - this.outerHeight())*3 / 4));
-		}
-		if (pos.match(/left/)) {
-			this.css('left', (($(window).width() - this.outerWidth()) / 4));
-		} else if (pos.match(/center/)) {
-			this.css('left', (($(window).width() - this.outerWidth()) / 2));
-		} else if (pos.match(/right/)) {
-			this.css('left', (($(window).width() - this.outerWidth())*3 / 4));
-		}
-		return this;
-	};
-	jQuery.fn.setBg = function (url, layout) {
-		if (url == '') {
-			url = '<%= request.getContextPath() %>/resources/img/sample/brick01.jpg';
-			layout = 'tile';
-		}
-		if (layout == 'center') {
-			this.css('background', 'url('+url+') no-repeat fixed 50% 50%');
-			this.html('');
-		} else if (layout == 'tile') {
-			this.css('background', 'url('+url+') repeat fixed 0 30px');
-			this.html('');
-		} else if (layout == 'stretch') {
-			this.css('background', '');
-			this.html('<img src="'+url+'" class="stretch" alt="background image" />');
-		}
-	};
-	jQuery.fn.setBgColor = function (color, isTransparent) {
-		if (isTransparent == 'true') {
-			color = 'transparent';
-		}
-		this.css('background-color', color);
-	};
 
 	// initialize page
 	$('#background').setBg('${userProfileDisplay.bgImgUrl}', '${userProfileDisplay.bgImgLayout}');
@@ -94,7 +90,6 @@ $(function(){
 	$('#user_content').setFont('${userProfileDisplay.contentFontSize}', '${userProfileDisplay.contentFontColor}');
 	$('#user_profile').setBgColor('${userProfileDisplay.profileBoxColor}', '${userProfileDisplay.profileBoxTransparent}');
 	$('#user_profile').setPos('${userProfileDisplay.profileBoxPosition}');
-
 });
 // -->
 </script>

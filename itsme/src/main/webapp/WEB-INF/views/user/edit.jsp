@@ -109,8 +109,8 @@ function activateTab(){
 		type: "GET",
 		url: url,
 		cache: false,
-		success: function(formHtml){
-			$("#form_area").html(formHtml);
+		success: function(html){
+			$("#form_area").html(html);
 		}
 	});
 	$('p[class="tab_button_disabled"]').removeClass('tab_button_disabled').addClass('tab_button');

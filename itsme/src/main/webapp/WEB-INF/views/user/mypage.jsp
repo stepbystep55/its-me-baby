@@ -23,9 +23,15 @@
 #background { width: 100%; height: 100%; position: absolute; left: 0px; top: 0px; z-index: -1; }
 .stretch {width:100%;height:auto;min-height:100%;}
 
-/* profile box */
-#user_profile { z-index:9; padding: 20px 15px; }
-#user_content { margin: 5px 0; }
+/* sticky */
+.sticky {
+    width: 250px;
+    height: 50px;
+    background-color: #FFFFFF;
+    z-index:9;
+    padding:20px 15px;
+    cursor: pointer;
+}
 
 // -->
 	</style>
@@ -60,32 +66,31 @@
 	</style>
 <script type="text/javascript">
 <!--
-jQuery.fn.setBg = function (url, layout) {
+function applyPgBg(url, layout) {
 	if (url == '') {
 		url = '<%= request.getContextPath() %>/resources/img/sample/brick01.jpg';
 		layout = 'tile';
 	}
 	switch (layout) {
 		case 'center':
-			this.css('background', 'url('+url+') no-repeat fixed 50% 50%');
-			this.html('');
+			$('#background').css('background', 'url('+url+') no-repeat fixed 50% 50%').html('');
 			break;
 		case 'tile':
-			this.css('background', 'url('+url+') repeat fixed 0 30px');
-			this.html('');
+			$('#background').css('background', 'url('+url+') repeat fixed 0 30px').html('');
 			break;
 		case 'stretch':
-			this.css('background', '');
-			this.html('<img src="'+url+'" class="stretch" alt="background image" />');
+			$('#background').css('background', '').html('<img src="'+url+'" class="stretch" alt="background image" />');
 			break;
 	}
-};
+}
 jQuery.fn.setBgColor = function (color, isTransparent) {
-	if (isTransparent == 'true') color = 'transparent';
-	this.css('background-color', color);
+	this.css('background-color', ((isTransparent == 'true') ? 'transparent' : color));
 };
+var stickyForm = '<textarea></textarea>';
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
+
+	applyPgBg('${userProfileDisplay.bgImgUrl}', '${userProfileDisplay.bgImgLayout}');
 
 	$('#prof_edit_toggle').click(function() {
 		$('#prof_tabs').toggle('fast', function() {
@@ -98,6 +103,33 @@ $(function(){
 	});
 
 	$('#new_sticky').click(function() {
+		$('<div class="sticky">Drag & Double Click!</div>')
+		.appendTo('body')
+		.resizable()
+		.draggable()
+		.dblclick(function() {
+			$(this).wrapInner(stickyForm)
+			.find('textarea')
+			.focus()
+			.select()
+			.blur(function() {
+				$(this).parent().html($(this).val());
+				$.ajax({
+					type: "GET",
+					url: url,
+					data: url,
+					cache: false,
+					success: function(html){
+						$("#feed_message > span").html(html);
+						$('#feed_message').fadeOut(3000);
+					}
+				});
+			});
+		});
+	});
+
+	$('#preview_bg_btn').click(function() {
+		applyPgBg($('#bgImgUrl').val(), $('#bgImgLayout option:selected').val());
 	});
 });
 // -->
@@ -105,19 +137,23 @@ $(function(){
 
 </head>
 <body>
-<div id="background">
-</div>
+<div id="background"></div>
+
 <jsp:include page="../_menu_bar.jsp"/>
 
 <div id="feed_message">
-	<c:if test="${created}"><span class="confirm"><spring:message code="result.created" /></span></c:if>
-	<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated.page" /></span></c:if>
+	<span class="confirm">
+	<c:if test="${created}"><spring:message code="result.created" /></c:if>
+	<c:if test="${updated}"><spring:message code="result.updated.page" /></c:if>
+	</span>
 </div>
 
 <c:if test="${editMode}">
 	<div id="edit_box">
 		<div id="edit_bar"><a id="prof_edit_toggle" href="#">Close</a></div>
 		<div id="edit_ctrl">
+		<form:form modelAttribute="userProfile" action="updateMyPage" method="post">
+		<form:hidden path="userId" />
 			<table id="edit_tbl">
 				<tr>
 					<td class="edit_label align_right">Backgrounds</td>
@@ -144,8 +180,11 @@ $(function(){
 				</tr>
 			</table>
 			<input id="new_sticky" type="button" value="new sticky" />
+			<input type="submit" name="updateMyPage" value="update"/>
+		</form:form>
 		</div>
 	</div>
 </c:if>
+
 </body>
 </html>

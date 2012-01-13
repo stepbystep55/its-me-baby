@@ -2,15 +2,19 @@ package its.me.baby.controller;
 
 import its.me.baby.dto.User;
 import its.me.baby.dto.UserProfile;
+import its.me.baby.dto.UserSticky;
 import its.me.baby.exception.IllegalRequestException;
 import its.me.baby.exception.InvalidInputException;
 import its.me.baby.mapper.UserMasterMapper;
 import its.me.baby.mapper.UserProfileMapper;
+import its.me.baby.mapper.UserStickyMapper;
 import its.me.baby.util.UserCookieGenerator;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -26,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -42,6 +47,9 @@ public class UserSettingsController {
 
 	@Autowired
 	private UserProfileMapper userProfileMapper;
+
+	@Autowired
+	private UserStickyMapper userStickyMapper;
 
 	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
 
@@ -296,14 +304,17 @@ public class UserSettingsController {
 	@RequestMapping(value = "gotoMyPage", method={RequestMethod.GET})
 	public ModelAndView gotoMyPage(HttpServletRequest request) throws IllegalRequestException {
 
-		UserProfile userProfile = userProfileMapper.getUserProfileById(userCookieGenerator.getUserId(request));
+		Integer authUserId = userCookieGenerator.getUserId(request);
+
+		UserProfile userProfile = userProfileMapper.getUserProfileById(authUserId);
 		if (userProfile == null) throw new IllegalRequestException();
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("userProfileDisplay", userProfile);
 		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("userStickyList", userStickyMapper.listByUserId(authUserId));
 		modelAndView.addObject("editMode", true);
-		modelAndView.setViewName("user/show");
+		modelAndView.setViewName("user/mypage");
 		return modelAndView;
 	}
 
@@ -330,6 +341,7 @@ public class UserSettingsController {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("userProfileDisplay", userProfileMapper.getUserProfileById(authUserId));
 			modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("userStickyList", userStickyMapper.listByUserId(authUserId));
 			modelAndView.addObject("editMode", true);
 			modelAndView.setViewName("user/show");
 			return modelAndView;
@@ -341,10 +353,34 @@ public class UserSettingsController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("userProfileDisplay", userProfile);
 		modelAndView.addObject("userProfile", userProfile);
+		modelAndView.addObject("userStickyList", userStickyMapper.listByUserId(authUserId));
 		modelAndView.addObject("editMode", true);
 		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("user/show");
 		return modelAndView;
 	}
 
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "addSticky", method={RequestMethod.POST})
+	public @ResponseBody Map<String, String> addSticky(HttpServletRequest request, HttpServletResponse response) throws IllegalRequestException {
+		
+		Integer userId = new Integer(request.getParameter("userId"));
+		String content = (String)request.getParameter("content");
+		Integer positionTop = new Integer(request.getParameter("positionTop"));
+		Integer positionLeft = new Integer(request.getParameter("positionLeft"));
+
+		System.out.println("content="+content+", pTop="+positionTop+", pLft="+positionLeft);
+		UserSticky userSticky = new UserSticky();
+		userSticky.setId(userStickyMapper.newId(userId));
+		userSticky.setUserId(userId);
+		userSticky.setPositionTop(positionTop);
+		userSticky.setPositionLeft(positionLeft);
+		userSticky.setContent(content);
+		
+		userStickyMapper.create(userSticky);
+
+		Map<String, String> map = new HashMap<String, String>(1);
+		map.put("msg", "OK");
+		return map;
+	}
 }

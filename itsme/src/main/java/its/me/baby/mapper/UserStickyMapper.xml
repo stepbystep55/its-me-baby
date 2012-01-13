@@ -10,6 +10,15 @@
 		<result property="content" column="CONTENT"/>
 	</resultMap>
 
+	<select id="newId" parameterType="Integer" resultType="int">
+		SELECT
+			IFNULL(MAX(ID) + 1, 1)
+		FROM
+			USER_STICKY
+		WHERE
+			USER_ID = #{userId}
+	</select>
+
 	<select id="listByUserId" parameterType="Integer" resultMap="userSticky">
 		SELECT
 			ID,

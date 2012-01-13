@@ -25,12 +25,15 @@
 
 /* sticky */
 .sticky {
-    width: 250px;
-    height: 50px;
-    background-color: #FFFFFF;
-    z-index:9;
-    padding:20px 15px;
-    cursor: pointer;
+	width: 250px;
+	height: 50px;
+	background-color: #FFFFFF;
+	z-index:9;
+	padding:20px 15px;
+	cursor: pointer;
+	position: absolute;
+	top: 100px;
+	left: 500px;
 }
 
 // -->
@@ -41,7 +44,7 @@
 	#edit_box {
 		position: absolute;
 		top: 33px;
-		left: 10px;
+		right: 10px;
 		z-index: 99;
 		width: 500px;
 		padding: 5px 10px;
@@ -58,9 +61,11 @@
 		color: #FFFFFF;
 		outline: none; /* avoid showing a dotted border of firefox */
 	}
-	.prof_edit_label { width: 80px; padding: 0 5px; font-weight: bold; }
-	.prof_edit_sublabel { padding: 0 5px; }
-	.prof_edit_panel { text-align: right; }
+	table#edit_tbl { width: 100%; border-spacing: 10px; }
+	.edit_label { width: 80px; padding: 0 5px; font-weight: bold; }
+	.edit_sublabel { width: 60px; padding: 0 5px; }
+	.edit_input { width: 120px; padding: 0 5px; }
+	.edit_panel { text-align: right; }
 	#new_stick { text-size: 20px; }
 // -->
 	</style>
@@ -86,18 +91,48 @@ function applyPgBg(url, layout) {
 jQuery.fn.setBgColor = function (color, isTransparent) {
 	this.css('background-color', ((isTransparent == 'true') ? 'transparent' : color));
 };
-var stickyForm = '<textarea></textarea>';
+function editable() {
+	$(this).wrapInner(stickyForm)
+	.find('textarea')
+	.focus()
+	.select()
+	.blur(function() {
+		var txtVal = $(this).val();
+		var posTop = $(this).parent().position().top;
+		var posLeft = $(this).parent().position().left;
+		$(this).parent().html(txtVal);
+		$.ajax({
+			type: "POST",
+			url: 'addSticky',
+			data: {
+				userId: '<c:out value="${userProfile.userId}" />',
+				content: txtVal,
+				positionTop: posTop,
+				positionLeft: posLeft,
+			},
+			dataType: 'json',
+			cache: false,
+			success: function(res){
+				alert(res.msg);
+				//$("#feed_message > span").html(res);
+				//$('#feed_message').fadeOut(3000);
+			}
+		});
+	});
+}
+
+var stickyForm = '<textarea class="txtara"></textarea>';
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
 
 	applyPgBg('${userProfileDisplay.bgImgUrl}', '${userProfileDisplay.bgImgLayout}');
 
-	$('#prof_edit_toggle').click(function() {
-		$('#prof_tabs').toggle('fast', function() {
-			if ($('#prof_edit_toggle').text() == 'Close') {
-				$('#prof_edit_toggle').text('Open');
+	$('#edit_toggle').click(function() {
+		$('#edit_ctrl').toggle('fast', function() {
+			if ($('#edit_toggle').text() == 'Close') {
+				$('#edit_toggle').text('Open');
 			} else {
-				$('#prof_edit_toggle').text('Close');
+				$('#edit_toggle').text('Close');
 			}
 		});
 	});
@@ -107,30 +142,14 @@ $(function(){
 		.appendTo('body')
 		.resizable()
 		.draggable()
-		.dblclick(function() {
-			$(this).wrapInner(stickyForm)
-			.find('textarea')
-			.focus()
-			.select()
-			.blur(function() {
-				$(this).parent().html($(this).val());
-				$.ajax({
-					type: "GET",
-					url: url,
-					data: url,
-					cache: false,
-					success: function(html){
-						$("#feed_message > span").html(html);
-						$('#feed_message').fadeOut(3000);
-					}
-				});
-			});
-		});
+		.dblclick(editable);
 	});
 
 	$('#preview_bg_btn').click(function() {
 		applyPgBg($('#bgImgUrl').val(), $('#bgImgLayout option:selected').val());
 	});
+	
+	$('.sticky').draggable();
 });
 // -->
 </script>
@@ -150,22 +169,20 @@ $(function(){
 
 <c:if test="${editMode}">
 	<div id="edit_box">
-		<div id="edit_bar"><a id="prof_edit_toggle" href="#">Close</a></div>
+		<div id="edit_bar"><a id="edit_toggle" href="#">Close</a></div>
 		<div id="edit_ctrl">
 		<form:form modelAttribute="userProfile" action="updateMyPage" method="post">
 		<form:hidden path="userId" />
 			<table id="edit_tbl">
 				<tr>
 					<td class="edit_label align_right">Backgrounds</td>
-					<td><span class="edit_sublabel">URL</span></td>
-					<td><form:input path="bgImgUrl" maxlength="512" /></td>
+					<td class="edit_sublabel">URL</td>
+					<td class="edit_input form_input_stretch"><form:input path="bgImgUrl" maxlength="512" /></td>
 				</tr>
 				<tr>
 					<td></td>
-					<td>
-					 	<span class="edit_sublabel">Layout</span>
-					</td>
-					<td>
+					<td class="edit_sublabel">Layout</td>
+					<td class="edit_input">
 						<form:select path="bgImgLayout">
 							<form:option value="center"/>
 							<form:option value="tile"/>
@@ -178,13 +195,24 @@ $(function(){
 						<input id="preview_bg_btn" type="button" value="preview" />
 					</td>
 				</tr>
+				<tr><td colspan="3">&nbsp;</td></tr>
+				<tr>
+					<td class="edit_panel" colspan="3">
+						<input id="new_sticky" type="button" value="new sticky" />&nbsp;
+						<input type="submit" name="updateMyPage" value="update"/>
+					</td>
+				</tr>
 			</table>
-			<input id="new_sticky" type="button" value="new sticky" />
-			<input type="submit" name="updateMyPage" value="update"/>
 		</form:form>
 		</div>
 	</div>
 </c:if>
+
+<c:forEach items="${userStickyList}" var="userSticky">
+	<div class="sticky" style="position:absolute; top:${userSticky.positionTop}px; left:${userSticky.positionLeft}px;">
+		<c:out value="${userSticky.content}" />
+	</div>
+</c:forEach>
 
 </body>
 </html>

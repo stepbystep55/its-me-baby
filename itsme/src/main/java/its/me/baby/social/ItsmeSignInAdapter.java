@@ -10,6 +10,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 public final class ItsmeSignInAdapter implements SignInAdapter {
 
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
+		System.out.println("userid="+userId);
 		return null;
 	}
 

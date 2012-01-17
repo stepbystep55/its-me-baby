@@ -55,7 +55,7 @@
 		<constructor-arg>
 			<bean class="its.me.baby.social.ItsmeSignInAdapter" />
 		</constructor-arg>
-		<property name="postSignInUrl" value="http://itsme.cloudfoundry.com/afterConnect" />
+		<property name="postSignInUrl" value="http://its.me:8080/baby/afterConnect" />
 	</bean>
 
 </beans>

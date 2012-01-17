@@ -10,11 +10,12 @@
 	<%@ include file="../_head_base.jsp"%>
 	<%@ include file="../_head_menu_bar.jsp"%>
 	<%@ include file="../_head_grid.jsp"%>
-	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.corner.js"></script>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/colorbox.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.colorbox-min.js"></script>
 	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery-ui-1.8.16.custom.css">
 	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css"  media="screen" href="<%= request.getContextPath() %>/resources/css/jquery.minicolors.css" />
+	<script type="text/javascript"  charset="utf-8" src="<%= request.getContextPath() %>/resources/js/jquery.minicolors.min.js"></script>
 	<style type="text/css">
 <!--
 #feed_message { width: 100%; position: absolute; margin: -26px auto; text-align: center; z-index: 999; }
@@ -24,36 +25,36 @@
 .stretch {width:100%;height:auto;min-height:100%;}
 
 /* sticky */
+.sticky_editor {
+	border: solid 1px #000000;
+	z-index: 9;
+	width: 500px;
+}
+.sticky_editor_tbl {
+	width: 100%;
+}
 .sticky {
-	width: 250px;
-	height: 50px;
+	width: 100%;
+	height: 100%;
 	background-color: #FFFFFF;
-	z-index:9;
 	padding:20px 15px;
 	cursor: pointer;
-	position: absolute;
-	top: 100px;
-	left: 500px;
 }
-
-// -->
-	</style>
-	<style type="text/css">
-<!--
 	/* profile edit */
 	#edit_box {
 		position: absolute;
 		top: 33px;
 		right: 10px;
 		z-index: 99;
-		width: 500px;
+		/*width: 500px;*/
 		padding: 5px 10px;
 		background-color: #FFFFFF;
 		border: 3px solid #666666;
 	}
 	#edit_bar {
 		background-color: #000000;
-		padding: 3px;
+		margin: 3px 0;
+		padding: 5px;
 		width: 80px;
 		text-align: center;
 	}
@@ -61,11 +62,11 @@
 		color: #FFFFFF;
 		outline: none; /* avoid showing a dotted border of firefox */
 	}
+	#edit_ctrl { margin: 15px 0; }
 	table#edit_tbl { width: 100%; border-spacing: 10px; }
-	.edit_label { width: 80px; padding: 0 5px; font-weight: bold; }
-	.edit_sublabel { width: 60px; padding: 0 5px; }
-	.edit_input { width: 120px; padding: 0 5px; }
-	.edit_panel { text-align: right; }
+	table td.edit_label { padding: 3px 5px; font-weight: bold; }
+	table td.edit_sublabel { padding: 3px 5px; }
+	table td.edit_input { padding: 3px 5px; }
 	#new_stick { text-size: 20px; }
 // -->
 	</style>
@@ -91,24 +92,29 @@ function applyPgBg(url, layout) {
 jQuery.fn.setBgColor = function (color, isTransparent) {
 	this.css('background-color', ((isTransparent == 'true') ? 'transparent' : color));
 };
+
 function editable() {
-	$(this).wrapInner(stickyForm)
+	$(this).wrapInner('<textarea class="txtara"></textarea>')
 	.find('textarea')
 	.focus()
 	.select()
 	.blur(function() {
-		var txtVal = $(this).val();
-		var posTop = $(this).parent().position().top;
-		var posLeft = $(this).parent().position().left;
-		$(this).parent().html(txtVal);
+		var stickyContent = $(this).val();
+		var stickyPositionTop = $(this).parent().position().top;
+		var stickyPositionLeft = $(this).parent().position().left;
+		var stickyHeight = $(this).parent().innerHeight();
+		var stickyWidth = $(this).parent().innerWidth();
+		$(this).parent().html(stickyContent);
 		$.ajax({
 			type: "POST",
 			url: 'addSticky',
 			data: {
 				userId: '<c:out value="${userProfile.userId}" />',
-				content: txtVal,
-				positionTop: posTop,
-				positionLeft: posLeft,
+				positionTop: stickyPositionTop,
+				positionLeft: stickyPositionLeft,
+				width: stickyWidth,
+				height: stickyHeight,
+				content: stickyContent
 			},
 			dataType: 'json',
 			cache: false,
@@ -121,24 +127,22 @@ function editable() {
 	});
 }
 
-var stickyForm = '<textarea class="txtara"></textarea>';
 $(function(){
 	if($('#feed_message')!=null) $('#feed_message').fadeOut(3000);
+
+	$('.minicolors').miniColors();
 
 	applyPgBg('${userProfileDisplay.bgImgUrl}', '${userProfileDisplay.bgImgLayout}');
 
 	$('#edit_toggle').click(function() {
 		$('#edit_ctrl').toggle('fast', function() {
-			if ($('#edit_toggle').text() == 'Close') {
-				$('#edit_toggle').text('Open');
-			} else {
-				$('#edit_toggle').text('Close');
-			}
+			($('#edit_toggle').text() == 'Close') ? $('#edit_toggle').text('Open') : $('#edit_toggle').text('Close');
 		});
 	});
 
 	$('#new_sticky').click(function() {
-		$('<div class="sticky">Drag & Double Click!</div>')
+		$($('#sticky_editor_in').html())
+		.css({position:'absolute',top:100, left:150})
 		.appendTo('body')
 		.resizable()
 		.draggable()
@@ -149,7 +153,6 @@ $(function(){
 		applyPgBg($('#bgImgUrl').val(), $('#bgImgLayout option:selected').val());
 	});
 	
-	$('.sticky').draggable();
 });
 // -->
 </script>
@@ -167,6 +170,35 @@ $(function(){
 	</span>
 </div>
 
+<div id="sticky_editor_in" style="display: none;">
+	<div class="sticky_editor">
+		<form action="#" method="post">
+		<table class="sticky_editor_tbl">
+			<tr>
+				<td><input type="button" value="delete" /></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td class="edit_label">FONT</td>
+				<td class="edit_sublabel">Size:</td><td><input type="text" size="3" maxlength="3" /></td>
+				<td class="edit_sublabel">Color:</td><td><input type="text" id="fontColor" name="fontColor" class="minicolors" size="8" maxlength="6" /></td>
+			</tr>
+			<tr>
+				<td class="edit_label">BACKGROUND:</td>
+				<td class="edit_sublabel">Transparent:</td><td><input type="checkbox" name="transparent" /></td>
+				<td class="edit_sublabel">Color:</td><td><input type="text" id="bgColor" readonly="readonly" name="bgColor" class="minicolors" size="8" maxlength="6" /></td>
+			</tr>
+			<tr><td colspan="5">
+				<div class="sticky">Drag &amp; Double Click!</div>
+			</td></tr>
+		</table>
+		</form>
+	</div>
+</div>
+
 <c:if test="${editMode}">
 	<div id="edit_box">
 		<div id="edit_bar"><a id="edit_toggle" href="#">Close</a></div>
@@ -175,9 +207,9 @@ $(function(){
 		<form:hidden path="userId" />
 			<table id="edit_tbl">
 				<tr>
-					<td class="edit_label align_right">Backgrounds</td>
+					<td class="edit_label align_right">BACKGROUNDS</td>
 					<td class="edit_sublabel">URL</td>
-					<td class="edit_input form_input_stretch"><form:input path="bgImgUrl" maxlength="512" /></td>
+					<td class="edit_input form_input_stretch"><form:input path="bgImgUrl" size="60" maxlength="512" /></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -190,15 +222,13 @@ $(function(){
 						</form:select>
 					</td>
 				</tr>
-				<tr>
-					<td class="edit_panel" colspan="3">
-						<input id="preview_bg_btn" type="button" value="preview" />
-					</td>
-				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<tr>
-					<td class="edit_panel" colspan="3">
+					<td>
 						<input id="new_sticky" type="button" value="new sticky" />&nbsp;
+					</td>
+					<td class="align_right" colspan="2">
+						<input id="preview_bg_btn" type="button" value="preview" />&nbsp;&nbsp;
 						<input type="submit" name="updateMyPage" value="update"/>
 					</td>
 				</tr>
@@ -209,7 +239,15 @@ $(function(){
 </c:if>
 
 <c:forEach items="${userStickyList}" var="userSticky">
-	<div class="sticky" style="position:absolute; top:${userSticky.positionTop}px; left:${userSticky.positionLeft}px;">
+	<div class="stickyFixed"
+		style="
+		position:absolute;
+		top:${userSticky.positionTop}px;
+		left:${userSticky.positionLeft}px;
+		height:${userSticky.height}px;
+		width:${userSticky.width}px;
+		font-size:${userSticky.fontSize}px;
+		">
 		<c:out value="${userSticky.content}" />
 	</div>
 </c:forEach>

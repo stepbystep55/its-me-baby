@@ -7,6 +7,12 @@
 		<result property="userId" column="USER_ID"/>
 		<result property="positionTop" column="POSITION_TOP"/>
 		<result property="positionLeft" column="POSITION_LEFT"/>
+		<result property="width" column="WIDTH"/>
+		<result property="height" column="HEIGHT"/>
+		<result property="fontSize" column="FONT_SIZE"/>
+		<result property="fontColor" column="FONT_COLOR"/>
+		<result property="transparent" column="TRANSPARENT"/>
+		<result property="bgColor" column="BG_COLOR"/>
 		<result property="content" column="CONTENT"/>
 	</resultMap>
 
@@ -25,6 +31,12 @@
 			USER_ID,
 			POSITION_TOP,
 			POSITION_LEFT,
+			WIDTH,
+			HEIGHT,
+			FONT_SIZE,
+			FONT_COLOR,
+			TRANSPARENT,
+			BG_COLOR,
 			CONTENT
 		FROM
 			USER_STICKY
@@ -39,6 +51,12 @@
 			USER_ID,
 			POSITION_TOP,
 			POSITION_LEFT,
+			WIDTH,
+			HEIGHT,
+			FONT_SIZE,
+			FONT_COLOR,
+			TRANSPARENT,
+			BG_COLOR,
 			CONTENT
 		)
 		VALUES
@@ -47,6 +65,12 @@
 			#{userId},
 			#{positionTop},
 			#{positionLeft},
+			#{width},
+			#{height},
+			#{fontSize},
+			#{fontColor},
+			#{transparent},
+			#{bgColor},
 			#{content}
 		)
 	</insert>
@@ -57,6 +81,12 @@
 				USER_ID = #{userId},
 				POSITION_TOP = #{positionTop},
 				POSITION_LEFT = #{positionLeft},
+				WIDTH = #{width},
+				HEIGHT = #{height},
+				FONT_SIZE = #{fontSize},
+				FONT_COLOR = #{fontColor},
+				TRANSPARENT = #{transparent},
+				BG_COLOR = #{bgColor},
 				CONTENT = #{content}
 			WHERE
 				ID = #{id}

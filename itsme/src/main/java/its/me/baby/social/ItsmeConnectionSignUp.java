@@ -18,7 +18,10 @@ public class ItsmeConnectionSignUp implements ConnectionSignUp {
 
 	public String execute(Connection<?> connection) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		return userCookieGenerator.getUserId(request).toString();
+		String userId = userCookieGenerator.getUserId(request).toString();
+		System.out.println("ItsmeConnectionSignUp#userId="+userId);
+		return userId;
+		//return userCookieGenerator.getUserId(request).toString();
 		//return connection.getKey().getProviderUserId();
 	}
 

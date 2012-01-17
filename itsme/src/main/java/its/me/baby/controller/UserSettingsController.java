@@ -275,11 +275,11 @@ public class UserSettingsController {
 		Integer authUserId = userCookieGenerator.getUserId(request);
 
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(authUserId.toString());
-		if (request.getAttribute("disconnectFacebook") != null) {
+		if (request.getParameter("disconnectFacebook") != null) {
 			Connection connection = connectionRepository.findPrimaryConnection(Facebook.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		}
-		if (request.getAttribute("disconnectTwitter") != null) {
+		if (request.getParameter("disconnectTwitter") != null) {
 			Connection connection = connectionRepository.findPrimaryConnection(Twitter.class);
 			if (connection != null) connectionRepository.removeConnection(connection.getKey());
 		}
@@ -365,9 +365,11 @@ public class UserSettingsController {
 	public @ResponseBody Map<String, String> addSticky(HttpServletRequest request, HttpServletResponse response) throws IllegalRequestException {
 		
 		Integer userId = new Integer(request.getParameter("userId"));
-		String content = (String)request.getParameter("content");
 		Integer positionTop = new Integer(request.getParameter("positionTop"));
 		Integer positionLeft = new Integer(request.getParameter("positionLeft"));
+		Integer height = new Integer(request.getParameter("height"));
+		Integer width = new Integer(request.getParameter("width"));
+		String content = (String)request.getParameter("content");
 
 		System.out.println("content="+content+", pTop="+positionTop+", pLft="+positionLeft);
 		UserSticky userSticky = new UserSticky();
@@ -375,6 +377,8 @@ public class UserSettingsController {
 		userSticky.setUserId(userId);
 		userSticky.setPositionTop(positionTop);
 		userSticky.setPositionLeft(positionLeft);
+		userSticky.setHeight(height);
+		userSticky.setWidth(width);
 		userSticky.setContent(content);
 		
 		userStickyMapper.create(userSticky);
